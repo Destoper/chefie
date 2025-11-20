@@ -61,29 +61,11 @@ class AdicionarIngredientePage extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          spacing: 10,
-          children: [
-            Expanded(
-              child: ButtonRounded(
-                text: "Cancelar", 
-                onPressed: (){}, // TODO: logic 
-                borderWidth: 2.3, 
-                invertColors: true,
-                height: 60,
-                
-              )
-            ),
-            Expanded(
-              child: ButtonRounded(
-                text: "Salvar", 
-                onPressed: (){}, // TODO: logic
-                borderWidth: 2.3, 
-                height: 60,
-              )
-            ),
-          ],
+        child: ButtonRounded(
+          text: "Salvar", 
+          onPressed: (){}, // TODO: logic
+          borderWidth: 2.3, 
+          height: 60,
         ),
       ),
     );

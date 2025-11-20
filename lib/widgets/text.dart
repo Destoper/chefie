@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 
 class TextTitle extends StatelessWidget {
   final String text;
+  final FontWeight fontWeight;
+  final double fontSize;
 
   const TextTitle({
     super.key,
     this.text = "Title!",
+    this.fontWeight = FontWeight.w800,
+    this.fontSize = 32,
   });
 
   @override
@@ -15,8 +19,8 @@ class TextTitle extends StatelessWidget {
       text,
       style: TextStyle(
         color: AppColors.textOf(context),
-        fontSize: 32,
-        fontWeight: FontWeight.w800
+        fontSize: fontSize,
+        fontWeight: fontWeight
       )
     );
   }

@@ -63,7 +63,7 @@ class _IngredientesPageState extends State<IngredientesPage> {
         shape: CircleBorder(),
         backgroundColor: AppColors.primary,
         tooltip: "Adicionar ingrediente",
-        child: Icon(Icons.add, color: AppColors.textOf(context)),
+        child: Icon(Icons.add, color: AppColors.textDark),
       ),
     );
   }

@@ -1,3 +1,6 @@
+import 'package:chefie/models/ingrediente.dart';
+import 'package:chefie/models/ingrediente_categoria.dart';
+import 'package:chefie/models/unidades.dart';
 import 'package:flutter/material.dart';
 
 class ReceitaModel {
@@ -6,6 +9,10 @@ class ReceitaModel {
   String category;
   Color color;
   int estimatedTimeMin;
+  int portionSizePeople;
+  int difficulty; // easy - 0, medium - 1, hard 2
+  List<IngredienteModel> ingredients;
+  String instructions;
 
   ReceitaModel({
     required this.name,
@@ -13,6 +20,10 @@ class ReceitaModel {
     required this.category,
     required this.color,
     required this.estimatedTimeMin,
+    required this.portionSizePeople,
+    required this.difficulty,
+    required this.ingredients,
+    required this.instructions,
   });
 
 static List<ReceitaModel> getReceitas(){
@@ -25,6 +36,47 @@ static List<ReceitaModel> getReceitas(){
       category: "Salada", 
       color: Colors.green,
       estimatedTimeMin: 15,
+      portionSizePeople: 2,
+      difficulty: 0,
+      instructions: "Asse o salmão e misture tudo.",
+      ingredients: [
+        IngredienteModel(
+            nome: "Salmão", 
+            quantidade: 300, 
+            unidade: Unidade(name: "g"),
+            categoria: IngredienteCategoriaModel.categoriaCarne(),
+          ),
+        IngredienteModel(
+            nome: "Sal", 
+            quantidade: 1, 
+            unidade: Unidade(name: "g"),
+            categoria: IngredienteCategoriaModel.categoriaTempero(),
+          ),
+        IngredienteModel(
+            nome: "Tomate", 
+            quantidade: 1, 
+            unidade: Unidade(name: "un"),
+            categoria: IngredienteCategoriaModel.categoriaFruta(),
+          ),
+        IngredienteModel(
+            nome: "Brócolis", 
+            quantidade: 5, 
+            unidade: Unidade(name: "un"),
+            categoria: IngredienteCategoriaModel.categoriaVegetal(),
+          ),
+        IngredienteModel(
+            nome: "Cenoura", 
+            quantidade: 1, 
+            unidade: Unidade(name: "un"),
+            categoria: IngredienteCategoriaModel.categoriaVegetal(),
+          ),
+        IngredienteModel(
+            nome: "Alface", 
+            quantidade: 1, 
+            unidade: Unidade(name: "un"),
+            categoria: IngredienteCategoriaModel.categoriaVegetal(),
+          ),
+        ]
     )
   );
 
@@ -35,6 +87,29 @@ static List<ReceitaModel> getReceitas(){
       category: "Italiana", 
       color: Colors.orange.shade200, 
       estimatedTimeMin: 45,
+      portionSizePeople: 4,
+      difficulty: 1,
+      instructions: "Faça a máquina depois asse em um forno por 15 minutos",
+      ingredients: [
+        IngredienteModel(
+            nome: "Queijo", 
+            quantidade: 200, 
+            unidade: Unidade(name: "g"),
+            categoria: IngredienteCategoriaModel.categoriaLaticinio(),
+          ),
+        IngredienteModel(
+            nome: "Pepperoni", 
+            quantidade: 100, 
+            unidade: Unidade(name: "g"),
+            categoria: IngredienteCategoriaModel.categoriaCarne(),
+          ),
+        IngredienteModel(
+            nome: "Massa de Pizza", 
+            quantidade: 300, 
+            unidade: Unidade(name: "g"),
+            categoria: IngredienteCategoriaModel.categoriaGrao(),
+          ),
+      ]
     )
   );
 
@@ -45,6 +120,29 @@ static List<ReceitaModel> getReceitas(){
       category: "Café da Manhã", 
       color: Colors.brown.shade300, 
       estimatedTimeMin: 45,
+      portionSizePeople: 1,
+      difficulty: 0,
+      instructions: "Cozinhe os ovos, depois bata com o abacate. Sirva com torradas.",
+      ingredients: [
+        IngredienteModel(
+            nome: "Ovo", 
+            quantidade: 5, 
+            unidade: Unidade(name: "un"),
+            categoria: IngredienteCategoriaModel.categoriaCarne(),
+          ),
+        IngredienteModel(
+            nome: "Abacate", 
+            quantidade: 1, 
+            unidade: Unidade(name: "un"),
+            categoria: IngredienteCategoriaModel.categoriaFruta(),
+          ),
+        IngredienteModel(
+            nome: "Torrada", 
+            quantidade: 10, 
+            unidade: Unidade(name: "un"),
+            categoria: IngredienteCategoriaModel.categoriaGrao(),
+          ),
+      ]
     )
   );  
 

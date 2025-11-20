@@ -42,7 +42,7 @@ class _MainScaffoldState extends State<MainScaffold> {
     IngredientesPage(),
   ];
 
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
