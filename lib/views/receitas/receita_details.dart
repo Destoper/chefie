@@ -117,6 +117,7 @@ class RecipeInfoItem extends StatelessWidget {
       height: 100,
       padding: EdgeInsets.all(5),
       child: Column(
+        spacing: 5,
         children: [
           Container(
             width: 60,
