@@ -1,3 +1,4 @@
+import 'package:chefie/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'views/home/home.dart';
 
@@ -13,9 +14,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Chefie',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'PlusJakartaSans'
-      ),
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.system,
       home: HomePage(),
     );
   }

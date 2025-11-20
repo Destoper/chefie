@@ -1,4 +1,5 @@
 import 'package:chefie/models/receita.dart';
+import 'package:chefie/widgets/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:chefie/widgets/button.dart';
 import 'package:chefie/widgets/text.dart';
@@ -7,7 +8,7 @@ import 'package:chefie/widgets/receita_preview.dart';
 
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -15,6 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<ReceitaModel> receitas  = [];
+  int currentPageIndex = 0;
 
   void _getReceitas(){
     receitas = ReceitaModel.getReceitas();
@@ -23,7 +25,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     _getReceitas();
-    int currentPageIndex = 0;
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
       appBar: appBar(),
@@ -70,7 +71,7 @@ class _HomePageState extends State<HomePage> {
           sugestoesDoDiaCarousel()
         ],
       ),
-      bottomNavigationBar: navigationBar(currentPageIndex),
+      bottomNavigationBar: ChefieNavBar(),
     );
   }
 
@@ -86,37 +87,7 @@ class _HomePageState extends State<HomePage> {
           )
         );
   }
-
-  NavigationBar navigationBar(int currentPageIndex) {
-    return NavigationBar(
-      backgroundColor: AppColors.backgroundLight,
-      elevation: 0.1,
-      indicatorColor: Colors.transparent,
-      onDestinationSelected: (int idx) {},
-      selectedIndex: currentPageIndex,
-      destinations: <Widget>[
-        NavigationDestination(
-          selectedIcon: Icon(Icons.home_outlined, color: AppColors.primary),
-          icon: Icon(Icons.home_outlined),
-          tooltip: 'Início',
-          label: 'Início',
-        ),
-        NavigationDestination(
-          selectedIcon: Icon(Icons.shopping_basket_outlined, color: AppColors.primary),
-          icon: Icon(Icons.shopping_basket_outlined),
-          tooltip: 'Ingredientes',
-          label: 'Ingredientes',
-        ),
-        NavigationDestination(
-          selectedIcon: Icon(Icons.favorite_border, color: AppColors.primary),
-          icon: Icon(Icons.favorite_border),
-          tooltip: 'Favoritos',
-          label: 'Favoritos',
-        ),
-      ],
-    );
-  }
-
+  
   AppBar appBar() {
     return AppBar(
       title: Text(
@@ -133,7 +104,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-
-
-

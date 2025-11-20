@@ -1,3 +1,4 @@
+import 'package:chefie/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class TextTitle extends StatelessWidget {
@@ -23,10 +24,12 @@ class TextTitle extends StatelessWidget {
 
 class TextLabel extends StatelessWidget {
   final String text;
+  final double fontSize;
 
   const TextLabel({
     super.key,
-    required this.text
+    required this.text,
+    this.fontSize = 20,
   });
 
   @override
@@ -34,8 +37,8 @@ class TextLabel extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        color: Colors.black, 
-        fontSize: 20,
+        color: AppColors.text, 
+        fontSize: fontSize,
         fontWeight: FontWeight.w700
       )
     );
