@@ -6,7 +6,7 @@ class AppColors {
 
   static const Color primary = Color(0xFFff6933);
   static const Color backgroundLight = Color(0xFFF8F6F5);
-  static const Color backgroundDark = Color(0xFF23140F);
+  static const Color backgroundDark = Color.fromARGB(255, 0, 0, 0);
   static const Color textLight = Color(0xFF1D110C);
   static const Color textDark = Color(0xFFF8F6F5);
   static const Color textSecondaryLight = Color(0xFF6C757D);
@@ -20,6 +20,26 @@ class AppColors {
   static const Color white = Colors.white;
   static const Color text = textLight;
   static const Color surface = surfaceLight;
+
+  static Color backgroundOf(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark ? backgroundDark : backgroundLight;
+  }
+
+  static Color surfaceOf(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark ? surfaceDark : surfaceLight;
+  }
+
+  static Color textOf(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark ? textDark : textLight;
+  }
+
+  static Color textSecondaryOf(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark ? textSecondaryDark : textSecondaryLight;
+  }
+
+  static Color borderOf(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark ? borderDark : borderLight;
+  }
 }
 
 class AppTheme {

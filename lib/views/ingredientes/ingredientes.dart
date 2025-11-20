@@ -22,7 +22,7 @@ class _IngredientesPageState extends State<IngredientesPage> {
   Widget build(BuildContext context) {
     _getIngredientes();
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: AppColors.backgroundOf(context),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: ChefieAppBar(title:"Meus ingredientes"),
@@ -35,8 +35,8 @@ class _IngredientesPageState extends State<IngredientesPage> {
               hintText: "Buscar em meus ingredientes...",
               padding: WidgetStateProperty.all(EdgeInsets.only(left: 20, right: 20)),
               elevation: WidgetStateProperty.all(0.0),
-              backgroundColor: WidgetStateProperty.all(AppColors.surface),
-              leading: Icon(Icons.search, color: AppColors.text),
+              backgroundColor: WidgetStateProperty.all(AppColors.surfaceOf(context)),
+              leading: Icon(Icons.search, color: AppColors.textOf(context)),
               textStyle: WidgetStateProperty.all(
                 TextStyle(
                   fontSize: 18,
@@ -63,7 +63,7 @@ class _IngredientesPageState extends State<IngredientesPage> {
         shape: CircleBorder(),
         backgroundColor: AppColors.primary,
         tooltip: "Adicionar ingrediente",
-        child: Icon(Icons.add, color: AppColors.textDark),
+        child: Icon(Icons.add, color: AppColors.textOf(context)),
       ),
     );
   }
@@ -90,8 +90,8 @@ class ItemIngrediente extends StatelessWidget {
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: AppColors.borderLight, width: 1),
-          color: AppColors.surfaceLight,
+          border: Border.all(color: AppColors.borderOf(context), width: 1),
+          color: AppColors.surfaceOf(context),
         ),
         child: Row(
           children: [
@@ -119,7 +119,7 @@ class ItemIngrediente extends StatelessWidget {
                   Text(
                     ingrediente.nome,
                     style: TextStyle(
-                      color: AppColors.text, 
+                      color: AppColors.textOf(context), 
                       fontSize: 18,
                       fontWeight: FontWeight.w400
                     )
@@ -127,7 +127,7 @@ class ItemIngrediente extends StatelessWidget {
                   Text(
                     "${ingrediente.quantidade}g",
                     style: TextStyle(
-                      color: AppColors.text, 
+                      color: AppColors.textOf(context), 
                       fontSize: 16,
                       fontWeight: FontWeight.w300
                     )
@@ -138,7 +138,7 @@ class ItemIngrediente extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(Icons.mode_edit_outline_outlined, color: AppColors.text),
+                Icon(Icons.mode_edit_outline_outlined, color: AppColors.textOf(context)),
                 SizedBox(width: 20),
                 Icon(Icons.delete_outline_outlined, color: AppColors.destructive)
               ],

@@ -21,7 +21,7 @@ class ChefieAppBar extends StatelessWidget {
           fontWeight: FontWeight.bold,
         )
       ),
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: AppColors.backgroundOf(context),
       centerTitle: true,
       elevation: 0.5,
       leading: leading

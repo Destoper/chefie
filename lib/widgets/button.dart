@@ -7,8 +7,8 @@ class ButtonRounded extends StatelessWidget {
   final VoidCallback onPressed;
   final double width;
   final double height;
-  final Color backgroundColor;
-  final Color foregroundColor;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
   final double borderWidth;
   final double fontSize;
   final FontWeight fontWeight;
@@ -21,10 +21,10 @@ class ButtonRounded extends StatelessWidget {
     required this.onPressed,
     this.icon,
     this.invertColors = false,
-  this.width = double.infinity,
-  this.height = 50,
-  this.backgroundColor = AppColors.primary,
-  this.foregroundColor = AppColors.white,
+    this.width = double.infinity,
+    this.height = 50,
+    this.backgroundColor,
+    this.foregroundColor,
     this.borderWidth = 0,
     this.fontSize = 18,
     this.fontWeight = FontWeight.w600,
@@ -33,6 +33,8 @@ class ButtonRounded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color bgColor = backgroundColor ?? AppColors.primary;
+    final Color borderColor = foregroundColor ?? AppColors.backgroundOf(context);
     return 
       SizedBox(
         width: width,
@@ -40,13 +42,13 @@ class ButtonRounded extends StatelessWidget {
         child: TextButton(
           onPressed: onPressed,
           style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all<Color>(invertColors? foregroundColor : backgroundColor),
-            foregroundColor: WidgetStateProperty.all<Color>(invertColors? backgroundColor : foregroundColor),
+            backgroundColor: WidgetStateProperty.all<Color>(invertColors? borderColor : bgColor),
+            foregroundColor: WidgetStateProperty.all<Color>(invertColors? bgColor : borderColor),
             shape: WidgetStateProperty.all<OutlinedBorder>(
               RoundedRectangleBorder(
                 borderRadius: borderRadius,
                 side: BorderSide(
-                  color: invertColors? backgroundColor : foregroundColor,
+                  color: invertColors? bgColor : borderColor,
                   width: borderWidth,
                 ),
               ),

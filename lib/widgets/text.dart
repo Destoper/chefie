@@ -14,7 +14,7 @@ class TextTitle extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        color: Colors.black, 
+        color: AppColors.textOf(context),
         fontSize: 32,
         fontWeight: FontWeight.w800
       )
@@ -24,14 +24,14 @@ class TextTitle extends StatelessWidget {
 
 class TextLabel extends StatelessWidget {
   final String text;
-  final Color color;
+  final Color? color;
   final double fontSize;
   final FontWeight fontWeight;
 
   const TextLabel({
     super.key,
     required this.text,
-    this.color = AppColors.text,
+    this.color,
     this.fontSize = 20,
     this.fontWeight = FontWeight.w700,
   });
@@ -41,10 +41,10 @@ class TextLabel extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        color: color,
+        color: color ?? AppColors.textOf(context),
         fontSize: fontSize,
-        fontWeight: fontWeight
-      )
+        fontWeight: fontWeight,
+      ),
     );
   }
 }
@@ -64,10 +64,10 @@ class FieldTitle extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          color: AppColors.text, 
+          color: AppColors.textOf(context), 
           fontSize: 21,
           fontWeight: FontWeight.w400,
-        )
+        ),
       ),
     );
   }

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:chefie/models/ingrediente_categoria.dart';
 
 class IngredienteModel {

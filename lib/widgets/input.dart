@@ -21,7 +21,7 @@ class InputText extends StatelessWidget {
         TextField(
           decoration: InputDecoration(
             filled: true,
-            fillColor: AppColors.backgroundLight,
+            fillColor: AppColors.backgroundOf(context),
             contentPadding: const EdgeInsets.all(15),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
@@ -33,7 +33,7 @@ class InputText extends StatelessWidget {
             ),
             hintText: hintText,
             hintStyle: TextStyle(
-              color: AppColors.text.withValues(alpha: 0.6),
+              color: AppColors.textOf(context).withValues(alpha: 0.6),
               fontSize: 18,
             ),
           ),
@@ -61,7 +61,7 @@ class NumberField extends StatelessWidget {
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
           decoration: InputDecoration(
             filled: true,
-            fillColor: AppColors.backgroundLight,
+            fillColor: AppColors.backgroundOf(context),
             contentPadding: const EdgeInsets.all(15),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
@@ -73,7 +73,7 @@ class NumberField extends StatelessWidget {
             ),
             hintText: "1",
             hintStyle: TextStyle(
-              color: AppColors.text.withValues(alpha: 0.6),
+              color: AppColors.textOf(context).withValues(alpha: 0.6),
             ),
           ),
         ),

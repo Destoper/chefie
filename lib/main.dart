@@ -62,7 +62,7 @@ class _MainScaffoldState extends State<MainScaffold> {
 
   NavigationBar navigationBar() {
     return NavigationBar(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: AppColors.backgroundOf(context),
       elevation: 0.1,
       indicatorColor: Colors.transparent,
       onDestinationSelected: (int index) {

@@ -38,6 +38,7 @@ class AdicionarIngredientePage extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: campoDropdown(
+                    context,
                     "Unidade",
                     Unidade.getUnidades(),
                   ),
@@ -88,7 +89,7 @@ class AdicionarIngredientePage extends StatelessWidget {
     );
   }
 
-  Column campoDropdown(String text, List<Unidade> opcoes) {
+  Column campoDropdown(BuildContext context, String text, List<Unidade> opcoes) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -104,7 +105,7 @@ class AdicionarIngredientePage extends StatelessWidget {
           ),
           inputDecorationTheme:InputDecorationTheme(
             filled: true,
-            fillColor: AppColors.backgroundLight, 
+            fillColor: AppColors.backgroundOf(context),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
               borderSide: BorderSide(color: AppColors.primary.withValues(alpha: 0.3), width: 1.6)
@@ -112,7 +113,7 @@ class AdicionarIngredientePage extends StatelessWidget {
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
               borderSide: BorderSide(color: AppColors.primary, width: 1.6),
-            ) ,
+            ),
           ),
         ),
       ],
@@ -171,7 +172,7 @@ class CategoriaItem extends StatelessWidget {
       width: 110,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
-        color: selected ? AppColors.primary.withValues(alpha: 0.25) : AppColors.primary.withValues(alpha:0.1),
+  color: selected ? AppColors.primary.withValues(alpha: 0.25) : AppColors.primary.withValues(alpha:0.1),
         border: Border.all(
           color: selected ? AppColors.primary : Colors.transparent,
           width: 2,
@@ -196,7 +197,7 @@ class CategoriaItem extends StatelessWidget {
             text: categoria.nome,
             fontSize: 15,
             fontWeight: FontWeight.w500,
-            color: selected? AppColors.primary : AppColors.text,
+            color: selected ? AppColors.primary : AppColors.textOf(context),
           ),
         ],
       ),

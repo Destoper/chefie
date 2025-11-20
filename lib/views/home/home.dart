@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     _getReceitas();
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: AppColors.backgroundOf(context),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: ChefieAppBar(title: "Chefie", leading: Icon(Icons.restaurant_menu)),
