@@ -75,7 +75,6 @@ class _HomePageState extends State<HomePage> {
           sugestoesDoDiaCarousel()
         ],
       ),
-      bottomNavigationBar: ChefieNavBar(),
     );
   }
 
