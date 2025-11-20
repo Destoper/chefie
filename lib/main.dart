@@ -1,5 +1,4 @@
 import 'package:chefie/theme/app_theme.dart';
-import 'package:chefie/widgets/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'views/home/home.dart';
 import 'views/ingredientes/ingredientes.dart';
