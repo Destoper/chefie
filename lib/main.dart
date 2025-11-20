@@ -1,4 +1,5 @@
 import 'package:chefie/theme/app_theme.dart';
+import 'package:chefie/views/receitas/find_receita.dart';
 import 'package:flutter/material.dart';
 import 'views/home/home.dart';
 import 'views/ingredientes/ingredientes.dart';
@@ -38,7 +39,7 @@ class _MainScaffoldState extends State<MainScaffold> {
   final List<Widget> _pages = [
     HomePage(),
     IngredientesPage(),
-    IngredientesPage(),
+    FindReceitaPage(),
     IngredientesPage(),
   ];
 
