@@ -96,19 +96,19 @@ class _HomePageState extends State<HomePage> {
       selectedIndex: currentPageIndex,
       destinations: <Widget>[
         NavigationDestination(
-          selectedIcon: Icon(Icons.home, color: AppColors.primary),
+          selectedIcon: Icon(Icons.home_outlined, color: AppColors.primary),
           icon: Icon(Icons.home_outlined),
           tooltip: 'Início',
           label: 'Início',
         ),
         NavigationDestination(
-          selectedIcon: Icon(Icons.shopping_basket, color: AppColors.primary),
-          icon: Badge(child: Icon(Icons.shopping_basket_outlined)),
+          selectedIcon: Icon(Icons.shopping_basket_outlined, color: AppColors.primary),
+          icon: Icon(Icons.shopping_basket_outlined),
           tooltip: 'Ingredientes',
           label: 'Ingredientes',
         ),
         NavigationDestination(
-          selectedIcon: Icon(Icons.favorite, color: AppColors.primary),
+          selectedIcon: Icon(Icons.favorite_border, color: AppColors.primary),
           icon: Icon(Icons.favorite_border),
           tooltip: 'Favoritos',
           label: 'Favoritos',
