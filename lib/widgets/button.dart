@@ -13,6 +13,7 @@ class ButtonRounded extends StatelessWidget {
   final double fontSize;
   final FontWeight fontWeight;
   final bool invertColors;
+  final BorderRadiusGeometry borderRadius;
 
   const ButtonRounded({
     super.key,
@@ -27,6 +28,7 @@ class ButtonRounded extends StatelessWidget {
     this.borderWidth = 0,
     this.fontSize = 18,
     this.fontWeight = FontWeight.w600,
+    this.borderRadius = const BorderRadius.all(Radius.circular(30)),
   });
 
   @override
@@ -42,7 +44,7 @@ class ButtonRounded extends StatelessWidget {
             foregroundColor: WidgetStateProperty.all<Color>(invertColors? backgroundColor : foregroundColor),
             shape: WidgetStateProperty.all<OutlinedBorder>(
               RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
+                borderRadius: borderRadius,
                 side: BorderSide(
                   color: invertColors? backgroundColor : foregroundColor,
                   width: borderWidth,

@@ -1,4 +1,5 @@
 import 'package:chefie/models/receita.dart';
+import 'package:chefie/widgets/chefie_app_bar.dart';
 import 'package:chefie/widgets/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:chefie/widgets/button.dart';
@@ -27,7 +28,10 @@ class _HomePageState extends State<HomePage> {
     _getReceitas();
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
-      appBar: appBar(),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: ChefieAppBar(title: "Chefie", leading: Icon(Icons.restaurant_menu)),
+      ),      
       body: ListView(
         children: <Widget>[
           Padding(

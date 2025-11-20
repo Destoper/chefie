@@ -1,9 +1,9 @@
 import 'package:chefie/models/ingrediente.dart';
 import 'package:chefie/theme/app_theme.dart';
+import 'package:chefie/views/ingredientes/adicionar_ingrediente.dart';
+import 'package:chefie/widgets/chefie_app_bar.dart';
 import 'package:chefie/widgets/navigation_bar.dart';
-import 'package:chefie/widgets/text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class IngredientesPage extends StatefulWidget {
   const IngredientesPage({super.key});
@@ -24,7 +24,10 @@ class _IngredientesPageState extends State<IngredientesPage> {
     _getIngredientes();
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
-      appBar: appBar(),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: ChefieAppBar(title:"Meus ingredientes"),
+      ),
       body: Column(
         children: [
           Padding(
@@ -52,28 +55,18 @@ class _IngredientesPageState extends State<IngredientesPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AdicionarIngredientePage()),
+          );
+        },
         shape: CircleBorder(),
         backgroundColor: AppColors.primary,
         tooltip: "Adicionar ingrediente",
         child: Icon(Icons.add, color: AppColors.textDark),
       ),
       bottomNavigationBar: ChefieNavBar(),
-    );
-  }
-
-  AppBar appBar() {
-    return AppBar(
-      title: Text(
-        "Meus ingredientes",
-        style: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-        )
-      ),
-      backgroundColor: AppColors.backgroundLight,
-      centerTitle: true,
-      elevation: 0.5,
     );
   }
 }
@@ -107,12 +100,18 @@ class ItemIngrediente extends StatelessWidget {
             Container(
               width: 50,
               height: 50,
-              padding: EdgeInsets.all(5),
+              padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                color: Colors.red.shade100,
+                color: ingrediente.categoria.cor,
               ),
-              child: SvgPicture.asset('assets/icons/carne.svg')
+              child: Center(
+                child: Text(
+                  ingrediente.categoria.icone,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 24)
+              ),
+            )
             ),
             SizedBox(width: 15),
             Expanded(

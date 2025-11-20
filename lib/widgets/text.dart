@@ -24,12 +24,16 @@ class TextTitle extends StatelessWidget {
 
 class TextLabel extends StatelessWidget {
   final String text;
+  final Color color;
   final double fontSize;
+  final FontWeight fontWeight;
 
   const TextLabel({
     super.key,
     required this.text,
+    this.color = AppColors.text,
     this.fontSize = 20,
+    this.fontWeight = FontWeight.w700,
   });
 
   @override
@@ -37,10 +41,34 @@ class TextLabel extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        color: AppColors.text, 
+        color: color,
         fontSize: fontSize,
-        fontWeight: FontWeight.w700
+        fontWeight: fontWeight
       )
+    );
+  }
+}
+
+class FieldTitle extends StatelessWidget {
+  const FieldTitle({
+    super.key,
+    required this.text,
+  });
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6.0),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: AppColors.text, 
+          fontSize: 21,
+          fontWeight: FontWeight.w400,
+        )
+      ),
     );
   }
 }

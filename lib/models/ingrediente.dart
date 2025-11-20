@@ -4,7 +4,7 @@ import 'package:chefie/models/ingrediente_categoria.dart';
 class IngredienteModel {
   String nome;
   int quantidade;
-  String categoria;
+  IngredienteCategoriaModel categoria;
 
   IngredienteModel({
     required this.nome,
@@ -19,7 +19,7 @@ class IngredienteModel {
       IngredienteModel(
         nome: "Tomate",
         quantidade: 500,
-        categoria: "Fruta",        
+        categoria: IngredienteCategoriaModel.categoriaFruta(),        
       )
     );
 
@@ -27,7 +27,7 @@ class IngredienteModel {
       IngredienteModel(
         nome: "Frango",
         quantidade: 2,
-        categoria: "Carne",        
+        categoria: IngredienteCategoriaModel.categoriaCarne(),
       )
     );
 
@@ -35,7 +35,7 @@ class IngredienteModel {
       IngredienteModel(
         nome: "Arroz",
         quantidade: 1000,
-        categoria: "Grão",        
+        categoria: IngredienteCategoriaModel.categoriaGrao(),        
       )
     );
 
