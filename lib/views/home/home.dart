@@ -1,5 +1,8 @@
 import 'package:chefie/models/receita.dart';
+import 'package:chefie/views/ingredientes/ingredientes.dart';
+import 'package:chefie/views/receitas/find_receita.dart';
 import 'package:chefie/widgets/chefie_app_bar.dart';
+import 'package:chefie/widgets/image.dart';
 import 'package:flutter/material.dart';
 import 'package:chefie/widgets/button.dart';
 import 'package:chefie/widgets/text.dart';
@@ -44,21 +47,42 @@ class _HomePageState extends State<HomePage> {
             width: double.infinity,
             height: 200,
             clipBehavior: Clip.antiAlias,
-            decoration: const BoxDecoration(shape: BoxShape.rectangle, borderRadius: BorderRadius.all(Radius.circular(25.0))),
-            child:Image.network(
-              "https://lh3.googleusercontent.com/aida-public/AB6AXuBnRdwr4pPmUz7lSSqXJfcAIaP4fAB3B0vc0orpjJw5-_5G5iTQBBMVZ_g48p5HNYimB-akiA3EF5xt-Q9UUum8lSk9pm09V5hGFPdQ5k_4I56DwxRka_2VpWR1YvnaXCV74qCf2_gspq01qt92toGeuXGTX-gXOUEQV8PXqZjNbGmeAej9XQul0HhszsJOGEeGdx1EwxG9QqoQL7ybuFzYVcaFpP1V685As7TH8JYOQLIf4xh5z5S_iw8UUN919Lups5eJHC0jEraK",
-              fit: BoxFit.cover,
+            decoration: const BoxDecoration(
+              shape: BoxShape.rectangle, 
+              borderRadius: BorderRadius.all(
+                Radius.circular(25.0)
+              )
+            ),
+            child:
+            ChefieImage(
+              image: Image.network(
+                "https://lh3.googleusercontent.com/aida-public/AB6AXuBnRdwr4pPmUz7lSSqXJfcAIaP4fAB3B0vc0orpjJw5-_5G5iTQBBMVZ_g48p5HNYimB-akiA3EF5xt-Q9UUum8lSk9pm09V5hGFPdQ5k_4I56DwxRka_2VpWR1YvnaXCV74qCf2_gspq01qt92toGeuXGTX-gXOUEQV8PXqZjNbGmeAej9XQul0HhszsJOGEeGdx1EwxG9QqoQL7ybuFzYVcaFpP1V685As7TH8JYOQLIf4xh5z5S_iw8UUN919Lups5eJHC0jEraK",
+              ),
             ),
           ),
           SizedBox(height: 20),
           ButtonRounded(
-            onPressed: (){}, 
+            onPressed: (){
+              Navigator.push(
+                context, 
+                MaterialPageRoute(
+                  builder: (context) => IngredientesPage(),
+                )
+              );
+            }, 
             text: "Meus ingredientes",
             height: 55.0,
           ),
           SizedBox(height: 10),
           ButtonRounded(
-            onPressed: (){}, 
+            onPressed: (){
+              Navigator.push(
+                context, 
+                MaterialPageRoute(
+                  builder: (context) => FindReceitaPage(),
+                )
+              );
+            }, 
             text: "Explorar receitas", 
             height: 55.0,
             invertColors: true, 
