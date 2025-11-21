@@ -25,11 +25,11 @@ class ReceitaDetailsPage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: (){}, // TODO: share recipe logic
+            onPressed: (){}, // TODO: share receita logic
             icon: Icon(Icons.ios_share)
           ),
           IconButton(
-            onPressed: (){}, // TODO: save recipes logic
+            onPressed: (){}, // TODO: save receitas logic
             icon: Icon(Icons.favorite_border),
             selectedIcon: Icon(Icons.favorite),
           ),
@@ -57,15 +57,15 @@ class ReceitaDetailsPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              RecipeInfoItem(
+              ReceitaInfoItem(
                 text: "${receita.estimatedTimeMin} min", 
                 icon: Icons.access_time
               ),
-              RecipeInfoItem(
+              ReceitaInfoItem(
                 text: "${receita.portionSizePeople} pessoas", 
                 icon: Icons.people_alt_outlined
               ),
-              RecipeInfoItem(
+              ReceitaInfoItem(
                 text: dificuldades[receita.difficulty], 
                 icon: Icons.lunch_dining_outlined
               ),
@@ -100,8 +100,8 @@ class ReceitaDetailsPage extends StatelessWidget {
   }
 }
 
-class RecipeInfoItem extends StatelessWidget {
-  const RecipeInfoItem({
+class ReceitaInfoItem extends StatelessWidget {
+  const ReceitaInfoItem({
     super.key,
     required this.text,
     required this.icon,

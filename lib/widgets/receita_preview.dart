@@ -1,9 +1,10 @@
 import 'package:chefie/theme/app_theme.dart';
 import 'package:chefie/views/receitas/receita_details.dart';
+import 'package:chefie/widgets/image.dart';
 import 'package:flutter/material.dart';
 import 'package:chefie/models/receita.dart';
 
-class ReceitaPreview extends StatelessWidget {
+class ReceitaPreview extends StatefulWidget {
   const ReceitaPreview({
     super.key,
     required this.receita
@@ -12,12 +13,18 @@ class ReceitaPreview extends StatelessWidget {
   final ReceitaModel receita;
 
   @override
+  State<ReceitaPreview> createState() => _ReceitaPreviewState();
+}
+
+class _ReceitaPreviewState extends State<ReceitaPreview> {
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => Navigator.push(
         context, 
         MaterialPageRoute(
-          builder: (context) => ReceitaDetailsPage(receita: receita)
+          builder: (context) => ReceitaDetailsPage(receita: widget.receita)
         ),
       ),
       child: Container(
@@ -26,22 +33,13 @@ class ReceitaPreview extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 150,
-              width: double.infinity,
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: receita.color,
-              ),
-              child: Image(
-                image: receita.image.image,
-                fit: BoxFit.cover
-              )
+            ChefieImage(
+              image: widget.receita.image,
+              color: widget.receita.color,
             ),
             SizedBox(height: 5),
             Text(
-              receita.name,
+              widget.receita.name,
               style: TextStyle(
                 color: AppColors.textOf(context),
                 fontSize: 16,
@@ -49,12 +47,13 @@ class ReceitaPreview extends StatelessWidget {
               )
             ),
             Text(
-              "${receita.estimatedTimeMin} min",
+              "${widget.receita.estimatedTimeMin} min",
               style: TextStyle(
-                color: AppColors.textSecondaryOf(context), 
+                color: AppColors.textSecondaryLight, 
                 fontSize: 13,
                 fontWeight: FontWeight.w400
-              ))
+              )
+            )
           ],
         ),
       ),
