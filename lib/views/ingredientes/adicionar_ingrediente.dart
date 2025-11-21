@@ -1,6 +1,6 @@
 
-import 'package:chefie/models/ingrediente_categoria.dart';
-import 'package:chefie/models/unidades.dart';
+import 'package:chefie/modelviews/ingrediente_categoria.dart';
+import 'package:chefie/modelviews/unidades.dart';
 import 'package:chefie/widgets/button.dart';
 import 'package:chefie/widgets/chefie_app_bar.dart';
 import 'package:chefie/widgets/text.dart';

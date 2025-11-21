@@ -1,4 +1,4 @@
-import 'package:chefie/models/receita.dart';
+import 'package:chefie/modelviews/receita.dart';
 import 'package:chefie/widgets/chefie_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:chefie/widgets/button.dart';

@@ -1,5 +1,5 @@
-import 'package:chefie/models/ingrediente_categoria.dart';
-import 'package:chefie/models/unidades.dart';
+import 'package:chefie/modelviews/ingrediente_categoria.dart';
+import 'package:chefie/modelviews/unidades.dart';
 
 class IngredienteModel {
   String nome;

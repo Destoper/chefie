@@ -1,31 +1,26 @@
-class RecipeAPI {
-  final int id;
-  final String title;
-  final String image;
-  final int usedIngredients;
-  final int missingIngredients;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  RecipeAPI({
-    required this.id,
-    required this.title,
-    required this.image,
-    required this.usedIngredients,
-    required this.missingIngredients,
-  });
+part 'recipe_api.freezed.dart';
+part 'recipe_api.g.dart';
 
-  factory RecipeAPI.fromJson(Map<String, dynamic> json) {
-    return RecipeAPI(
-      id: json['id'],
-      title: json['title'],
-      image: json['image'] ?? '',
-      usedIngredients: json['usedIngredientCount'] ?? 0,
-      missingIngredients: json['missedIngredientCount'] ?? 0,
-    );
-  }
+@freezed
+abstract class RecipeApi with _$RecipeApi {
+  const factory RecipeApi({
+    required int id,
+    required String title,
+    required String image,
+    @Default(0) int usedIngredientCount,
+    @Default(0) int missedIngredientCount,
+  }) = _RecipeApi;
 
+  factory RecipeApi.fromJson(Map<String, dynamic> json) =>
+      _$RecipeApiFromJson(json);
+}
+
+extension RecipeApiExtension on RecipeApi {
   double get matchPercentage {
-    final total = usedIngredients + missingIngredients;
+    final total = usedIngredientCount + missedIngredientCount;
     if (total == 0) return 0;
-    return (usedIngredients / total) * 100;
+    return (usedIngredientCount / total) * 100;
   }
 }

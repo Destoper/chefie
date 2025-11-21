@@ -3,13 +3,13 @@ import '../models/category.dart';
 
 class CategoryRepository {
   final SupabaseClient _supabase = Supabase.instance.client;
-  final String _tableName = 'categories';
+  static const String _table = 'categories';
 
   Future<List<Category>> getAll() async {
     final response = await _supabase
-        .from(_tableName)
+        .from(_table)
         .select()
-        .order('name');
+        .order('name_pt');
 
     return (response as List)
         .map((json) => Category.fromJson(json))
@@ -18,7 +18,7 @@ class CategoryRepository {
 
   Future<Category?> getById(String id) async {
     final response = await _supabase
-        .from(_tableName)
+        .from(_table)
         .select()
         .eq('id', id)
         .maybeSingle();

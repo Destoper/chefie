@@ -1,35 +1,18 @@
-class Category {
-  final String? id;
-  final String name;
-  final String? nameEn;
-  final String icon;
-  final DateTime createdAt;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  Category({
-    this.id,
-    required this.name,
-    this.nameEn,       
-    required this.icon,
-    DateTime? createdAt,
-  }) : createdAt = createdAt ?? DateTime.now();
+part 'category.freezed.dart';
+part 'category.g.dart';
 
-  factory Category.fromJson(Map<String, dynamic> json) {
-    return Category(
-      id: json['id'],
-      name: json['name'],
-      nameEn: json['name_en'], 
-      icon: json['icon'] ?? '📦',
-      createdAt: DateTime.parse(json['created_at']),
-    );
-  }
+@freezed
+abstract class Category with _$Category {
+  const factory Category({
+    required String id,
+    required String namePt,
+    required String nameEn,
+    required String icon,
+    required DateTime createdAt,
+  }) = _Category;
 
-  Map<String, dynamic> toJson() {
-    return {
-      if (id != null) 'id': id,
-      'name': name,
-      if (nameEn != null) 'name_en': nameEn,
-      'icon': icon,
-      'created_at': createdAt.toIso8601String(),
-    };
-  }
+  factory Category.fromJson(Map<String, dynamic> json) =>
+      _$CategoryFromJson(json);
 }
