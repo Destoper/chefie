@@ -68,7 +68,7 @@ class _ChefieImageState extends State<ChefieImage> {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   if (mounted) {
                     setState(() {
-                      //_imageLoaded = true;
+                      _imageLoaded = true;
                     });
                   }
                 });

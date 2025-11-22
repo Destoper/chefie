@@ -109,7 +109,11 @@ class _HomePageState extends State<HomePage> {
             itemCount: receitas.length,
             scrollDirection: Axis.horizontal,
             separatorBuilder:(context, index) => SizedBox(width: 15),
-            itemBuilder: (context, index) => ReceitaPreview(receita: receitas[index]),
+            itemBuilder: (context, index) => ReceitaPreview(
+              receita: receitas[index], 
+              previewWidth: 250,
+              nameMaxLines: 1,
+            ),
           )
         );
   }
