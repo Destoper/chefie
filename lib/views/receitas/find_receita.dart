@@ -32,6 +32,12 @@ class _FindReceitaPageState extends State<FindReceitaPage> {
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: ChefieAppBar(title: "Buscar receitas"),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){},
+        backgroundColor: AppColors.primary,
+        shape: CircleBorder(),
+        child: Icon(Icons.search, color: AppColors.backgroundOf(context)),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
