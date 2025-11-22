@@ -8,7 +8,7 @@ class UserIngredientRepository {
   Future<List<UserIngredient>> getUserIngredients(String userId) async {
     final response = await _supabase
         .from(_table)
-        .select()
+        .select('*, global_ingredients(*)') 
         .eq('user_id', userId);
 
     return (response as List)
@@ -32,7 +32,7 @@ class UserIngredientRepository {
   Future<List<UserIngredient>> getAllUserIngredients() async {
     final response = await _supabase
         .from(_table)
-        .select();
+        .select('*, global_ingredients(*)');  
 
     return (response as List)
         .map((json) => UserIngredient.fromJson(json))
@@ -56,9 +56,9 @@ class UserIngredientRepository {
   Future<List<UserIngredient>> getUserIngredientsByNamePrefix(String userId, String namePrefix) async {
     final response = await _supabase
         .from(_table)
-        .select()
+        .select('*, global_ingredients(*)')  
         .eq('user_id', userId)
-        .like('name_pt', '$namePrefix%');
+        .ilike('global_ingredients.name_pt', '$namePrefix%'); 
 
     return (response as List)
         .map((json) => UserIngredient.fromJson(json))
