@@ -5,6 +5,7 @@ import 'package:chefie/models/user_ingredient.dart';
 import 'package:chefie/theme/app_theme.dart';
 import 'package:chefie/views/ingredientes/adicionar_ingrediente.dart';
 import 'package:chefie/widgets/chefie_app_bar.dart';
+import 'package:chefie/widgets/chefie_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

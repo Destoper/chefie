@@ -6,6 +6,7 @@ import 'package:chefie/models/category.dart';
 import 'package:chefie/models/global_ingredient.dart';
 import 'package:chefie/models/user_ingredient.dart';
 import 'package:chefie/modelviews/unidades.dart';
+import 'package:chefie/modelviews/ingrediente.dart';
 import 'package:chefie/widgets/button.dart';
 import 'package:chefie/widgets/chefie_app_bar.dart';
 import 'package:chefie/widgets/chefie_search_bar.dart';
