@@ -9,7 +9,7 @@ sealed class Category with _$Category {
     required String id,
     required String namePt,
     required String nameEn,
-    @Default('📦') String icon,
+    @Default('_') String icon,
     DateTime? createdAt,
   }) = _Category;
 

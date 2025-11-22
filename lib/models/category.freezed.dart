@@ -207,7 +207,7 @@ return $default(_that.id,_that.namePt,_that.nameEn,_that.icon,_that.createdAt);c
 @JsonSerializable()
 
 class _Category implements Category {
-  const _Category({required this.id, required this.namePt, required this.nameEn, this.icon = '📦', this.createdAt});
+  const _Category({required this.id, required this.namePt, required this.nameEn, this.icon = '_', this.createdAt});
   factory _Category.fromJson(Map<String, dynamic> json) => _$CategoryFromJson(json);
 
 @override final  String id;

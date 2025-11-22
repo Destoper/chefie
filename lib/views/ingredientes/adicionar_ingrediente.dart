@@ -6,7 +6,6 @@ import 'package:chefie/models/category.dart';
 import 'package:chefie/models/global_ingredient.dart';
 import 'package:chefie/models/user_ingredient.dart';
 import 'package:chefie/modelviews/unidades.dart';
-import 'package:chefie/modelviews/ingrediente.dart';
 import 'package:chefie/widgets/button.dart';
 import 'package:chefie/widgets/chefie_app_bar.dart';
 import 'package:chefie/widgets/chefie_search_bar.dart';
@@ -38,7 +37,7 @@ class AdicionarIngredientePage extends ConsumerStatefulWidget {
 class _AdicionarIngredientePageState extends ConsumerState<AdicionarIngredientePage> {
   List<GlobalIngredient> _allIngredients = [];
   List<GlobalIngredient> _filteredIngredients = [];
-  Map<String, SelectedIngredient> _selectedIngredients = {};
+  final Map<String, SelectedIngredient> _selectedIngredients = {};
   Map<String, Category> _categoriesMap = {};
   bool _isLoading = false;
   bool _isSaving = false;
@@ -279,7 +278,7 @@ class ItemIngrediente extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final icon = category?.icon ?? '📦';
+    final icon = category?.icon ?? '...';
     final unidades = Unidade.getUnidades();
 
     return Padding(
@@ -294,7 +293,7 @@ class ItemIngrediente extends StatelessWidget {
             width: isSelected ? 2 : 1,
           ),
           color: isSelected
-              ? AppColors.primary.withOpacity(0.1)
+              ? AppColors.primary.withValues(alpha: 0.1)
               : AppColors.surfaceOf(context),
         ),
         child: Column(
@@ -316,7 +315,7 @@ class ItemIngrediente extends StatelessWidget {
                   ),
                   Icon(
                     isSelected ? Icons.check_circle : Icons.circle_outlined,
-                    color: isSelected ? AppColors.primary : AppColors.textOf(context).withOpacity(0.3),
+                    color: isSelected ? AppColors.primary : AppColors.textOf(context).withValues(alpha: 0.3),
                   ),
                 ],
               ),
@@ -338,7 +337,7 @@ class ItemIngrediente extends StatelessWidget {
                         contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: AppColors.primary.withOpacity(0.3)),
+                          borderSide: BorderSide(color: AppColors.primary.withValues(alpha: 0.3)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -361,7 +360,7 @@ class ItemIngrediente extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: DropdownButtonFormField<String>(
-                      value: selectedData?.unit ?? 'un',
+                      initialValue: selectedData?.unit ?? 'un',
                       decoration: InputDecoration(
                         labelText: 'Unidade',
                         filled: true,
@@ -369,7 +368,7 @@ class ItemIngrediente extends StatelessWidget {
                         contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: AppColors.primary.withOpacity(0.3)),
+                          borderSide: BorderSide(color: AppColors.primary.withValues(alpha: 0.3)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),

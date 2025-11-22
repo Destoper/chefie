@@ -5,7 +5,6 @@ import 'package:chefie/models/user_ingredient.dart';
 import 'package:chefie/theme/app_theme.dart';
 import 'package:chefie/views/ingredientes/adicionar_ingrediente.dart';
 import 'package:chefie/widgets/chefie_app_bar.dart';
-import 'package:chefie/widgets/chefie_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -193,7 +192,7 @@ class ItemIngrediente extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final nome = ingrediente.globalIngredient?.namePt ?? 'Ingrediente';
-    final icon = categoria?.icon ?? '📦';
+    final icon = categoria?.icon ?? '...';
     
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
@@ -212,7 +211,7 @@ class ItemIngrediente extends StatelessWidget {
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                color: AppColors.primary.withOpacity(0.2),
+                color: AppColors.primary.withValues(alpha: 0.3),
               ),
               child: Center(
                 child: Text(

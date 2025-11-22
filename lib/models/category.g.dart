@@ -10,7 +10,7 @@ _Category _$CategoryFromJson(Map<String, dynamic> json) => _Category(
   id: json['id'] as String,
   namePt: json['namePt'] as String,
   nameEn: json['nameEn'] as String,
-  icon: json['icon'] as String? ?? '📦',
+  icon: json['icon'] as String? ?? '_',
   createdAt: json['createdAt'] == null
       ? null
       : DateTime.parse(json['createdAt'] as String),
