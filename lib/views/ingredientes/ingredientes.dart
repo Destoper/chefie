@@ -2,6 +2,7 @@ import 'package:chefie/models/ingrediente.dart';
 import 'package:chefie/theme/app_theme.dart';
 import 'package:chefie/views/ingredientes/adicionar_ingrediente.dart';
 import 'package:chefie/widgets/chefie_app_bar.dart';
+import 'package:chefie/widgets/chefie_search_bar.dart';
 import 'package:flutter/material.dart';
 
 class IngredientesPage extends StatefulWidget {
@@ -31,19 +32,10 @@ class _IngredientesPageState extends State<IngredientesPage> {
         children: [
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: SearchBar(
-              hintText: "Buscar em meus ingredientes...",
-              padding: WidgetStateProperty.all(EdgeInsets.only(left: 20, right: 20)),
-              elevation: WidgetStateProperty.all(0.0),
-              backgroundColor: WidgetStateProperty.all(AppColors.surfaceOf(context)),
-              leading: Icon(Icons.search, color: AppColors.textOf(context)),
-              textStyle: WidgetStateProperty.all(
-                TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w300,
-                ),
-              ),
-            ),
+            child: ChefieSearchBar(
+              hintText: "Buscar em meus ingredientes",
+              onChanged: (query) {} // TODO: Filter logic,
+            )
           ),
           ListView.builder(
             shrinkWrap: true,
