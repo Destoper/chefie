@@ -143,8 +143,119 @@ static List<ReceitaModel> getReceitas(){
             categoria: IngredienteCategoriaModel.categoriaGrao(),
           ),
       ]
-    )
+    )    
   );  
+
+  receitas.add(
+    ReceitaModel(
+      name: "Bolo de Cenoura com Cobertura de Chocolate", 
+      image: Image.network("https://receitatodahora.com.br/wp-content/uploads/2024/11/bolo-de-cenoura-com-chocolate-1411.jpg"), 
+      category: "Sobremesa", 
+      color: Colors.deepOrange, 
+      estimatedTimeMin: 60,
+      portionSizePeople: 8,
+      difficulty: 2, // Dificuldade mais alta
+      instructions: "Misture os ingredientes, asse e cubra com o chocolate derretido.",
+      ingredients: [
+        IngredienteModel(
+            nome: "Cenoura", 
+            quantidade: 3, 
+            unidade: Unidade(name: "un"),
+            categoria: IngredienteCategoriaModel.categoriaVegetal(),
+          ),
+        IngredienteModel(
+            nome: "Farinha de Trigo", 
+            quantidade: 300, 
+            unidade: Unidade(name: "g"),
+            categoria: IngredienteCategoriaModel.categoriaGrao(),
+          ),
+        IngredienteModel(
+            nome: "Ovo", 
+            quantidade: 4, 
+            unidade: Unidade(name: "un"),
+            categoria: IngredienteCategoriaModel.categoriaCarne(),
+          ),
+        IngredienteModel(
+            nome: "Açúcar", 
+            quantidade: 250, 
+            unidade: Unidade(name: "g"),
+            categoria: IngredienteCategoriaModel.categoriaTempero(),
+          ),
+        IngredienteModel(
+            nome: "Chocolate em Barra", 
+            quantidade: 150, 
+            unidade: Unidade(name: "g"),
+            categoria: IngredienteCategoriaModel.categoriaLaticinio(),
+          ),
+      ]
+    )
+  );
+
+  receitas.add(
+    ReceitaModel(
+      name: "Sopa de Legumes Simples", 
+      image: Image.network("https://assets.unileversolutions.com/recipes-v2/36850.jpg"), 
+      category: "Sopa", 
+      color: Colors.yellow.shade800, 
+      estimatedTimeMin: 30,
+      portionSizePeople: 4,
+      difficulty: 0,
+      instructions: "Cozinhe os legumes em água temperada até ficarem macios. Bata ou sirva em pedaços.",
+      ingredients: [
+        IngredienteModel(
+            nome: "Batata", 
+            quantidade: 500, 
+            unidade: Unidade(name: "g"),
+            categoria: IngredienteCategoriaModel.categoriaVegetal(),
+          ),
+        IngredienteModel(
+            nome: "Abobrinha", 
+            quantidade: 1, 
+            unidade: Unidade(name: "un"),
+            categoria: IngredienteCategoriaModel.categoriaVegetal(),
+          ),
+        IngredienteModel(
+            nome: "Cebola", 
+            quantidade: 1, 
+            unidade: Unidade(name: "un"),
+            categoria: IngredienteCategoriaModel.categoriaTempero(),
+          ),
+        IngredienteModel(
+            nome: "Caldo de Legumes", 
+            quantidade: 1, 
+            unidade: Unidade(name: "L"),
+            categoria: IngredienteCategoriaModel.categoriaTempero(),
+          ),
+      ]
+    )
+  );
+
+  receitas.add(
+    ReceitaModel(
+      name: "Picanha na Grelha com Sal Grosso", 
+      image: Image.network("https://img.freepik.com/fotos-premium/churrasco-de-picanha-brasileiro-assado-na-grelha-e-servido-em-fatias_491130-4526.jpg"), 
+      category: "Churrasco", 
+      color: Colors.red.shade900, 
+      estimatedTimeMin: 20,
+      portionSizePeople: 3,
+      difficulty: 1,
+      instructions: "Tempere a picanha com sal grosso e asse na grelha até o ponto desejado.",
+      ingredients: [
+        IngredienteModel(
+            nome: "Picanha", 
+            quantidade: 800, 
+            unidade: Unidade(name: "g"),
+            categoria: IngredienteCategoriaModel.categoriaCarne(),
+          ),
+        IngredienteModel(
+            nome: "Sal Grosso", 
+            quantidade: 50, 
+            unidade: Unidade(name: "g"),
+            categoria: IngredienteCategoriaModel.categoriaTempero(),
+          ),
+      ]
+    )
+  );
 
   return receitas;  
 }
