@@ -1,11 +1,10 @@
-import 'package:chefie/modelviews/ingrediente.dart';
-import 'package:chefie/modelviews/receita.dart';
+import 'package:chefie/models/recipe_details.dart';
 import 'package:chefie/theme/app_theme.dart';
 import 'package:chefie/widgets/text.dart';
 import 'package:flutter/material.dart';
 
 class ReceitaDetailsPage extends StatelessWidget {
-  final ReceitaModel receita;
+  final RecipeDetails receita;
 
   const ReceitaDetailsPage({
     super.key,
@@ -14,87 +13,117 @@ class ReceitaDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> dificuldades = ["Fácil", "Médio", "Difícil"];
     return Scaffold(
       backgroundColor: AppColors.backgroundOf(context),
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Navigator.pop(context), 
-          icon: Icon(Icons.arrow_back)
+          onPressed: () => Navigator.pop(context),
+          icon: Icon(Icons.arrow_back),
         ),
         actions: [
           IconButton(
-            onPressed: (){}, // TODO: share receita logic
-            icon: Icon(Icons.ios_share)
+            onPressed: () {}, // TODO: share receita logic
+            icon: Icon(Icons.ios_share),
           ),
           IconButton(
-            onPressed: (){}, // TODO: save receitas logic
+            onPressed: () {}, // TODO: save receitas logic
             icon: Icon(Icons.favorite_border),
             selectedIcon: Icon(Icons.favorite),
           ),
         ],
       ),
       body: ListView(
-         padding: EdgeInsets.all(10),
-         shrinkWrap: false,
-         children: [
+        padding: EdgeInsets.all(10),
+        shrinkWrap: false,
+        children: [
           Container(
             width: double.infinity,
+            height: 250,
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(25.0)),
-              color: AppColors.primary.withValues(alpha: 0.6),
+              color: AppColors.primary.withOpacity(0.6),
             ),
-              child: receita.image,
+            child: receita.image != null && receita.image!.isNotEmpty
+                ? Image.network(
+                    receita.image!,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => Center(
+                      child: Icon(Icons.restaurant, size: 64, color: AppColors.textOf(context)),
+                    ),
+                  )
+                : Center(
+                    child: Icon(Icons.restaurant, size: 64, color: AppColors.textOf(context)),
+                  ),
           ),
           SizedBox(height: 20),
-          TextTitle(
-            text: receita.name, 
-            fontWeight: FontWeight.w700
-          ),
+          
+          TextTitle(text: receita.title, fontWeight: FontWeight.w700),
 
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ReceitaInfoItem(
-                text: "${receita.estimatedTimeMin} min", 
-                icon: Icons.access_time
+                text: "${receita.readyInMinutes} min",
+                icon: Icons.access_time,
               ),
               ReceitaInfoItem(
-                text: "${receita.portionSizePeople} pessoas", 
-                icon: Icons.people_alt_outlined
+                text: "${receita.servings} pessoas",
+                icon: Icons.people_alt_outlined,
               ),
               ReceitaInfoItem(
-                text: dificuldades[receita.difficulty], 
-                icon: Icons.lunch_dining_outlined
+                text: "${receita.ingredients.length} itens",
+                icon: Icons.kitchen_outlined,
               ),
             ],
           ),
 
           Divider(color: AppColors.borderOf(context)),
           SizedBox(height: 20),
+
           TextLabel(text: "Ingredientes", fontSize: 22, fontWeight: FontWeight.w600),
           SizedBox(height: 12),
           Column(
-            spacing: 10,
             children: [
               for (var ingredient in receita.ingredients)
-                IngredienteItem(ingredient: ingredient),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: IngredienteItem(ingredient: ingredient),
+                ),
             ],
           ),
           SizedBox(height: 20),
           Divider(color: AppColors.borderOf(context)),
           SizedBox(height: 12),
+          
           TextLabel(text: "Modo de Preparo", fontSize: 22, fontWeight: FontWeight.w600),
           SizedBox(height: 12),
-          TextLabel(
-            text:receita.instructions,
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
-          SizedBox(height: 120)
+          if (receita.instructions != null && receita.instructions!.isNotEmpty)
+            _buildInstructions(receita.instructions!, context)
+          else
+            Text(
+              'Instruções não disponíveis',
+              style: TextStyle(
+                color: AppColors.textOf(context).withOpacity(0.6),
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          SizedBox(height: 120),
         ],
-      )
+      ),
+    );
+  }
+
+  Widget _buildInstructions(String instructions, BuildContext context) {
+    final cleanInstructions = instructions
+        .replaceAll(RegExp(r'<[^>]*>'), '\n')
+        .replaceAll(RegExp(r'\n\s*\n'), '\n\n')
+        .trim();
+
+    return TextLabel(
+      text: cleanInstructions,
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
     );
   }
 }
@@ -116,31 +145,38 @@ class ReceitaInfoItem extends StatelessWidget {
       height: 100,
       padding: EdgeInsets.all(5),
       child: Column(
-        spacing: 5,
         children: [
           Container(
             width: 60,
             height: 60,
             decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.3),
+              color: AppColors.primary.withOpacity(0.3),
               borderRadius: BorderRadius.circular(45),
             ),
-            child: Icon(icon, color: AppColors.destructive)
+            child: Icon(icon, color: AppColors.destructive),
           ),
-          Text(text, style: TextStyle(fontWeight: FontWeight.w600))
+          SizedBox(height: 5),
+          Text(text, style: TextStyle(fontWeight: FontWeight.w600)),
         ],
       ),
     );
   }
 }
 
-class IngredienteItem extends StatelessWidget {
+class IngredienteItem extends StatefulWidget {
   const IngredienteItem({
     super.key,
     required this.ingredient,
   });
 
-  final IngredienteModel ingredient;
+  final String ingredient;
+
+  @override
+  State<IngredienteItem> createState() => _IngredienteItemState();
+}
+
+class _IngredienteItemState extends State<IngredienteItem> {
+  bool _checked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -149,25 +185,31 @@ class IngredienteItem extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         color: AppColors.surfaceOf(context),
-        border: BoxBorder.all(
-          color: AppColors.borderOf(context)
-        )
+        border: Border.all(color: AppColors.borderOf(context)),
       ),
       child: Row(
         children: [
           Checkbox(
-            value: false,
-            onChanged: (newValue) { },
+            value: _checked,
+            onChanged: (newValue) {
+              setState(() => _checked = newValue ?? false);
+            },
             activeColor: AppColors.primary,
             checkColor: AppColors.white,
           ),
-          TextLabel(
-            text: "${ingredient.quantidade}${ingredient.unidade.name} de ${ingredient.nome}",
-            fontSize: 18,
-            fontWeight: FontWeight.w400,
-          )
+          Expanded(
+            child: Text(
+              widget.ingredient,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: AppColors.textOf(context),
+                decoration: _checked ? TextDecoration.lineThrough : null,
+              ),
+            ),
+          ),
         ],
-      )
+      ),
     );
   }
 }
