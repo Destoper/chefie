@@ -27,7 +27,7 @@ final globalIngredientRepositoryProvider =
 typedef GlobalIngredientRepositoryRef =
     AutoDisposeProviderRef<GlobalIngredientRepository>;
 String _$globalIngredientControllerHash() =>
-    r'2cd9ab5e32b82d68d905f7bedef4236ce338eedf';
+    r'824770a6050ab136c1337da43bfdc98dda20d2ff';
 
 /// See also [GlobalIngredientController].
 @ProviderFor(GlobalIngredientController)

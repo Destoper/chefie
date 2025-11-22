@@ -50,4 +50,14 @@ class UserIngredientController extends _$UserIngredientController {
       await _refreshState();
     });
   }
+
+  Future<List<UserIngredient>> getUserIngredientsByNamePrefix(String namePrefix) async {
+    final userId = ref.watch(authControllerProvider.select((auth) => auth.value?.id));
+
+    if (userId == null) {
+      return [];
+    }
+
+    return ref.read(userIngredientRepositoryProvider).getUserIngredientsByNamePrefix(userId, namePrefix);
+  }
 }

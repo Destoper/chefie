@@ -46,4 +46,15 @@ class GlobalIngredientRepository {
         .delete()
         .eq('id', id);
   }
+  
+  Future<List<GlobalIngredient>> getByNamePrefix(String namePrefix) async {
+    final response = await _supabase
+        .from(_table)
+        .select()
+        .like('name_pt', '$namePrefix%');
+
+    return (response as List)
+        .map((json) => GlobalIngredient.fromJson(json))
+        .toList();
+  }
 }

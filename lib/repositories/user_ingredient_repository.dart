@@ -52,4 +52,16 @@ class UserIngredientRepository {
         .update(ingredient.toJson())
         .eq('id', ingredient.id);
   }
+  
+  Future<List<UserIngredient>> getUserIngredientsByNamePrefix(String userId, String namePrefix) async {
+    final response = await _supabase
+        .from(_table)
+        .select()
+        .eq('user_id', userId)
+        .like('name_pt', '$namePrefix%');
+
+    return (response as List)
+        .map((json) => UserIngredient.fromJson(json))
+        .toList();
+  }
 }

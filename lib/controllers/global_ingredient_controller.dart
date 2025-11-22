@@ -25,4 +25,8 @@ class GlobalIngredientController extends _$GlobalIngredientController {
       return ref.read(globalIngredientRepositoryProvider).getAll();
     });
   }
+
+  Future<List<GlobalIngredient>> getIngredientsByNamePrefix(String namePrefix) async {
+    return ref.read(globalIngredientRepositoryProvider).getByNamePrefix(namePrefix);
+  }
 }

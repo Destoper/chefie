@@ -27,7 +27,7 @@ final userIngredientRepositoryProvider =
 typedef UserIngredientRepositoryRef =
     AutoDisposeProviderRef<UserIngredientRepository>;
 String _$userIngredientControllerHash() =>
-    r'6b9de49726d59f7794b3e934c2a27ee35882b420';
+    r'818b156aa88af7db83432ff7a753c122a473f7f7';
 
 /// See also [UserIngredientController].
 @ProviderFor(UserIngredientController)
