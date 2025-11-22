@@ -6,39 +6,28 @@ part 'user_ingredient.g.dart';
 @freezed
 sealed class UserIngredient with _$UserIngredient {
   const factory UserIngredient({
-    required String id,
-    required String visitorId,
-    required String globalIngredientId,
+    @JsonKey(includeToJson: false) required String id,
+    @JsonKey(name: 'user_id') required String userId,
+    @JsonKey(name: 'global_ingredient_id') required String globalIngredientId,
     @Default(1.0) double quantity,
     @Default('un') String unit,
-    DateTime? createdAt,
-    GlobalIngredientNested? globalIngredient,
+    @JsonKey(name: 'created_at', includeToJson: false) DateTime? createdAt,
+    @JsonKey(name: 'global_ingredients', includeToJson: false) GlobalIngredientNested? globalIngredient,
   }) = _UserIngredient;
 
   factory UserIngredient.fromJson(Map<String, dynamic> json) =>
-      _$UserIngredientFromJson({
-        ...json,
-        'userId': json['user_id'],
-        'globalIngredientId': json['global_ingredient_id'],
-        'createdAt': json['created_at'],
-        'globalIngredient': json['global_ingredients'],
-      });
+      _$UserIngredientFromJson(json);
 }
 
 @freezed
 sealed class GlobalIngredientNested with _$GlobalIngredientNested {
   const factory GlobalIngredientNested({
     required String id,
-    required String namePt,
-    required String nameEn,
-    String? categoryId,
+    @JsonKey(name: 'name_pt') required String namePt,
+    @JsonKey(name: 'name_en') required String nameEn,
+    @JsonKey(name: 'category_id') String? categoryId,
   }) = _GlobalIngredientNested;
 
   factory GlobalIngredientNested.fromJson(Map<String, dynamic> json) =>
-      _$GlobalIngredientNestedFromJson({
-        ...json,
-        'namePt': json['name_pt'],
-        'nameEn': json['name_en'],
-        'categoryId': json['category_id'],
-      });
+      _$GlobalIngredientNestedFromJson(json);
 }

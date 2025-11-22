@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserIngredient {
 
- String get id; String get visitorId; String get globalIngredientId; double get quantity; String get unit; DateTime? get createdAt; GlobalIngredientNested? get globalIngredient;
+@JsonKey(includeToJson: false) String get id;@JsonKey(name: 'user_id') String get userId;@JsonKey(name: 'global_ingredient_id') String get globalIngredientId; double get quantity; String get unit;@JsonKey(name: 'created_at', includeToJson: false) DateTime? get createdAt;@JsonKey(name: 'global_ingredients', includeToJson: false) GlobalIngredientNested? get globalIngredient;
 /// Create a copy of UserIngredient
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserIngredientCopyWith<UserIngredient> get copyWith => _$UserIngredientCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserIngredient&&(identical(other.id, id) || other.id == id)&&(identical(other.visitorId, visitorId) || other.visitorId == visitorId)&&(identical(other.globalIngredientId, globalIngredientId) || other.globalIngredientId == globalIngredientId)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.unit, unit) || other.unit == unit)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.globalIngredient, globalIngredient) || other.globalIngredient == globalIngredient));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserIngredient&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.globalIngredientId, globalIngredientId) || other.globalIngredientId == globalIngredientId)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.unit, unit) || other.unit == unit)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.globalIngredient, globalIngredient) || other.globalIngredient == globalIngredient));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,visitorId,globalIngredientId,quantity,unit,createdAt,globalIngredient);
+int get hashCode => Object.hash(runtimeType,id,userId,globalIngredientId,quantity,unit,createdAt,globalIngredient);
 
 @override
 String toString() {
-  return 'UserIngredient(id: $id, visitorId: $visitorId, globalIngredientId: $globalIngredientId, quantity: $quantity, unit: $unit, createdAt: $createdAt, globalIngredient: $globalIngredient)';
+  return 'UserIngredient(id: $id, userId: $userId, globalIngredientId: $globalIngredientId, quantity: $quantity, unit: $unit, createdAt: $createdAt, globalIngredient: $globalIngredient)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UserIngredientCopyWith<$Res>  {
   factory $UserIngredientCopyWith(UserIngredient value, $Res Function(UserIngredient) _then) = _$UserIngredientCopyWithImpl;
 @useResult
 $Res call({
- String id, String visitorId, String globalIngredientId, double quantity, String unit, DateTime? createdAt, GlobalIngredientNested? globalIngredient
+@JsonKey(includeToJson: false) String id,@JsonKey(name: 'user_id') String userId,@JsonKey(name: 'global_ingredient_id') String globalIngredientId, double quantity, String unit,@JsonKey(name: 'created_at', includeToJson: false) DateTime? createdAt,@JsonKey(name: 'global_ingredients', includeToJson: false) GlobalIngredientNested? globalIngredient
 });
 
 
@@ -65,10 +65,10 @@ class _$UserIngredientCopyWithImpl<$Res>
 
 /// Create a copy of UserIngredient
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? visitorId = null,Object? globalIngredientId = null,Object? quantity = null,Object? unit = null,Object? createdAt = freezed,Object? globalIngredient = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? globalIngredientId = null,Object? quantity = null,Object? unit = null,Object? createdAt = freezed,Object? globalIngredient = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,visitorId: null == visitorId ? _self.visitorId : visitorId // ignore: cast_nullable_to_non_nullable
+as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,globalIngredientId: null == globalIngredientId ? _self.globalIngredientId : globalIngredientId // ignore: cast_nullable_to_non_nullable
 as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
 as double,unit: null == unit ? _self.unit : unit // ignore: cast_nullable_to_non_nullable
@@ -168,10 +168,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String visitorId,  String globalIngredientId,  double quantity,  String unit,  DateTime? createdAt,  GlobalIngredientNested? globalIngredient)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(includeToJson: false)  String id, @JsonKey(name: 'user_id')  String userId, @JsonKey(name: 'global_ingredient_id')  String globalIngredientId,  double quantity,  String unit, @JsonKey(name: 'created_at', includeToJson: false)  DateTime? createdAt, @JsonKey(name: 'global_ingredients', includeToJson: false)  GlobalIngredientNested? globalIngredient)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserIngredient() when $default != null:
-return $default(_that.id,_that.visitorId,_that.globalIngredientId,_that.quantity,_that.unit,_that.createdAt,_that.globalIngredient);case _:
+return $default(_that.id,_that.userId,_that.globalIngredientId,_that.quantity,_that.unit,_that.createdAt,_that.globalIngredient);case _:
   return orElse();
 
 }
@@ -189,10 +189,10 @@ return $default(_that.id,_that.visitorId,_that.globalIngredientId,_that.quantity
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String visitorId,  String globalIngredientId,  double quantity,  String unit,  DateTime? createdAt,  GlobalIngredientNested? globalIngredient)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(includeToJson: false)  String id, @JsonKey(name: 'user_id')  String userId, @JsonKey(name: 'global_ingredient_id')  String globalIngredientId,  double quantity,  String unit, @JsonKey(name: 'created_at', includeToJson: false)  DateTime? createdAt, @JsonKey(name: 'global_ingredients', includeToJson: false)  GlobalIngredientNested? globalIngredient)  $default,) {final _that = this;
 switch (_that) {
 case _UserIngredient():
-return $default(_that.id,_that.visitorId,_that.globalIngredientId,_that.quantity,_that.unit,_that.createdAt,_that.globalIngredient);}
+return $default(_that.id,_that.userId,_that.globalIngredientId,_that.quantity,_that.unit,_that.createdAt,_that.globalIngredient);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -206,10 +206,10 @@ return $default(_that.id,_that.visitorId,_that.globalIngredientId,_that.quantity
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String visitorId,  String globalIngredientId,  double quantity,  String unit,  DateTime? createdAt,  GlobalIngredientNested? globalIngredient)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(includeToJson: false)  String id, @JsonKey(name: 'user_id')  String userId, @JsonKey(name: 'global_ingredient_id')  String globalIngredientId,  double quantity,  String unit, @JsonKey(name: 'created_at', includeToJson: false)  DateTime? createdAt, @JsonKey(name: 'global_ingredients', includeToJson: false)  GlobalIngredientNested? globalIngredient)?  $default,) {final _that = this;
 switch (_that) {
 case _UserIngredient() when $default != null:
-return $default(_that.id,_that.visitorId,_that.globalIngredientId,_that.quantity,_that.unit,_that.createdAt,_that.globalIngredient);case _:
+return $default(_that.id,_that.userId,_that.globalIngredientId,_that.quantity,_that.unit,_that.createdAt,_that.globalIngredient);case _:
   return null;
 
 }
@@ -221,16 +221,16 @@ return $default(_that.id,_that.visitorId,_that.globalIngredientId,_that.quantity
 @JsonSerializable()
 
 class _UserIngredient implements UserIngredient {
-  const _UserIngredient({required this.id, required this.visitorId, required this.globalIngredientId, this.quantity = 1.0, this.unit = 'un', this.createdAt, this.globalIngredient});
+  const _UserIngredient({@JsonKey(includeToJson: false) required this.id, @JsonKey(name: 'user_id') required this.userId, @JsonKey(name: 'global_ingredient_id') required this.globalIngredientId, this.quantity = 1.0, this.unit = 'un', @JsonKey(name: 'created_at', includeToJson: false) this.createdAt, @JsonKey(name: 'global_ingredients', includeToJson: false) this.globalIngredient});
   factory _UserIngredient.fromJson(Map<String, dynamic> json) => _$UserIngredientFromJson(json);
 
-@override final  String id;
-@override final  String visitorId;
-@override final  String globalIngredientId;
+@override@JsonKey(includeToJson: false) final  String id;
+@override@JsonKey(name: 'user_id') final  String userId;
+@override@JsonKey(name: 'global_ingredient_id') final  String globalIngredientId;
 @override@JsonKey() final  double quantity;
 @override@JsonKey() final  String unit;
-@override final  DateTime? createdAt;
-@override final  GlobalIngredientNested? globalIngredient;
+@override@JsonKey(name: 'created_at', includeToJson: false) final  DateTime? createdAt;
+@override@JsonKey(name: 'global_ingredients', includeToJson: false) final  GlobalIngredientNested? globalIngredient;
 
 /// Create a copy of UserIngredient
 /// with the given fields replaced by the non-null parameter values.
@@ -245,16 +245,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserIngredient&&(identical(other.id, id) || other.id == id)&&(identical(other.visitorId, visitorId) || other.visitorId == visitorId)&&(identical(other.globalIngredientId, globalIngredientId) || other.globalIngredientId == globalIngredientId)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.unit, unit) || other.unit == unit)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.globalIngredient, globalIngredient) || other.globalIngredient == globalIngredient));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserIngredient&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.globalIngredientId, globalIngredientId) || other.globalIngredientId == globalIngredientId)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.unit, unit) || other.unit == unit)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.globalIngredient, globalIngredient) || other.globalIngredient == globalIngredient));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,visitorId,globalIngredientId,quantity,unit,createdAt,globalIngredient);
+int get hashCode => Object.hash(runtimeType,id,userId,globalIngredientId,quantity,unit,createdAt,globalIngredient);
 
 @override
 String toString() {
-  return 'UserIngredient(id: $id, visitorId: $visitorId, globalIngredientId: $globalIngredientId, quantity: $quantity, unit: $unit, createdAt: $createdAt, globalIngredient: $globalIngredient)';
+  return 'UserIngredient(id: $id, userId: $userId, globalIngredientId: $globalIngredientId, quantity: $quantity, unit: $unit, createdAt: $createdAt, globalIngredient: $globalIngredient)';
 }
 
 
@@ -265,7 +265,7 @@ abstract mixin class _$UserIngredientCopyWith<$Res> implements $UserIngredientCo
   factory _$UserIngredientCopyWith(_UserIngredient value, $Res Function(_UserIngredient) _then) = __$UserIngredientCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String visitorId, String globalIngredientId, double quantity, String unit, DateTime? createdAt, GlobalIngredientNested? globalIngredient
+@JsonKey(includeToJson: false) String id,@JsonKey(name: 'user_id') String userId,@JsonKey(name: 'global_ingredient_id') String globalIngredientId, double quantity, String unit,@JsonKey(name: 'created_at', includeToJson: false) DateTime? createdAt,@JsonKey(name: 'global_ingredients', includeToJson: false) GlobalIngredientNested? globalIngredient
 });
 
 
@@ -282,10 +282,10 @@ class __$UserIngredientCopyWithImpl<$Res>
 
 /// Create a copy of UserIngredient
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? visitorId = null,Object? globalIngredientId = null,Object? quantity = null,Object? unit = null,Object? createdAt = freezed,Object? globalIngredient = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? globalIngredientId = null,Object? quantity = null,Object? unit = null,Object? createdAt = freezed,Object? globalIngredient = freezed,}) {
   return _then(_UserIngredient(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,visitorId: null == visitorId ? _self.visitorId : visitorId // ignore: cast_nullable_to_non_nullable
+as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,globalIngredientId: null == globalIngredientId ? _self.globalIngredientId : globalIngredientId // ignore: cast_nullable_to_non_nullable
 as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
 as double,unit: null == unit ? _self.unit : unit // ignore: cast_nullable_to_non_nullable
@@ -314,7 +314,7 @@ $GlobalIngredientNestedCopyWith<$Res>? get globalIngredient {
 /// @nodoc
 mixin _$GlobalIngredientNested {
 
- String get id; String get namePt; String get nameEn; String? get categoryId;
+ String get id;@JsonKey(name: 'name_pt') String get namePt;@JsonKey(name: 'name_en') String get nameEn;@JsonKey(name: 'category_id') String? get categoryId;
 /// Create a copy of GlobalIngredientNested
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -347,7 +347,7 @@ abstract mixin class $GlobalIngredientNestedCopyWith<$Res>  {
   factory $GlobalIngredientNestedCopyWith(GlobalIngredientNested value, $Res Function(GlobalIngredientNested) _then) = _$GlobalIngredientNestedCopyWithImpl;
 @useResult
 $Res call({
- String id, String namePt, String nameEn, String? categoryId
+ String id,@JsonKey(name: 'name_pt') String namePt,@JsonKey(name: 'name_en') String nameEn,@JsonKey(name: 'category_id') String? categoryId
 });
 
 
@@ -452,7 +452,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String namePt,  String nameEn,  String? categoryId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'name_pt')  String namePt, @JsonKey(name: 'name_en')  String nameEn, @JsonKey(name: 'category_id')  String? categoryId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _GlobalIngredientNested() when $default != null:
 return $default(_that.id,_that.namePt,_that.nameEn,_that.categoryId);case _:
@@ -473,7 +473,7 @@ return $default(_that.id,_that.namePt,_that.nameEn,_that.categoryId);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String namePt,  String nameEn,  String? categoryId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'name_pt')  String namePt, @JsonKey(name: 'name_en')  String nameEn, @JsonKey(name: 'category_id')  String? categoryId)  $default,) {final _that = this;
 switch (_that) {
 case _GlobalIngredientNested():
 return $default(_that.id,_that.namePt,_that.nameEn,_that.categoryId);}
@@ -490,7 +490,7 @@ return $default(_that.id,_that.namePt,_that.nameEn,_that.categoryId);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String namePt,  String nameEn,  String? categoryId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'name_pt')  String namePt, @JsonKey(name: 'name_en')  String nameEn, @JsonKey(name: 'category_id')  String? categoryId)?  $default,) {final _that = this;
 switch (_that) {
 case _GlobalIngredientNested() when $default != null:
 return $default(_that.id,_that.namePt,_that.nameEn,_that.categoryId);case _:
@@ -505,13 +505,13 @@ return $default(_that.id,_that.namePt,_that.nameEn,_that.categoryId);case _:
 @JsonSerializable()
 
 class _GlobalIngredientNested implements GlobalIngredientNested {
-  const _GlobalIngredientNested({required this.id, required this.namePt, required this.nameEn, this.categoryId});
+  const _GlobalIngredientNested({required this.id, @JsonKey(name: 'name_pt') required this.namePt, @JsonKey(name: 'name_en') required this.nameEn, @JsonKey(name: 'category_id') this.categoryId});
   factory _GlobalIngredientNested.fromJson(Map<String, dynamic> json) => _$GlobalIngredientNestedFromJson(json);
 
 @override final  String id;
-@override final  String namePt;
-@override final  String nameEn;
-@override final  String? categoryId;
+@override@JsonKey(name: 'name_pt') final  String namePt;
+@override@JsonKey(name: 'name_en') final  String nameEn;
+@override@JsonKey(name: 'category_id') final  String? categoryId;
 
 /// Create a copy of GlobalIngredientNested
 /// with the given fields replaced by the non-null parameter values.
@@ -546,7 +546,7 @@ abstract mixin class _$GlobalIngredientNestedCopyWith<$Res> implements $GlobalIn
   factory _$GlobalIngredientNestedCopyWith(_GlobalIngredientNested value, $Res Function(_GlobalIngredientNested) _then) = __$GlobalIngredientNestedCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String namePt, String nameEn, String? categoryId
+ String id,@JsonKey(name: 'name_pt') String namePt,@JsonKey(name: 'name_en') String nameEn,@JsonKey(name: 'category_id') String? categoryId
 });
 
 

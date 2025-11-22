@@ -1,4 +1,4 @@
-import 'package:chefie/models/receita.dart';
+import 'package:chefie/modelviews/receita.dart';
 import 'package:chefie/views/ingredientes/ingredientes.dart';
 import 'package:chefie/views/receitas/find_receita.dart';
 import 'package:chefie/widgets/chefie_app_bar.dart';

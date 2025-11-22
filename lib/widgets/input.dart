@@ -47,9 +47,11 @@ class NumberField extends StatelessWidget {
   const NumberField({
     super.key,
     required this.text,
+    this.controller,
   });
 
   final String text;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +60,7 @@ class NumberField extends StatelessWidget {
       children: [
         FieldTitle(text: text),
         TextField(
+          controller: controller,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
           decoration: InputDecoration(
             filled: true,
@@ -65,11 +68,11 @@ class NumberField extends StatelessWidget {
             contentPadding: const EdgeInsets.all(15),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
-              borderSide: BorderSide(color: AppColors.primary.withValues(alpha: 0.3), width: 1.6)
+              borderSide: BorderSide(color: AppColors.primary.withValues(alpha: 0.3), width: 1.6),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
-              borderSide: BorderSide(color: AppColors.primary, width: 1.6)
+              borderSide: BorderSide(color: AppColors.primary, width: 1.6),
             ),
             hintText: "1",
             hintStyle: TextStyle(
