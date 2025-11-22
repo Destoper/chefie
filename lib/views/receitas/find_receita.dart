@@ -50,12 +50,7 @@ class _FindReceitaPageState extends State<FindReceitaPage> {
                 padding: const EdgeInsets.symmetric(vertical: 6),
                 children: [
                   FilterOption(text: "Ordenar por", icon: Icons.swap_vert),
-                  FilterOption(
-                    text: "Match %",
-                    color: AppColors.primary.withValues(alpha: 0.2),
-                    textColor: AppColors.primary,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  FilterOption(text: "Match %"),
                   FilterOption(text: "Tempo"),
                 ],
               ),
@@ -86,50 +81,70 @@ class _FindReceitaPageState extends State<FindReceitaPage> {
   }
 }
 
-class FilterOption extends StatelessWidget {
+class FilterOption extends StatefulWidget {
   const FilterOption({
     super.key,
     required this.text,
     this.icon,
-    this.color,
-    this.textColor,
-    this.fontWeight,
   });
 
   final String text;
   final IconData? icon;
-  final Color? color;
-  final Color? textColor;
-  final FontWeight? fontWeight;
 
+  @override
+  State<FilterOption> createState() => _FilterOptionState();
+}
+
+class _FilterOptionState extends State<FilterOption> {
+  late bool selected;
+
+  @override
+  void initState() {
+    super.initState();
+    selected = false;
+  }
+  //final Color? color;
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(right: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(45),
-        color: color ?? AppColors.borderOf(context),
+        color: !selected ? AppColors.borderOf(context) : AppColors.primary.withValues(alpha: 0.2),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (icon != null)
-            Row(
-              children: [
-                Icon(icon, size: 20, color: AppColors.textOf(context)),
-                const SizedBox(width: 8),
-              ],
+      child: GestureDetector(
+        onTap: (){
+          setState(() {
+            // TODO: Filter logic
+            selected = !selected;
+          });
+        },
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (widget.icon != null)
+              Row(
+                children: [
+                  Icon(
+                    widget.icon, 
+                    size: 20, 
+                    color: !selected? AppColors.textOf(context) 
+                                    : AppColors.primary
+                  ),
+                  const SizedBox(width: 8),
+                ],
+              ),
+            Text(
+              widget.text,
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+                color: !selected ? AppColors.textOf(context) : AppColors.primary,
+              ),
             ),
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: fontWeight ?? FontWeight.w500,
-              color: textColor ?? AppColors.textOf(context),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
