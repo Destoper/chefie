@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:chefie/models/recipe_details.dart'; 
 import 'package:chefie/theme/app_theme.dart';
 import 'package:chefie/views/receitas/receita_details.dart';
 import 'package:chefie/widgets/image.dart';
@@ -35,15 +36,28 @@ class ReceitaPreview extends StatefulWidget {
 class _ReceitaPreviewState extends State<ReceitaPreview> {
   @override
   Widget build(BuildContext context) {
-    int qtyAvailableAvailable = Random().nextInt(widget.receita.ingredients.length+1);
+    int qtyAvailableAvailable = Random().nextInt(widget.receita.ingredients.length + 1);
     bool readyToPrepare = (qtyAvailableAvailable == widget.receita.ingredients.length);
+    
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ReceitaDetailsPage(receita: widget.receita),
-        ),
-      ),
+      onTap: () {
+        final detailsAdapter = RecipeDetails(
+          id: 0,
+          title: widget.receita.name,
+          image: null,
+          readyInMinutes: widget.receita.estimatedTimeMin,
+          servings: 2,
+          ingredients: widget.receita.ingredients.map((e) => e.toString()).toList(),
+          instructions: "Detalhes não disponíveis na prévia.",
+        );
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ReceitaDetailsPage(receita: detailsAdapter),
+          ),
+        );
+      },
       child: Container(
         height: widget.previewHeight,
         width: widget.previewWidth,
@@ -89,7 +103,6 @@ class _ReceitaPreviewState extends State<ReceitaPreview> {
                 ),
                 if(widget.showMissingIngredientCount)
                   Text(
-                    // TODO: Use real ingredient data
                     readyToPrepare? 
                       "Pronto p/ preparo!"
                       : "$qtyAvailableAvailable/${widget.receita.ingredients.length} ingredientes",
