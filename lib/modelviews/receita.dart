@@ -1,6 +1,6 @@
-import 'package:chefie/models/ingrediente.dart';
-import 'package:chefie/models/ingrediente_categoria.dart';
-import 'package:chefie/models/unidades.dart';
+import 'package:chefie/modelviews/ingrediente.dart';
+import 'package:chefie/modelviews/ingrediente_categoria.dart';
+import 'package:chefie/modelviews/unidades.dart';
 import 'package:flutter/material.dart';
 
 class ReceitaModel {
