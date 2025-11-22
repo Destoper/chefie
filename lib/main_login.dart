@@ -4,7 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'views/home/home.dart';
 import 'views/login/login_temp.dart';
 import 'controllers/auth_controller.dart';
-import 'views/test/test_screen.dart';
+import 'views/home/home.dart';
 import 'config/env.dart';
 
 void main() async {
@@ -48,7 +48,7 @@ class AuthWrapper extends ConsumerWidget {
     return authState.when(
       data: (user) {
         if (user != null) {
-          return const TestScreen();
+          return const HomePage();
         }
         return const LoginScreen();
       },
