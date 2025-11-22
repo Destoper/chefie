@@ -1,5 +1,4 @@
 import 'package:chefie/models/ingrediente.dart';
-import 'package:chefie/views/ingredientes/old_adicionar_ingrediente.dart';
 import 'package:chefie/widgets/button.dart';
 import 'package:chefie/widgets/chefie_app_bar.dart';
 import 'package:chefie/widgets/chefie_search_bar.dart';
