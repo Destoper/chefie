@@ -1,7 +1,6 @@
 import 'package:chefie/modelviews/ingrediente.dart';
 import 'package:chefie/modelviews/receita.dart';
 import 'package:chefie/theme/app_theme.dart';
-import 'package:chefie/widgets/chefie_app_bar.dart';
 import 'package:chefie/widgets/text.dart';
 import 'package:flutter/material.dart';
 
