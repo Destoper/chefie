@@ -4,7 +4,7 @@ import 'package:chefie/theme/app_theme.dart';
 import 'package:chefie/views/receitas/receita_details.dart';
 import 'package:chefie/widgets/image.dart';
 import 'package:flutter/material.dart';
-import 'package:chefie/models/receita.dart';
+import 'package:chefie/modelviews/receita.dart';
 
 class ReceitaPreview extends StatefulWidget {
   const ReceitaPreview({

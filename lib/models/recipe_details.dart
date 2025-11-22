@@ -1,25 +1,26 @@
-class RecipeDetails {
-  final int id;
-  final String title;
-  final String? image;
-  final int preparationTime;
-  final int servings;
-  final String? instructions;
-  final List<String> ingredients;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  RecipeDetails({
-    required this.id,
-    required this.title,
-    this.image,
-    required this.preparationTime,
-    required this.servings,
-    this.instructions,
-    required this.ingredients,
-  });
+part 'recipe_details.freezed.dart';
+part 'recipe_details.g.dart';
 
-  factory RecipeDetails.fromJson(Map<String, dynamic> json) {
+@freezed
+sealed class RecipeDetails with _$RecipeDetails {
+  const factory RecipeDetails({
+    required int id,
+    required String title,
+    String? image,
+    @Default(0) int readyInMinutes,
+    @Default(0) int servings,
+    String? instructions,
+    @Default([]) List<String> ingredients,
+  }) = _RecipeDetails;
+
+  factory RecipeDetails.fromJson(Map<String, dynamic> json) =>
+      _$RecipeDetailsFromJson(json);
+
+  // Factory customizado para parsear resposta da API Spoonacular
+  factory RecipeDetails.fromApiJson(Map<String, dynamic> json) {
     List<String> ingredientsList = [];
-
     if (json['extendedIngredients'] != null) {
       ingredientsList = (json['extendedIngredients'] as List)
           .map((ing) => ing['original'] as String)
@@ -30,22 +31,10 @@ class RecipeDetails {
       id: json['id'],
       title: json['title'],
       image: json['image'],
-      preparationTime: json['readyInMinutes'] ?? 0,
+      readyInMinutes: json['readyInMinutes'] ?? 0,
       servings: json['servings'] ?? 0,
       instructions: json['instructions'],
       ingredients: ingredientsList,
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'api_id': id,
-      'title': title,
-      'image': image,
-      'preparation_time': preparationTime,
-      'servings': servings,
-      'instructions': instructions,
-      'ingredients': ingredients,
-    };
   }
 }
