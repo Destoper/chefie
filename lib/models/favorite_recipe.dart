@@ -5,7 +5,7 @@ part 'favorite_recipe.freezed.dart';
 part 'favorite_recipe.g.dart';
 
 @freezed
-abstract class FavoriteRecipe with _$FavoriteRecipe {
+sealed class FavoriteRecipe with _$FavoriteRecipe {
   const factory FavoriteRecipe({
     required String id,
     required String userId,
@@ -16,11 +16,18 @@ abstract class FavoriteRecipe with _$FavoriteRecipe {
     @Default(0) int servings,
     String? instructions,
     @Default([]) List<String> ingredients,
-    required DateTime createdAt,
+    DateTime? createdAt,
   }) = _FavoriteRecipe;
 
   factory FavoriteRecipe.fromJson(Map<String, dynamic> json) =>
-      _$FavoriteRecipeFromJson(json);
+      _$FavoriteRecipeFromJson({
+        ...json,
+        'userId': json['user_id'],
+        'apiId': json['api_id'],
+        'imageUrl': json['image_url'],
+        'readyInMinutes': json['ready_in_minutes'] ?? 0,
+        'createdAt': json['created_at'],
+      });
 
   // Criar a partir de RecipeDetails
   factory FavoriteRecipe.fromRecipeDetails({

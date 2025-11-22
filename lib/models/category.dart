@@ -4,15 +4,19 @@ part 'category.freezed.dart';
 part 'category.g.dart';
 
 @freezed
-abstract class Category with _$Category {
+sealed class Category with _$Category {
   const factory Category({
     required String id,
     required String namePt,
     required String nameEn,
-    required String icon,
-    required DateTime createdAt,
+    @Default('📦') String icon,
+    DateTime? createdAt,
   }) = _Category;
 
-  factory Category.fromJson(Map<String, dynamic> json) =>
-      _$CategoryFromJson(json);
+  factory Category.fromJson(Map<String, dynamic> json) => _$CategoryFromJson({
+    ...json,
+    'namePt': json['name_pt'],
+    'nameEn': json['name_en'],
+    'createdAt': json['created_at'],
+  });
 }

@@ -9,7 +9,7 @@ class GlobalIngredientRepository {
     final response = await _supabase
         .from(_table)
         .select()
-        .order('name');
+        .order('name_pt');
 
     return (response as List)
         .map((json) => GlobalIngredient.fromJson(json))

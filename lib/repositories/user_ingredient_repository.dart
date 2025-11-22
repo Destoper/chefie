@@ -29,6 +29,23 @@ class UserIngredientRepository {
         .eq('id', id);
   }
 
+  Future<List<UserIngredient>> getAllUserIngredients() async {
+    final response = await _supabase
+        .from(_table)
+        .select();
+
+    return (response as List)
+        .map((json) => UserIngredient.fromJson(json))
+        .toList();
+  }
+
+  Future<void> clearUserIngredients(String userId) async {
+    await _supabase
+        .from(_table)
+        .delete()
+        .eq('user_id', userId);
+  }
+
   Future<void> updateUserIngredient(UserIngredient ingredient) async {
     await _supabase
         .from(_table)

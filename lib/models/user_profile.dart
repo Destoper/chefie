@@ -4,7 +4,7 @@ part 'user_profile.freezed.dart';
 part 'user_profile.g.dart';
 
 @freezed
-abstract class UserProfile with _$UserProfile {
+sealed class UserProfile with _$UserProfile {
   const factory UserProfile({
     required String id,
     required String email,
@@ -13,5 +13,9 @@ abstract class UserProfile with _$UserProfile {
   }) = _UserProfile;
 
   factory UserProfile.fromJson(Map<String, dynamic> json) =>
-      _$UserProfileFromJson(json);
+      _$UserProfileFromJson({
+        ...json,
+        'displayName': json['display_name'],
+        'photoUrl': json['photo_url'],
+      });
 }

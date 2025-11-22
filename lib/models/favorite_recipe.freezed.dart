@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FavoriteRecipe {
 
- String get id; String get userId; int get apiId; String get title; String? get imageUrl; int get readyInMinutes; int get servings; String? get instructions; List<String> get ingredients; DateTime get createdAt;
+ String get id; String get userId; int get apiId; String get title; String? get imageUrl; int get readyInMinutes; int get servings; String? get instructions; List<String> get ingredients; DateTime? get createdAt;
 /// Create a copy of FavoriteRecipe
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $FavoriteRecipeCopyWith<$Res>  {
   factory $FavoriteRecipeCopyWith(FavoriteRecipe value, $Res Function(FavoriteRecipe) _then) = _$FavoriteRecipeCopyWithImpl;
 @useResult
 $Res call({
- String id, String userId, int apiId, String title, String? imageUrl, int readyInMinutes, int servings, String? instructions, List<String> ingredients, DateTime createdAt
+ String id, String userId, int apiId, String title, String? imageUrl, int readyInMinutes, int servings, String? instructions, List<String> ingredients, DateTime? createdAt
 });
 
 
@@ -65,7 +65,7 @@ class _$FavoriteRecipeCopyWithImpl<$Res>
 
 /// Create a copy of FavoriteRecipe
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? apiId = null,Object? title = null,Object? imageUrl = freezed,Object? readyInMinutes = null,Object? servings = null,Object? instructions = freezed,Object? ingredients = null,Object? createdAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? apiId = null,Object? title = null,Object? imageUrl = freezed,Object? readyInMinutes = null,Object? servings = null,Object? instructions = freezed,Object? ingredients = null,Object? createdAt = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
@@ -76,8 +76,8 @@ as String?,readyInMinutes: null == readyInMinutes ? _self.readyInMinutes : ready
 as int,servings: null == servings ? _self.servings : servings // ignore: cast_nullable_to_non_nullable
 as int,instructions: freezed == instructions ? _self.instructions : instructions // ignore: cast_nullable_to_non_nullable
 as String?,ingredients: null == ingredients ? _self.ingredients : ingredients // ignore: cast_nullable_to_non_nullable
-as List<String>,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as List<String>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 
@@ -124,10 +124,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _FavoriteRecipe():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -162,7 +159,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String userId,  int apiId,  String title,  String? imageUrl,  int readyInMinutes,  int servings,  String? instructions,  List<String> ingredients,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String userId,  int apiId,  String title,  String? imageUrl,  int readyInMinutes,  int servings,  String? instructions,  List<String> ingredients,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FavoriteRecipe() when $default != null:
 return $default(_that.id,_that.userId,_that.apiId,_that.title,_that.imageUrl,_that.readyInMinutes,_that.servings,_that.instructions,_that.ingredients,_that.createdAt);case _:
@@ -183,13 +180,10 @@ return $default(_that.id,_that.userId,_that.apiId,_that.title,_that.imageUrl,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String userId,  int apiId,  String title,  String? imageUrl,  int readyInMinutes,  int servings,  String? instructions,  List<String> ingredients,  DateTime createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String userId,  int apiId,  String title,  String? imageUrl,  int readyInMinutes,  int servings,  String? instructions,  List<String> ingredients,  DateTime? createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _FavoriteRecipe():
-return $default(_that.id,_that.userId,_that.apiId,_that.title,_that.imageUrl,_that.readyInMinutes,_that.servings,_that.instructions,_that.ingredients,_that.createdAt);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.id,_that.userId,_that.apiId,_that.title,_that.imageUrl,_that.readyInMinutes,_that.servings,_that.instructions,_that.ingredients,_that.createdAt);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -203,7 +197,7 @@ return $default(_that.id,_that.userId,_that.apiId,_that.title,_that.imageUrl,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String userId,  int apiId,  String title,  String? imageUrl,  int readyInMinutes,  int servings,  String? instructions,  List<String> ingredients,  DateTime createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String userId,  int apiId,  String title,  String? imageUrl,  int readyInMinutes,  int servings,  String? instructions,  List<String> ingredients,  DateTime? createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _FavoriteRecipe() when $default != null:
 return $default(_that.id,_that.userId,_that.apiId,_that.title,_that.imageUrl,_that.readyInMinutes,_that.servings,_that.instructions,_that.ingredients,_that.createdAt);case _:
@@ -218,7 +212,7 @@ return $default(_that.id,_that.userId,_that.apiId,_that.title,_that.imageUrl,_th
 @JsonSerializable()
 
 class _FavoriteRecipe implements FavoriteRecipe {
-  const _FavoriteRecipe({required this.id, required this.userId, required this.apiId, required this.title, this.imageUrl, this.readyInMinutes = 0, this.servings = 0, this.instructions, final  List<String> ingredients = const [], required this.createdAt}): _ingredients = ingredients;
+  const _FavoriteRecipe({required this.id, required this.userId, required this.apiId, required this.title, this.imageUrl, this.readyInMinutes = 0, this.servings = 0, this.instructions, final  List<String> ingredients = const [], this.createdAt}): _ingredients = ingredients;
   factory _FavoriteRecipe.fromJson(Map<String, dynamic> json) => _$FavoriteRecipeFromJson(json);
 
 @override final  String id;
@@ -236,7 +230,7 @@ class _FavoriteRecipe implements FavoriteRecipe {
   return EqualUnmodifiableListView(_ingredients);
 }
 
-@override final  DateTime createdAt;
+@override final  DateTime? createdAt;
 
 /// Create a copy of FavoriteRecipe
 /// with the given fields replaced by the non-null parameter values.
@@ -271,7 +265,7 @@ abstract mixin class _$FavoriteRecipeCopyWith<$Res> implements $FavoriteRecipeCo
   factory _$FavoriteRecipeCopyWith(_FavoriteRecipe value, $Res Function(_FavoriteRecipe) _then) = __$FavoriteRecipeCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String userId, int apiId, String title, String? imageUrl, int readyInMinutes, int servings, String? instructions, List<String> ingredients, DateTime createdAt
+ String id, String userId, int apiId, String title, String? imageUrl, int readyInMinutes, int servings, String? instructions, List<String> ingredients, DateTime? createdAt
 });
 
 
@@ -288,7 +282,7 @@ class __$FavoriteRecipeCopyWithImpl<$Res>
 
 /// Create a copy of FavoriteRecipe
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? apiId = null,Object? title = null,Object? imageUrl = freezed,Object? readyInMinutes = null,Object? servings = null,Object? instructions = freezed,Object? ingredients = null,Object? createdAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? apiId = null,Object? title = null,Object? imageUrl = freezed,Object? readyInMinutes = null,Object? servings = null,Object? instructions = freezed,Object? ingredients = null,Object? createdAt = freezed,}) {
   return _then(_FavoriteRecipe(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
@@ -299,8 +293,8 @@ as String?,readyInMinutes: null == readyInMinutes ? _self.readyInMinutes : ready
 as int,servings: null == servings ? _self.servings : servings // ignore: cast_nullable_to_non_nullable
 as int,instructions: freezed == instructions ? _self.instructions : instructions // ignore: cast_nullable_to_non_nullable
 as String?,ingredients: null == ingredients ? _self._ingredients : ingredients // ignore: cast_nullable_to_non_nullable
-as List<String>,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as List<String>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 

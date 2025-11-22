@@ -1,18 +1,16 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'favorite_recipe.dart';
+part of 'recipe_details.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_FavoriteRecipe _$FavoriteRecipeFromJson(Map<String, dynamic> json) =>
-    _FavoriteRecipe(
-      id: json['id'] as String,
-      userId: json['userId'] as String,
-      apiId: (json['apiId'] as num).toInt(),
+_RecipeDetails _$RecipeDetailsFromJson(Map<String, dynamic> json) =>
+    _RecipeDetails(
+      id: (json['id'] as num).toInt(),
       title: json['title'] as String,
-      imageUrl: json['imageUrl'] as String?,
+      image: json['image'] as String?,
       readyInMinutes: (json['readyInMinutes'] as num?)?.toInt() ?? 0,
       servings: (json['servings'] as num?)?.toInt() ?? 0,
       instructions: json['instructions'] as String?,
@@ -21,21 +19,15 @@ _FavoriteRecipe _$FavoriteRecipeFromJson(Map<String, dynamic> json) =>
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      createdAt: json['createdAt'] == null
-          ? null
-          : DateTime.parse(json['createdAt'] as String),
     );
 
-Map<String, dynamic> _$FavoriteRecipeToJson(_FavoriteRecipe instance) =>
+Map<String, dynamic> _$RecipeDetailsToJson(_RecipeDetails instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'userId': instance.userId,
-      'apiId': instance.apiId,
       'title': instance.title,
-      'imageUrl': instance.imageUrl,
+      'image': instance.image,
       'readyInMinutes': instance.readyInMinutes,
       'servings': instance.servings,
       'instructions': instance.instructions,
       'ingredients': instance.ingredients,
-      'createdAt': instance.createdAt?.toIso8601String(),
     };

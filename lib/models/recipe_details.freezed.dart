@@ -11,6 +11,7 @@ part of 'recipe_details.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
+
 /// @nodoc
 mixin _$RecipeDetails {
 
@@ -21,6 +22,8 @@ mixin _$RecipeDetails {
 @pragma('vm:prefer-inline')
 $RecipeDetailsCopyWith<RecipeDetails> get copyWith => _$RecipeDetailsCopyWithImpl<RecipeDetails>(this as RecipeDetails, _$identity);
 
+  /// Serializes this RecipeDetails to a JSON map.
+  Map<String, dynamic> toJson();
 
 
 @override
@@ -28,7 +31,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is RecipeDetails&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.image, image) || other.image == image)&&(identical(other.readyInMinutes, readyInMinutes) || other.readyInMinutes == readyInMinutes)&&(identical(other.servings, servings) || other.servings == servings)&&(identical(other.instructions, instructions) || other.instructions == instructions)&&const DeepCollectionEquality().equals(other.ingredients, ingredients));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,id,title,image,readyInMinutes,servings,instructions,const DeepCollectionEquality().hash(ingredients));
 
@@ -118,10 +121,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _RecipeDetails():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -180,10 +180,7 @@ return $default(_that.id,_that.title,_that.image,_that.readyInMinutes,_that.serv
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String title,  String? image,  int readyInMinutes,  int servings,  String? instructions,  List<String> ingredients)  $default,) {final _that = this;
 switch (_that) {
 case _RecipeDetails():
-return $default(_that.id,_that.title,_that.image,_that.readyInMinutes,_that.servings,_that.instructions,_that.ingredients);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.id,_that.title,_that.image,_that.readyInMinutes,_that.servings,_that.instructions,_that.ingredients);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -209,11 +206,11 @@ return $default(_that.id,_that.title,_that.image,_that.readyInMinutes,_that.serv
 }
 
 /// @nodoc
-
+@JsonSerializable()
 
 class _RecipeDetails implements RecipeDetails {
   const _RecipeDetails({required this.id, required this.title, this.image, this.readyInMinutes = 0, this.servings = 0, this.instructions, final  List<String> ingredients = const []}): _ingredients = ingredients;
-  
+  factory _RecipeDetails.fromJson(Map<String, dynamic> json) => _$RecipeDetailsFromJson(json);
 
 @override final  int id;
 @override final  String title;
@@ -235,14 +232,17 @@ class _RecipeDetails implements RecipeDetails {
 @pragma('vm:prefer-inline')
 _$RecipeDetailsCopyWith<_RecipeDetails> get copyWith => __$RecipeDetailsCopyWithImpl<_RecipeDetails>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$RecipeDetailsToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecipeDetails&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.image, image) || other.image == image)&&(identical(other.readyInMinutes, readyInMinutes) || other.readyInMinutes == readyInMinutes)&&(identical(other.servings, servings) || other.servings == servings)&&(identical(other.instructions, instructions) || other.instructions == instructions)&&const DeepCollectionEquality().equals(other._ingredients, _ingredients));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,id,title,image,readyInMinutes,servings,instructions,const DeepCollectionEquality().hash(_ingredients));
 

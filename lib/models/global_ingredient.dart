@@ -4,16 +4,22 @@ part 'global_ingredient.freezed.dart';
 part 'global_ingredient.g.dart';
 
 @freezed
-abstract class GlobalIngredient with _$GlobalIngredient {
+sealed class GlobalIngredient with _$GlobalIngredient {
   const factory GlobalIngredient({
     required String id,
     required String namePt,
-    required String nameEn, // Usado na API
+    required String nameEn,
     String? categoryId,
     @Default(true) bool common,
-    required DateTime createdAt,
+    DateTime? createdAt,
   }) = _GlobalIngredient;
 
-  factory GlobalIngredient.fromJson(Map<String, dynamic> json) =>
-      _$GlobalIngredientFromJson(json);
+  factory GlobalIngredient.fromJson(Map<String, dynamic> json) => 
+      _$GlobalIngredientFromJson({
+        ...json,
+        'namePt': json['name_pt'],
+        'nameEn': json['name_en'],
+        'categoryId': json['category_id'],
+        'createdAt': json['created_at'],
+      });
 }

@@ -119,10 +119,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _RecipeApi():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -181,10 +178,7 @@ return $default(_that.id,_that.title,_that.image,_that.usedIngredientCount,_that
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String title,  String image,  int usedIngredientCount,  int missedIngredientCount)  $default,) {final _that = this;
 switch (_that) {
 case _RecipeApi():
-return $default(_that.id,_that.title,_that.image,_that.usedIngredientCount,_that.missedIngredientCount);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.id,_that.title,_that.image,_that.usedIngredientCount,_that.missedIngredientCount);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -212,13 +206,13 @@ return $default(_that.id,_that.title,_that.image,_that.usedIngredientCount,_that
 /// @nodoc
 @JsonSerializable()
 
-class _RecipeApi implements RecipeApi {
-  const _RecipeApi({required this.id, required this.title, required this.image, this.usedIngredientCount = 0, this.missedIngredientCount = 0});
+class _RecipeApi extends RecipeApi {
+  const _RecipeApi({required this.id, required this.title, this.image = '', this.usedIngredientCount = 0, this.missedIngredientCount = 0}): super._();
   factory _RecipeApi.fromJson(Map<String, dynamic> json) => _$RecipeApiFromJson(json);
 
 @override final  int id;
 @override final  String title;
-@override final  String image;
+@override@JsonKey() final  String image;
 @override@JsonKey() final  int usedIngredientCount;
 @override@JsonKey() final  int missedIngredientCount;
 

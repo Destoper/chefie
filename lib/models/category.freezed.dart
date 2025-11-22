@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Category {
 
- String get id; String get namePt; String get nameEn; String get icon; DateTime get createdAt;
+ String get id; String get namePt; String get nameEn; String get icon; DateTime? get createdAt;
 /// Create a copy of Category
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $CategoryCopyWith<$Res>  {
   factory $CategoryCopyWith(Category value, $Res Function(Category) _then) = _$CategoryCopyWithImpl;
 @useResult
 $Res call({
- String id, String namePt, String nameEn, String icon, DateTime createdAt
+ String id, String namePt, String nameEn, String icon, DateTime? createdAt
 });
 
 
@@ -65,14 +65,14 @@ class _$CategoryCopyWithImpl<$Res>
 
 /// Create a copy of Category
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? namePt = null,Object? nameEn = null,Object? icon = null,Object? createdAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? namePt = null,Object? nameEn = null,Object? icon = null,Object? createdAt = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,namePt: null == namePt ? _self.namePt : namePt // ignore: cast_nullable_to_non_nullable
 as String,nameEn: null == nameEn ? _self.nameEn : nameEn // ignore: cast_nullable_to_non_nullable
 as String,icon: null == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
-as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as String,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 
@@ -119,10 +119,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _Category():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -157,7 +154,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String namePt,  String nameEn,  String icon,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String namePt,  String nameEn,  String icon,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Category() when $default != null:
 return $default(_that.id,_that.namePt,_that.nameEn,_that.icon,_that.createdAt);case _:
@@ -178,13 +175,10 @@ return $default(_that.id,_that.namePt,_that.nameEn,_that.icon,_that.createdAt);c
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String namePt,  String nameEn,  String icon,  DateTime createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String namePt,  String nameEn,  String icon,  DateTime? createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _Category():
-return $default(_that.id,_that.namePt,_that.nameEn,_that.icon,_that.createdAt);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.id,_that.namePt,_that.nameEn,_that.icon,_that.createdAt);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -198,7 +192,7 @@ return $default(_that.id,_that.namePt,_that.nameEn,_that.icon,_that.createdAt);c
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String namePt,  String nameEn,  String icon,  DateTime createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String namePt,  String nameEn,  String icon,  DateTime? createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _Category() when $default != null:
 return $default(_that.id,_that.namePt,_that.nameEn,_that.icon,_that.createdAt);case _:
@@ -213,14 +207,14 @@ return $default(_that.id,_that.namePt,_that.nameEn,_that.icon,_that.createdAt);c
 @JsonSerializable()
 
 class _Category implements Category {
-  const _Category({required this.id, required this.namePt, required this.nameEn, required this.icon, required this.createdAt});
+  const _Category({required this.id, required this.namePt, required this.nameEn, this.icon = '📦', this.createdAt});
   factory _Category.fromJson(Map<String, dynamic> json) => _$CategoryFromJson(json);
 
 @override final  String id;
 @override final  String namePt;
 @override final  String nameEn;
-@override final  String icon;
-@override final  DateTime createdAt;
+@override@JsonKey() final  String icon;
+@override final  DateTime? createdAt;
 
 /// Create a copy of Category
 /// with the given fields replaced by the non-null parameter values.
@@ -255,7 +249,7 @@ abstract mixin class _$CategoryCopyWith<$Res> implements $CategoryCopyWith<$Res>
   factory _$CategoryCopyWith(_Category value, $Res Function(_Category) _then) = __$CategoryCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String namePt, String nameEn, String icon, DateTime createdAt
+ String id, String namePt, String nameEn, String icon, DateTime? createdAt
 });
 
 
@@ -272,14 +266,14 @@ class __$CategoryCopyWithImpl<$Res>
 
 /// Create a copy of Category
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? namePt = null,Object? nameEn = null,Object? icon = null,Object? createdAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? namePt = null,Object? nameEn = null,Object? icon = null,Object? createdAt = freezed,}) {
   return _then(_Category(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,namePt: null == namePt ? _self.namePt : namePt // ignore: cast_nullable_to_non_nullable
 as String,nameEn: null == nameEn ? _self.nameEn : nameEn // ignore: cast_nullable_to_non_nullable
 as String,icon: null == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
-as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as String,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 

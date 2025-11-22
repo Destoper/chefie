@@ -13,7 +13,9 @@ _GlobalIngredient _$GlobalIngredientFromJson(Map<String, dynamic> json) =>
       nameEn: json['nameEn'] as String,
       categoryId: json['categoryId'] as String?,
       common: json['common'] as bool? ?? true,
-      createdAt: DateTime.parse(json['createdAt'] as String),
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.parse(json['createdAt'] as String),
     );
 
 Map<String, dynamic> _$GlobalIngredientToJson(_GlobalIngredient instance) =>
@@ -23,5 +25,5 @@ Map<String, dynamic> _$GlobalIngredientToJson(_GlobalIngredient instance) =>
       'nameEn': instance.nameEn,
       'categoryId': instance.categoryId,
       'common': instance.common,
-      'createdAt': instance.createdAt.toIso8601String(),
+      'createdAt': instance.createdAt?.toIso8601String(),
     };

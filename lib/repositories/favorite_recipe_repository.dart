@@ -3,7 +3,7 @@ import '../models/favorite_recipe.dart';
 
 class FavoriteRecipeRepository {
   final SupabaseClient _supabase = Supabase.instance.client;
-  final String _tableName = 'receitas_favoritas';
+  final String _tableName = 'favorite_recipes';
 
   Future<FavoriteRecipe> create(FavoriteRecipe recipe) async {
     final response = await _supabase
