@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 
 class ReceitaDetailsPage extends StatelessWidget {
   final RecipeDetails receita;
+  final Set<String> usedIngredients;
 
   const ReceitaDetailsPage({
     super.key,
     required this.receita,
+    this.usedIngredients = const {},
   });
 
   @override
@@ -36,6 +38,7 @@ class ReceitaDetailsPage extends StatelessWidget {
         padding: EdgeInsets.all(10),
         shrinkWrap: false,
         children: [
+          // Imagem
           Container(
             width: double.infinity,
             height: 250,
@@ -58,8 +61,10 @@ class ReceitaDetailsPage extends StatelessWidget {
           ),
           SizedBox(height: 20),
           
+          // Título
           TextTitle(text: receita.title, fontWeight: FontWeight.w700),
 
+          // Info cards
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -72,7 +77,7 @@ class ReceitaDetailsPage extends StatelessWidget {
                 icon: Icons.people_alt_outlined,
               ),
               ReceitaInfoItem(
-                text: "${receita.ingredients.length} itens",
+                text: "${receita.extendedIngredients.length} itens",
                 icon: Icons.kitchen_outlined,
               ),
             ],
@@ -80,15 +85,19 @@ class ReceitaDetailsPage extends StatelessWidget {
 
           Divider(color: AppColors.borderOf(context)),
           SizedBox(height: 20),
-
+          
+          // Ingredientes
           TextLabel(text: "Ingredientes", fontSize: 22, fontWeight: FontWeight.w600),
           SizedBox(height: 12),
           Column(
             children: [
-              for (var ingredient in receita.ingredients)
+              for (var ingredient in receita.extendedIngredients)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10),
-                  child: IngredienteItem(ingredient: ingredient),
+                  child: IngredienteItem(
+                    ingredient: ingredient.original,
+                    isOwned: _checkIfOwned(ingredient.name),
+                  ),
                 ),
             ],
           ),
@@ -96,6 +105,7 @@ class ReceitaDetailsPage extends StatelessWidget {
           Divider(color: AppColors.borderOf(context)),
           SizedBox(height: 12),
           
+          // Modo de preparo
           TextLabel(text: "Modo de Preparo", fontSize: 22, fontWeight: FontWeight.w600),
           SizedBox(height: 12),
           if (receita.instructions != null && receita.instructions!.isNotEmpty)
@@ -114,7 +124,13 @@ class ReceitaDetailsPage extends StatelessWidget {
     );
   }
 
+  bool _checkIfOwned(String ingredientName) {
+    final lowerName = ingredientName.toLowerCase();
+    return usedIngredients.any((owned) => lowerName.contains(owned) || owned.contains(lowerName));
+  }
+
   Widget _buildInstructions(String instructions, BuildContext context) {
+    // Remove tags HTML básicas
     final cleanInstructions = instructions
         .replaceAll(RegExp(r'<[^>]*>'), '\n')
         .replaceAll(RegExp(r'\n\s*\n'), '\n\n')
@@ -167,16 +183,24 @@ class IngredienteItem extends StatefulWidget {
   const IngredienteItem({
     super.key,
     required this.ingredient,
+    this.isOwned = false,
   });
 
   final String ingredient;
+  final bool isOwned;
 
   @override
   State<IngredienteItem> createState() => _IngredienteItemState();
 }
 
 class _IngredienteItemState extends State<IngredienteItem> {
-  bool _checked = false;
+  late bool _checked;
+
+  @override
+  void initState() {
+    super.initState();
+    _checked = widget.isOwned; // Inicia marcado se o usuário já tem
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -184,8 +208,14 @@ class _IngredienteItemState extends State<IngredienteItem> {
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: AppColors.surfaceOf(context),
-        border: Border.all(color: AppColors.borderOf(context)),
+        color: widget.isOwned 
+            ? AppColors.primary.withOpacity(0.1)
+            : AppColors.surfaceOf(context),
+        border: Border.all(
+          color: widget.isOwned 
+              ? AppColors.primary.withOpacity(0.3)
+              : AppColors.borderOf(context),
+        ),
       ),
       child: Row(
         children: [
@@ -202,12 +232,20 @@ class _IngredienteItemState extends State<IngredienteItem> {
               widget.ingredient,
               style: TextStyle(
                 fontSize: 16,
-                fontWeight: FontWeight.w400,
-                color: AppColors.textOf(context),
+                fontWeight: widget.isOwned ? FontWeight.w500 : FontWeight.w400,
+                color: widget.isOwned 
+                    ? AppColors.primary
+                    : AppColors.textOf(context),
                 decoration: _checked ? TextDecoration.lineThrough : null,
               ),
             ),
           ),
+          if (widget.isOwned)
+            Icon(
+              Icons.check_circle,
+              color: AppColors.primary,
+              size: 20,
+            ),
         ],
       ),
     );

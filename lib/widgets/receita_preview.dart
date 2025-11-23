@@ -41,14 +41,22 @@ class _ReceitaPreviewState extends State<ReceitaPreview> {
     
     return GestureDetector(
       onTap: () {
+        final extendedIngredients = widget.receita.ingredients.map((ing) {
+          return ExtendedIngredient(
+            id: Random().nextInt(10000),
+            name: ing.nome,
+            original: "${ing.quantidade}${ing.unidade.name} de ${ing.nome}",
+          );
+        }).toList();
+
         final detailsAdapter = RecipeDetails(
           id: 0,
           title: widget.receita.name,
           image: null,
           readyInMinutes: widget.receita.estimatedTimeMin,
-          servings: 2,
-          ingredients: widget.receita.ingredients.map((e) => e.toString()).toList(),
-          instructions: "Detalhes não disponíveis na prévia.",
+          servings: widget.receita.portionSizePeople,
+          instructions: widget.receita.instructions,
+          extendedIngredients: extendedIngredients,
         );
 
         Navigator.push(

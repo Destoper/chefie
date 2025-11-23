@@ -14,9 +14,11 @@ _RecipeDetails _$RecipeDetailsFromJson(Map<String, dynamic> json) =>
       readyInMinutes: (json['readyInMinutes'] as num?)?.toInt() ?? 0,
       servings: (json['servings'] as num?)?.toInt() ?? 0,
       instructions: json['instructions'] as String?,
-      ingredients:
-          (json['ingredients'] as List<dynamic>?)
-              ?.map((e) => e as String)
+      extendedIngredients:
+          (json['extendedIngredients'] as List<dynamic>?)
+              ?.map(
+                (e) => ExtendedIngredient.fromJson(e as Map<String, dynamic>),
+              )
               .toList() ??
           const [],
     );
@@ -29,5 +31,19 @@ Map<String, dynamic> _$RecipeDetailsToJson(_RecipeDetails instance) =>
       'readyInMinutes': instance.readyInMinutes,
       'servings': instance.servings,
       'instructions': instance.instructions,
-      'ingredients': instance.ingredients,
+      'extendedIngredients': instance.extendedIngredients,
+    };
+
+_ExtendedIngredient _$ExtendedIngredientFromJson(Map<String, dynamic> json) =>
+    _ExtendedIngredient(
+      id: (json['id'] as num).toInt(),
+      name: json['name'] as String,
+      original: json['original'] as String,
+    );
+
+Map<String, dynamic> _$ExtendedIngredientToJson(_ExtendedIngredient instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'original': instance.original,
     };

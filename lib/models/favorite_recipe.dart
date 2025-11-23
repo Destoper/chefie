@@ -43,7 +43,9 @@ sealed class FavoriteRecipe with _$FavoriteRecipe {
         readyInMinutes: recipe.readyInMinutes,
         servings: recipe.servings,
         instructions: recipe.instructions,
-        ingredients: recipe.ingredients,
+        ingredients: recipe.extendedIngredients
+            .map((ing) => ing.original)
+            .toList(),
         createdAt: DateTime.now(),
       );
 }

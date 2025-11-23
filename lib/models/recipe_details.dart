@@ -12,7 +12,7 @@ sealed class RecipeDetails with _$RecipeDetails {
     @Default(0) int readyInMinutes,
     @Default(0) int servings,
     String? instructions,
-    @Default([]) List<String> ingredients,
+    @Default([]) List<ExtendedIngredient> extendedIngredients,
   }) = _RecipeDetails;
 
   factory RecipeDetails.fromJson(Map<String, dynamic> json) =>
@@ -20,10 +20,10 @@ sealed class RecipeDetails with _$RecipeDetails {
 
   // Factory customizado para parsear resposta da API Spoonacular
   factory RecipeDetails.fromApiJson(Map<String, dynamic> json) {
-    List<String> ingredientsList = [];
+    List<ExtendedIngredient> ingredientsList = [];
     if (json['extendedIngredients'] != null) {
       ingredientsList = (json['extendedIngredients'] as List)
-          .map((ing) => ing['original'] as String)
+          .map((ing) => ExtendedIngredient.fromJson(ing))
           .toList();
     }
 
@@ -34,7 +34,19 @@ sealed class RecipeDetails with _$RecipeDetails {
       readyInMinutes: json['readyInMinutes'] ?? 0,
       servings: json['servings'] ?? 0,
       instructions: json['instructions'],
-      ingredients: ingredientsList,
+      extendedIngredients: ingredientsList,
     );
   }
+}
+
+@freezed
+sealed class ExtendedIngredient with _$ExtendedIngredient {
+  const factory ExtendedIngredient({
+    required int id,
+    required String name,
+    required String original,
+  }) = _ExtendedIngredient;
+
+  factory ExtendedIngredient.fromJson(Map<String, dynamic> json) =>
+      _$ExtendedIngredientFromJson(json);
 }

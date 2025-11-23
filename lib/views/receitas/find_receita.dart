@@ -16,7 +16,7 @@ class FindReceitaPage extends ConsumerStatefulWidget {
 }
 
 class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
-  String _sortBy = 'match';  // 'match' ou 'time'
+  String _sortBy = 'match'; // 'match' ou 'time'
   bool _isInitialLoad = true;
 
   @override
@@ -58,6 +58,7 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
       sorted.sort((a, b) => b.matchPercentage.compareTo(a.matchPercentage));
     }
     // TODO: ordenar por tempo
+    
     return sorted;
   }
 
@@ -84,6 +85,7 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Contador e filtros
             recipesAsync.when(
               loading: () => TextLabel(
                 text: "Buscando receitas...",
@@ -130,6 +132,7 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
               ),
             ),
             
+            // Grid de receitas
             Expanded(
               child: _buildRecipeGrid(recipesAsync, userIngredientsAsync),
             ),
@@ -143,6 +146,7 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
     AsyncValue<List<RecipeApi>> recipesAsync,
     AsyncValue userIngredientsAsync,
   ) {
+    // Verifica se tem ingredientes cadastrados
     return userIngredientsAsync.when(
       loading: () => Center(child: CircularProgressIndicator()),
       error: (e, _) => Center(
@@ -161,14 +165,14 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.kitchen_outlined, size: 64, color: AppColors.textOf(context).withValues(alpha: 0.4)),
+                Icon(Icons.kitchen_outlined, size: 64, color: AppColors.textOf(context).withOpacity(0.4)),
                 SizedBox(height: 16),
                 Text(
                   'Adicione ingredientes para\nencontrar receitas!',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
-                    color: AppColors.textOf(context).withValues(alpha: 0.6),
+                    color: AppColors.textOf(context).withOpacity(0.6),
                   ),
                 ),
               ],
@@ -176,6 +180,7 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
           );
         }
 
+        // Mostra as receitas
         return recipesAsync.when(
           loading: () => Center(child: CircularProgressIndicator()),
           error: (e, _) => Center(
@@ -234,7 +239,10 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ReceitaDetailsPage(receita: details),
+            builder: (context) => ReceitaDetailsPage(
+              receita: details,
+              usedIngredients: recipe.usedIngredients.map((i) => i.name.toLowerCase()).toSet(),
+            ),
           ),
         );
       }
@@ -272,6 +280,7 @@ class RecipePreviewCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Imagem
             Expanded(
               flex: 3,
               child: Stack(
@@ -282,14 +291,15 @@ class RecipePreviewCard extends StatelessWidget {
                           recipe.image,
                           fit: BoxFit.cover,
                           errorBuilder: (_, __, ___) => Container(
-                            color: AppColors.primary.withValues(alpha: 0.3),
+                            color: AppColors.primary.withOpacity(0.3),
                             child: Icon(Icons.restaurant, size: 40),
                           ),
                         )
                       : Container(
-                          color: AppColors.primary.withValues(alpha: 0.3),
+                          color: AppColors.primary.withOpacity(0.3),
                           child: Icon(Icons.restaurant, size: 40),
                         ),
+                  // Badge de match
                   Positioned(
                     top: 8,
                     right: 8,
@@ -312,6 +322,7 @@ class RecipePreviewCard extends StatelessWidget {
                 ],
               ),
             ),
+            // Info
             Expanded(
               flex: 2,
               child: Padding(
@@ -396,7 +407,7 @@ class FilterOption extends StatelessWidget {
           borderRadius: BorderRadius.circular(45),
           color: !selected
               ? AppColors.borderOf(context)
-              : AppColors.primary.withValues(alpha: 0.2),
+              : AppColors.primary.withOpacity(0.2),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Row(
