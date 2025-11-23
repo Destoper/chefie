@@ -38,7 +38,6 @@ class ReceitaDetailsPage extends StatelessWidget {
         padding: EdgeInsets.all(10),
         shrinkWrap: false,
         children: [
-          // Imagem
           Container(
             width: double.infinity,
             height: 250,
@@ -49,7 +48,7 @@ class ReceitaDetailsPage extends StatelessWidget {
             ),
             child: receita.image != null && receita.image!.isNotEmpty
                 ? Image.network(
-                    receita.image!,
+                    'https://images.weserv.nl/?url=${Uri.encodeComponent(receita.image!)}',
                     fit: BoxFit.cover,
                     errorBuilder: (_, __, ___) => Center(
                       child: Icon(Icons.restaurant, size: 64, color: AppColors.textOf(context)),
@@ -60,8 +59,7 @@ class ReceitaDetailsPage extends StatelessWidget {
                   ),
           ),
           SizedBox(height: 20),
-          
-          // Título
+
           TextTitle(text: receita.title, fontWeight: FontWeight.w700),
 
           // Info cards
@@ -86,7 +84,6 @@ class ReceitaDetailsPage extends StatelessWidget {
           Divider(color: AppColors.borderOf(context)),
           SizedBox(height: 20),
           
-          // Ingredientes
           TextLabel(text: "Ingredientes", fontSize: 22, fontWeight: FontWeight.w600),
           SizedBox(height: 12),
           Column(
@@ -105,7 +102,6 @@ class ReceitaDetailsPage extends StatelessWidget {
           Divider(color: AppColors.borderOf(context)),
           SizedBox(height: 12),
           
-          // Modo de preparo
           TextLabel(text: "Modo de Preparo", fontSize: 22, fontWeight: FontWeight.w600),
           SizedBox(height: 12),
           if (receita.instructions != null && receita.instructions!.isNotEmpty)
@@ -199,7 +195,7 @@ class _IngredienteItemState extends State<IngredienteItem> {
   @override
   void initState() {
     super.initState();
-    _checked = widget.isOwned; // Inicia marcado se o usuário já tem
+    _checked = widget.isOwned;
   }
 
   @override

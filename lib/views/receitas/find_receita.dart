@@ -85,7 +85,6 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Contador e filtros
             recipesAsync.when(
               loading: () => TextLabel(
                 text: "Buscando receitas...",
@@ -132,7 +131,6 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
               ),
             ),
             
-            // Grid de receitas
             Expanded(
               child: _buildRecipeGrid(recipesAsync, userIngredientsAsync),
             ),
@@ -180,7 +178,6 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
           );
         }
 
-        // Mostra as receitas
         return recipesAsync.when(
           loading: () => Center(child: CircularProgressIndicator()),
           error: (e, _) => Center(
@@ -280,7 +277,7 @@ class RecipePreviewCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Imagem
+
             Expanded(
               flex: 3,
               child: Stack(
@@ -288,7 +285,7 @@ class RecipePreviewCard extends StatelessWidget {
                 children: [
                   recipe.image.isNotEmpty
                       ? Image.network(
-                          recipe.image,
+                          'https://images.weserv.nl/?url=${Uri.encodeComponent(recipe.image)}',
                           fit: BoxFit.cover,
                           errorBuilder: (_, __, ___) => Container(
                             color: AppColors.primary.withOpacity(0.3),
@@ -299,7 +296,6 @@ class RecipePreviewCard extends StatelessWidget {
                           color: AppColors.primary.withOpacity(0.3),
                           child: Icon(Icons.restaurant, size: 40),
                         ),
-                  // Badge de match
                   Positioned(
                     top: 8,
                     right: 8,
@@ -322,7 +318,6 @@ class RecipePreviewCard extends StatelessWidget {
                 ],
               ),
             ),
-            // Info
             Expanded(
               flex: 2,
               child: Padding(
