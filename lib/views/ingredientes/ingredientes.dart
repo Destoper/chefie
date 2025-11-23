@@ -3,7 +3,6 @@ import 'package:chefie/controllers/category_controller.dart';
 import 'package:chefie/controllers/user_ingredient_controller.dart';
 import 'package:chefie/models/category.dart';
 import 'package:chefie/models/user_ingredient.dart';
-import 'package:chefie/modelviews/ingredient.dart';
 import 'package:chefie/modelviews/unidades.dart';
 import 'package:chefie/theme/app_theme.dart';
 import 'package:chefie/views/ingredientes/adicionar_ingrediente.dart';
@@ -140,7 +139,9 @@ class _IngredientesPageState extends ConsumerState<IngredientesPage> {
               data: (ingredientes) {
                 final categoriasMap = <String, Category>{};
                 categoriasAsync.whenData((cats) {
-                  for (final c in cats) categoriasMap[c.id] = c;
+                  for (final c in cats) {
+                    categoriasMap[c.id] = c;
+                  }
                 });
 
                 final filtered = ingredientes

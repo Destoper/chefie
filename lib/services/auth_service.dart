@@ -39,7 +39,6 @@ class AuthService {
 
       return userProfile;
     } catch (e) {
-      print('Error signing in with Google: $e');
       rethrow;
     }
   }
@@ -48,7 +47,6 @@ class AuthService {
     try {
       await _supabase.auth.signOut();
     } catch (e) {
-      print('Error signing out: $e');
       rethrow;
     }
   }

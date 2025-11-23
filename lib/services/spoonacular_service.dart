@@ -7,7 +7,6 @@ import '../models/recipe_details.dart';
 class SpoonacularService {
   static const String _baseUrl = 'https://api.spoonacular.com';
 
-  // Buscar receitas por ingredientes (em inglês)
   Future<List<RecipeApi>> findByIngredients(
     List<String> ingredients, {
     int number = 10,
@@ -43,7 +42,6 @@ class SpoonacularService {
     }
   }
 
-  // Buscar detalhes completos de uma receita
   Future<RecipeDetails> getRecipeDetails(int recipeId) async {
     final url = Uri.parse(
       '$_baseUrl/recipes/$recipeId/information'
@@ -55,7 +53,7 @@ class SpoonacularService {
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        return RecipeDetails.fromJson(json.decode(response.body));
+        return RecipeDetails.fromApiJson(json.decode(response.body));
       } else if (response.statusCode == 402) {
         throw Exception('Daily API limit reached.');
       } else {
@@ -66,7 +64,6 @@ class SpoonacularService {
     }
   }
 
-  // Buscar receitas aleatórias
   Future<List<RecipeDetails>> getRandomRecipes({int number = 6}) async {
     final url = Uri.parse(
       '$_baseUrl/recipes/random'
@@ -80,7 +77,7 @@ class SpoonacularService {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final List<dynamic> recipes = data['recipes'];
-        return recipes.map((json) => RecipeDetails.fromJson(json)).toList();
+        return recipes.map((json) => RecipeDetails.fromApiJson(json)).toList();
       } else if (response.statusCode == 402) {
         throw Exception('Daily API limit reached.');
       } else {
