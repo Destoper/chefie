@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../controllers/auth_controller.dart';
+import '../../theme/app_theme.dart';
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
@@ -17,10 +18,14 @@ class LoginScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.lock_outline, size: 80),
+              Icon(
+                Icons.restaurant_menu,
+                size: 80,
+                color: AppColors.primary,
+              ),
               const SizedBox(height: 32),
               const Text(
-                'Bem-vindo!',
+                'Chefie!',
                 style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
@@ -41,7 +46,7 @@ class LoginScreen extends ConsumerWidget {
                 loading: () => const CircularProgressIndicator(),
                 error: (error, stack) => Column(
                   children: [
-                    Text('Erro: $error', style: const TextStyle(color: Colors.red)),
+                    Text('Erro: $error', style: TextStyle(color: AppColors.primary)),
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
