@@ -44,7 +44,7 @@ class RecipeController extends _$RecipeController {
     state = const AsyncValue.loading();
 
     state = await AsyncValue.guard(() async {
-      return await _service.findByIngredients(ingredients, number: 20);
+      return await _service.findByIngredients(ingredients, number: 10);
     });
   }
 

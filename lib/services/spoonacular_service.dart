@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:translator/translator.dart';
 import '../config/env.dart';
 import '../models/recipe_api.dart';
 import '../models/recipe_details.dart';
 
 class SpoonacularService {
   static const String _baseUrl = 'https://api.spoonacular.com';
+  final _translator = GoogleTranslator();
 
   Future<List<RecipeApi>> findByIngredients(
     List<String> ingredients, {
@@ -31,7 +33,21 @@ class SpoonacularService {
 
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
-        return data.map((json) => RecipeApi.fromJson(json)).toList();
+        final recipes = data.map((json) => RecipeApi.fromJson(json)).toList();
+        
+        final titles = recipes.map((r) => r.title).join(' ||| ');
+        if (titles.isNotEmpty) {
+          final translated = await _translator.translate(titles, to: 'pt');
+          final splitTitles = translated.text.split(' ||| ');
+          
+          for (var i = 0; i < recipes.length; i++) {
+            if (i < splitTitles.length) {
+              recipes[i] = recipes[i].copyWith(title: splitTitles[i].trim());
+            }
+          }
+        }
+        
+        return recipes;
       } else if (response.statusCode == 402) {
         throw Exception('Daily API limit reached.');
       } else {
@@ -53,7 +69,8 @@ class SpoonacularService {
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        return RecipeDetails.fromApiJson(json.decode(response.body));
+        final recipe = RecipeDetails.fromApiJson(json.decode(response.body));
+        return await _translateRecipe(recipe);
       } else if (response.statusCode == 402) {
         throw Exception('Daily API limit reached.');
       } else {
@@ -76,8 +93,10 @@ class SpoonacularService {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        final List<dynamic> recipes = data['recipes'];
-        return recipes.map((json) => RecipeDetails.fromApiJson(json)).toList();
+        final List<dynamic> recipesJson = data['recipes'];
+        final recipes = recipesJson.map((json) => RecipeDetails.fromApiJson(json)).toList();
+        
+        return await Future.wait(recipes.map((r) => _translateRecipe(r)));
       } else if (response.statusCode == 402) {
         throw Exception('Daily API limit reached.');
       } else {
@@ -85,6 +104,50 @@ class SpoonacularService {
       }
     } catch (e) {
       throw Exception('Connection error: $e');
+    }
+  }
+
+  Future<RecipeDetails> _translateRecipe(RecipeDetails recipe) async {
+    try {
+      final results = await Future.wait([
+        _translator.translate(recipe.title, to: 'pt'),
+        recipe.instructions != null && recipe.instructions!.isNotEmpty
+            ? _translator.translate(recipe.instructions!, to: 'pt')
+            : Future.value(null),
+      ]);
+
+      List<ExtendedIngredient> translatedIngredients = [];
+      if (recipe.extendedIngredients.isNotEmpty) {
+        final ingredientsText = recipe.extendedIngredients
+            .map((e) => e.original)
+            .join(' ||| '); 
+        
+        final ingredientsTranslation = await _translator.translate(ingredientsText, to: 'pt');
+        final splitIngredients = ingredientsTranslation.text.split(' ||| ');
+
+        for (int i = 0; i < recipe.extendedIngredients.length; i++) {
+            final translatedDisplay = i < splitIngredients.length 
+                ? splitIngredients[i].trim() 
+                : recipe.extendedIngredients[i].original;
+
+            translatedIngredients.add(
+              recipe.extendedIngredients[i].copyWith(
+                original: translatedDisplay,
+              ),
+            );
+        }
+      }
+
+      return recipe.copyWith(
+        title: results[0]!.text,
+        instructions: results[1]?.text ?? recipe.instructions,
+        extendedIngredients: translatedIngredients.isNotEmpty 
+            ? translatedIngredients 
+            : recipe.extendedIngredients,
+      );
+
+    } catch (e) {
+      return recipe;
     }
   }
 }
