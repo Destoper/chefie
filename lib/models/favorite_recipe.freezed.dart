@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FavoriteRecipe {
 
- String get id; String get userId; int get apiId; String get title; String? get imageUrl; int get readyInMinutes; int get servings; String? get instructions; List<String> get ingredients; DateTime? get createdAt;
+ String get id; String get userId; int get apiId; String get title; String? get imageUrl; int get readyInMinutes; int get servings; String? get instructions; List<String> get ingredients; DateTime? get createdAt; String? get notes; int? get rating; DateTime? get lastCookedAt;
 /// Create a copy of FavoriteRecipe
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $FavoriteRecipeCopyWith<FavoriteRecipe> get copyWith => _$FavoriteRecipeCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FavoriteRecipe&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.apiId, apiId) || other.apiId == apiId)&&(identical(other.title, title) || other.title == title)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.readyInMinutes, readyInMinutes) || other.readyInMinutes == readyInMinutes)&&(identical(other.servings, servings) || other.servings == servings)&&(identical(other.instructions, instructions) || other.instructions == instructions)&&const DeepCollectionEquality().equals(other.ingredients, ingredients)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FavoriteRecipe&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.apiId, apiId) || other.apiId == apiId)&&(identical(other.title, title) || other.title == title)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.readyInMinutes, readyInMinutes) || other.readyInMinutes == readyInMinutes)&&(identical(other.servings, servings) || other.servings == servings)&&(identical(other.instructions, instructions) || other.instructions == instructions)&&const DeepCollectionEquality().equals(other.ingredients, ingredients)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.lastCookedAt, lastCookedAt) || other.lastCookedAt == lastCookedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,userId,apiId,title,imageUrl,readyInMinutes,servings,instructions,const DeepCollectionEquality().hash(ingredients),createdAt);
+int get hashCode => Object.hash(runtimeType,id,userId,apiId,title,imageUrl,readyInMinutes,servings,instructions,const DeepCollectionEquality().hash(ingredients),createdAt,notes,rating,lastCookedAt);
 
 @override
 String toString() {
-  return 'FavoriteRecipe(id: $id, userId: $userId, apiId: $apiId, title: $title, imageUrl: $imageUrl, readyInMinutes: $readyInMinutes, servings: $servings, instructions: $instructions, ingredients: $ingredients, createdAt: $createdAt)';
+  return 'FavoriteRecipe(id: $id, userId: $userId, apiId: $apiId, title: $title, imageUrl: $imageUrl, readyInMinutes: $readyInMinutes, servings: $servings, instructions: $instructions, ingredients: $ingredients, createdAt: $createdAt, notes: $notes, rating: $rating, lastCookedAt: $lastCookedAt)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $FavoriteRecipeCopyWith<$Res>  {
   factory $FavoriteRecipeCopyWith(FavoriteRecipe value, $Res Function(FavoriteRecipe) _then) = _$FavoriteRecipeCopyWithImpl;
 @useResult
 $Res call({
- String id, String userId, int apiId, String title, String? imageUrl, int readyInMinutes, int servings, String? instructions, List<String> ingredients, DateTime? createdAt
+ String id, String userId, int apiId, String title, String? imageUrl, int readyInMinutes, int servings, String? instructions, List<String> ingredients, DateTime? createdAt, String? notes, int? rating, DateTime? lastCookedAt
 });
 
 
@@ -65,7 +65,7 @@ class _$FavoriteRecipeCopyWithImpl<$Res>
 
 /// Create a copy of FavoriteRecipe
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? apiId = null,Object? title = null,Object? imageUrl = freezed,Object? readyInMinutes = null,Object? servings = null,Object? instructions = freezed,Object? ingredients = null,Object? createdAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? apiId = null,Object? title = null,Object? imageUrl = freezed,Object? readyInMinutes = null,Object? servings = null,Object? instructions = freezed,Object? ingredients = null,Object? createdAt = freezed,Object? notes = freezed,Object? rating = freezed,Object? lastCookedAt = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
@@ -77,6 +77,9 @@ as int,servings: null == servings ? _self.servings : servings // ignore: cast_nu
 as int,instructions: freezed == instructions ? _self.instructions : instructions // ignore: cast_nullable_to_non_nullable
 as String?,ingredients: null == ingredients ? _self.ingredients : ingredients // ignore: cast_nullable_to_non_nullable
 as List<String>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+as String?,rating: freezed == rating ? _self.rating : rating // ignore: cast_nullable_to_non_nullable
+as int?,lastCookedAt: freezed == lastCookedAt ? _self.lastCookedAt : lastCookedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
 }
@@ -159,10 +162,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String userId,  int apiId,  String title,  String? imageUrl,  int readyInMinutes,  int servings,  String? instructions,  List<String> ingredients,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String userId,  int apiId,  String title,  String? imageUrl,  int readyInMinutes,  int servings,  String? instructions,  List<String> ingredients,  DateTime? createdAt,  String? notes,  int? rating,  DateTime? lastCookedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FavoriteRecipe() when $default != null:
-return $default(_that.id,_that.userId,_that.apiId,_that.title,_that.imageUrl,_that.readyInMinutes,_that.servings,_that.instructions,_that.ingredients,_that.createdAt);case _:
+return $default(_that.id,_that.userId,_that.apiId,_that.title,_that.imageUrl,_that.readyInMinutes,_that.servings,_that.instructions,_that.ingredients,_that.createdAt,_that.notes,_that.rating,_that.lastCookedAt);case _:
   return orElse();
 
 }
@@ -180,10 +183,10 @@ return $default(_that.id,_that.userId,_that.apiId,_that.title,_that.imageUrl,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String userId,  int apiId,  String title,  String? imageUrl,  int readyInMinutes,  int servings,  String? instructions,  List<String> ingredients,  DateTime? createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String userId,  int apiId,  String title,  String? imageUrl,  int readyInMinutes,  int servings,  String? instructions,  List<String> ingredients,  DateTime? createdAt,  String? notes,  int? rating,  DateTime? lastCookedAt)  $default,) {final _that = this;
 switch (_that) {
 case _FavoriteRecipe():
-return $default(_that.id,_that.userId,_that.apiId,_that.title,_that.imageUrl,_that.readyInMinutes,_that.servings,_that.instructions,_that.ingredients,_that.createdAt);}
+return $default(_that.id,_that.userId,_that.apiId,_that.title,_that.imageUrl,_that.readyInMinutes,_that.servings,_that.instructions,_that.ingredients,_that.createdAt,_that.notes,_that.rating,_that.lastCookedAt);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -197,10 +200,10 @@ return $default(_that.id,_that.userId,_that.apiId,_that.title,_that.imageUrl,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String userId,  int apiId,  String title,  String? imageUrl,  int readyInMinutes,  int servings,  String? instructions,  List<String> ingredients,  DateTime? createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String userId,  int apiId,  String title,  String? imageUrl,  int readyInMinutes,  int servings,  String? instructions,  List<String> ingredients,  DateTime? createdAt,  String? notes,  int? rating,  DateTime? lastCookedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _FavoriteRecipe() when $default != null:
-return $default(_that.id,_that.userId,_that.apiId,_that.title,_that.imageUrl,_that.readyInMinutes,_that.servings,_that.instructions,_that.ingredients,_that.createdAt);case _:
+return $default(_that.id,_that.userId,_that.apiId,_that.title,_that.imageUrl,_that.readyInMinutes,_that.servings,_that.instructions,_that.ingredients,_that.createdAt,_that.notes,_that.rating,_that.lastCookedAt);case _:
   return null;
 
 }
@@ -212,7 +215,7 @@ return $default(_that.id,_that.userId,_that.apiId,_that.title,_that.imageUrl,_th
 @JsonSerializable()
 
 class _FavoriteRecipe implements FavoriteRecipe {
-  const _FavoriteRecipe({required this.id, required this.userId, required this.apiId, required this.title, this.imageUrl, this.readyInMinutes = 0, this.servings = 0, this.instructions, final  List<String> ingredients = const [], this.createdAt}): _ingredients = ingredients;
+  const _FavoriteRecipe({required this.id, required this.userId, required this.apiId, required this.title, this.imageUrl, this.readyInMinutes = 0, this.servings = 0, this.instructions, final  List<String> ingredients = const [], this.createdAt, this.notes, this.rating, this.lastCookedAt}): _ingredients = ingredients;
   factory _FavoriteRecipe.fromJson(Map<String, dynamic> json) => _$FavoriteRecipeFromJson(json);
 
 @override final  String id;
@@ -231,6 +234,9 @@ class _FavoriteRecipe implements FavoriteRecipe {
 }
 
 @override final  DateTime? createdAt;
+@override final  String? notes;
+@override final  int? rating;
+@override final  DateTime? lastCookedAt;
 
 /// Create a copy of FavoriteRecipe
 /// with the given fields replaced by the non-null parameter values.
@@ -245,16 +251,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FavoriteRecipe&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.apiId, apiId) || other.apiId == apiId)&&(identical(other.title, title) || other.title == title)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.readyInMinutes, readyInMinutes) || other.readyInMinutes == readyInMinutes)&&(identical(other.servings, servings) || other.servings == servings)&&(identical(other.instructions, instructions) || other.instructions == instructions)&&const DeepCollectionEquality().equals(other._ingredients, _ingredients)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FavoriteRecipe&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.apiId, apiId) || other.apiId == apiId)&&(identical(other.title, title) || other.title == title)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.readyInMinutes, readyInMinutes) || other.readyInMinutes == readyInMinutes)&&(identical(other.servings, servings) || other.servings == servings)&&(identical(other.instructions, instructions) || other.instructions == instructions)&&const DeepCollectionEquality().equals(other._ingredients, _ingredients)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.lastCookedAt, lastCookedAt) || other.lastCookedAt == lastCookedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,userId,apiId,title,imageUrl,readyInMinutes,servings,instructions,const DeepCollectionEquality().hash(_ingredients),createdAt);
+int get hashCode => Object.hash(runtimeType,id,userId,apiId,title,imageUrl,readyInMinutes,servings,instructions,const DeepCollectionEquality().hash(_ingredients),createdAt,notes,rating,lastCookedAt);
 
 @override
 String toString() {
-  return 'FavoriteRecipe(id: $id, userId: $userId, apiId: $apiId, title: $title, imageUrl: $imageUrl, readyInMinutes: $readyInMinutes, servings: $servings, instructions: $instructions, ingredients: $ingredients, createdAt: $createdAt)';
+  return 'FavoriteRecipe(id: $id, userId: $userId, apiId: $apiId, title: $title, imageUrl: $imageUrl, readyInMinutes: $readyInMinutes, servings: $servings, instructions: $instructions, ingredients: $ingredients, createdAt: $createdAt, notes: $notes, rating: $rating, lastCookedAt: $lastCookedAt)';
 }
 
 
@@ -265,7 +271,7 @@ abstract mixin class _$FavoriteRecipeCopyWith<$Res> implements $FavoriteRecipeCo
   factory _$FavoriteRecipeCopyWith(_FavoriteRecipe value, $Res Function(_FavoriteRecipe) _then) = __$FavoriteRecipeCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String userId, int apiId, String title, String? imageUrl, int readyInMinutes, int servings, String? instructions, List<String> ingredients, DateTime? createdAt
+ String id, String userId, int apiId, String title, String? imageUrl, int readyInMinutes, int servings, String? instructions, List<String> ingredients, DateTime? createdAt, String? notes, int? rating, DateTime? lastCookedAt
 });
 
 
@@ -282,7 +288,7 @@ class __$FavoriteRecipeCopyWithImpl<$Res>
 
 /// Create a copy of FavoriteRecipe
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? apiId = null,Object? title = null,Object? imageUrl = freezed,Object? readyInMinutes = null,Object? servings = null,Object? instructions = freezed,Object? ingredients = null,Object? createdAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? apiId = null,Object? title = null,Object? imageUrl = freezed,Object? readyInMinutes = null,Object? servings = null,Object? instructions = freezed,Object? ingredients = null,Object? createdAt = freezed,Object? notes = freezed,Object? rating = freezed,Object? lastCookedAt = freezed,}) {
   return _then(_FavoriteRecipe(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
@@ -294,6 +300,9 @@ as int,servings: null == servings ? _self.servings : servings // ignore: cast_nu
 as int,instructions: freezed == instructions ? _self.instructions : instructions // ignore: cast_nullable_to_non_nullable
 as String?,ingredients: null == ingredients ? _self._ingredients : ingredients // ignore: cast_nullable_to_non_nullable
 as List<String>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+as String?,rating: freezed == rating ? _self.rating : rating // ignore: cast_nullable_to_non_nullable
+as int?,lastCookedAt: freezed == lastCookedAt ? _self.lastCookedAt : lastCookedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
 }

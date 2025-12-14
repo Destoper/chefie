@@ -17,6 +17,9 @@ sealed class FavoriteRecipe with _$FavoriteRecipe {
     String? instructions,
     @Default([]) List<String> ingredients,
     DateTime? createdAt,
+    String? notes,
+    int? rating,
+    DateTime? lastCookedAt,
   }) = _FavoriteRecipe;
 
   factory FavoriteRecipe.fromJson(Map<String, dynamic> json) =>
@@ -27,9 +30,9 @@ sealed class FavoriteRecipe with _$FavoriteRecipe {
         'imageUrl': json['image_url'],
         'readyInMinutes': json['ready_in_minutes'] ?? 0,
         'createdAt': json['created_at'],
+        'lastCookedAt': json['last_cooked_at'],
       });
 
-  // Criar a partir de RecipeDetails
   factory FavoriteRecipe.fromRecipeDetails({
     required String userId,
     required RecipeDetails recipe,

@@ -163,14 +163,14 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.kitchen_outlined, size: 64, color: AppColors.textOf(context).withOpacity(0.4)),
+                Icon(Icons.kitchen_outlined, size: 64, color: AppColors.textOf(context).withValues(alpha: 0.4)),
                 SizedBox(height: 16),
                 Text(
                   'Adicione ingredientes para\nencontrar receitas!',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
-                    color: AppColors.textOf(context).withOpacity(0.6),
+                    color: AppColors.textOf(context).withValues(alpha: 0.6),
                   ),
                 ),
               ],
@@ -288,12 +288,12 @@ class RecipePreviewCard extends StatelessWidget {
                           'https://images.weserv.nl/?url=${Uri.encodeComponent(recipe.image)}',
                           fit: BoxFit.cover,
                           errorBuilder: (_, __, ___) => Container(
-                            color: AppColors.primary.withOpacity(0.3),
+                            color: AppColors.primary.withValues(alpha: 0.3),
                             child: Icon(Icons.restaurant, size: 40),
                           ),
                         )
                       : Container(
-                          color: AppColors.primary.withOpacity(0.3),
+                          color: AppColors.primary.withValues(alpha: 0.3),
                           child: Icon(Icons.restaurant, size: 40),
                         ),
                   Positioned(
@@ -402,7 +402,7 @@ class FilterOption extends StatelessWidget {
           borderRadius: BorderRadius.circular(45),
           color: !selected
               ? AppColors.borderOf(context)
-              : AppColors.primary.withOpacity(0.2),
+              : AppColors.primary.withValues(alpha: 0.2),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Row(

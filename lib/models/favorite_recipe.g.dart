@@ -24,6 +24,11 @@ _FavoriteRecipe _$FavoriteRecipeFromJson(Map<String, dynamic> json) =>
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
+      notes: json['notes'] as String?,
+      rating: (json['rating'] as num?)?.toInt(),
+      lastCookedAt: json['lastCookedAt'] == null
+          ? null
+          : DateTime.parse(json['lastCookedAt'] as String),
     );
 
 Map<String, dynamic> _$FavoriteRecipeToJson(_FavoriteRecipe instance) =>
@@ -38,4 +43,7 @@ Map<String, dynamic> _$FavoriteRecipeToJson(_FavoriteRecipe instance) =>
       'instructions': instance.instructions,
       'ingredients': instance.ingredients,
       'createdAt': instance.createdAt?.toIso8601String(),
+      'notes': instance.notes,
+      'rating': instance.rating,
+      'lastCookedAt': instance.lastCookedAt?.toIso8601String(),
     };

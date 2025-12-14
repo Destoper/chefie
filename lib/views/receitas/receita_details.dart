@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:chefie/models/recipe_details.dart';
 import 'package:chefie/theme/app_theme.dart';
 import 'package:chefie/widgets/text.dart';
-import 'package:flutter/material.dart';
+import 'package:chefie/controllers/favorite_recipe_controller.dart';
 
-class ReceitaDetailsPage extends StatelessWidget {
+class ReceitaDetailsPage extends ConsumerWidget {
   final RecipeDetails receita;
   final Set<String> usedIngredients;
 
@@ -14,28 +16,56 @@ class ReceitaDetailsPage extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isFavoriteAsync = ref.watch(isFavoriteProvider(receita.id));
+
     return Scaffold(
       backgroundColor: AppColors.backgroundOf(context),
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
         ),
         actions: [
-          IconButton(
-            onPressed: () {}, // TODO: share receita logic
-            icon: Icon(Icons.ios_share),
-          ),
-          IconButton(
-            onPressed: () {}, // TODO: save receitas logic
-            icon: Icon(Icons.favorite_border),
-            selectedIcon: Icon(Icons.favorite),
+          isFavoriteAsync.when(
+            data: (isFavorite) => IconButton(
+              onPressed: () async {
+                final wasAdded = await ref
+                    .read(favoriteControllerProvider.notifier)
+                    .toggle(receita);
+
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(wasAdded
+                          ? 'Receita adicionada aos favoritos!'
+                          : 'Receita removida dos favoritos.'),
+                      duration: const Duration(seconds: 2),
+                      backgroundColor: wasAdded ? Colors.green : Colors.red,
+                    ),
+                  );
+                }
+              },
+              icon: Icon(
+                isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: isFavorite ? Colors.red : null,
+              ),
+            ),
+            loading: () => const Padding(
+              padding: EdgeInsets.only(right: 16.0),
+              child: SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
+            ),
+            error: (_, __) => const Icon(Icons.error_outline),
           ),
         ],
       ),
       body: ListView(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         shrinkWrap: false,
         children: [
           Container(
@@ -43,26 +73,25 @@ class ReceitaDetailsPage extends StatelessWidget {
             height: 250,
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(25.0)),
-              color: AppColors.primary.withOpacity(0.6),
+              borderRadius: const BorderRadius.all(Radius.circular(25.0)),
+              color: AppColors.primary.withValues(alpha: 0.6),
             ),
             child: receita.image != null && receita.image!.isNotEmpty
                 ? Image.network(
                     'https://images.weserv.nl/?url=${Uri.encodeComponent(receita.image!)}',
                     fit: BoxFit.cover,
                     errorBuilder: (_, __, ___) => Center(
-                      child: Icon(Icons.restaurant, size: 64, color: AppColors.textOf(context)),
+                      child: Icon(Icons.restaurant,
+                          size: 64, color: AppColors.textOf(context)),
                     ),
                   )
                 : Center(
-                    child: Icon(Icons.restaurant, size: 64, color: AppColors.textOf(context)),
+                    child: Icon(Icons.restaurant,
+                        size: 64, color: AppColors.textOf(context)),
                   ),
           ),
-          SizedBox(height: 20),
-
+          const SizedBox(height: 20),
           TextTitle(text: receita.title, fontWeight: FontWeight.w700),
-
-          // Info cards
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -80,12 +109,11 @@ class ReceitaDetailsPage extends StatelessWidget {
               ),
             ],
           ),
-
           Divider(color: AppColors.borderOf(context)),
-          SizedBox(height: 20),
-          
-          TextLabel(text: "Ingredientes", fontSize: 22, fontWeight: FontWeight.w600),
-          SizedBox(height: 12),
+          const SizedBox(height: 20),
+          TextLabel(
+              text: "Ingredientes", fontSize: 22, fontWeight: FontWeight.w600),
+          const SizedBox(height: 12),
           Column(
             children: [
               for (var ingredient in receita.extendedIngredients)
@@ -98,23 +126,25 @@ class ReceitaDetailsPage extends StatelessWidget {
                 ),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Divider(color: AppColors.borderOf(context)),
-          SizedBox(height: 12),
-          
-          TextLabel(text: "Modo de Preparo", fontSize: 22, fontWeight: FontWeight.w600),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
+          TextLabel(
+              text: "Modo de Preparo",
+              fontSize: 22,
+              fontWeight: FontWeight.w600),
+          const SizedBox(height: 12),
           if (receita.instructions != null && receita.instructions!.isNotEmpty)
             _buildInstructions(receita.instructions!, context)
           else
             Text(
               'Instruções não disponíveis',
               style: TextStyle(
-                color: AppColors.textOf(context).withOpacity(0.6),
+                color: AppColors.textOf(context).withValues(alpha: 0.6),
                 fontStyle: FontStyle.italic,
               ),
             ),
-          SizedBox(height: 120),
+          const SizedBox(height: 120),
         ],
       ),
     );
@@ -122,11 +152,11 @@ class ReceitaDetailsPage extends StatelessWidget {
 
   bool _checkIfOwned(String ingredientName) {
     final lowerName = ingredientName.toLowerCase();
-    return usedIngredients.any((owned) => lowerName.contains(owned) || owned.contains(lowerName));
+    return usedIngredients
+        .any((owned) => lowerName.contains(owned) || owned.contains(lowerName));
   }
 
   Widget _buildInstructions(String instructions, BuildContext context) {
-    // Remove tags HTML básicas
     final cleanInstructions = instructions
         .replaceAll(RegExp(r'<[^>]*>'), '\n')
         .replaceAll(RegExp(r'\n\s*\n'), '\n\n')
@@ -155,20 +185,20 @@ class ReceitaInfoItem extends StatelessWidget {
     return Container(
       width: 100,
       height: 100,
-      padding: EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       child: Column(
         children: [
           Container(
             width: 60,
             height: 60,
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.3),
+              color: AppColors.primary.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(45),
             ),
             child: Icon(icon, color: AppColors.destructive),
           ),
-          SizedBox(height: 5),
-          Text(text, style: TextStyle(fontWeight: FontWeight.w600)),
+          const SizedBox(height: 5),
+          Text(text, style: const TextStyle(fontWeight: FontWeight.w600)),
         ],
       ),
     );
@@ -201,15 +231,15 @@ class _IngredienteItemState extends State<IngredienteItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: widget.isOwned 
-            ? AppColors.primary.withOpacity(0.1)
+        color: widget.isOwned
+            ? AppColors.primary.withValues(alpha: 0.1)
             : AppColors.surfaceOf(context),
         border: Border.all(
-          color: widget.isOwned 
-              ? AppColors.primary.withOpacity(0.3)
+          color: widget.isOwned
+              ? AppColors.primary.withValues(alpha: 0.5)
               : AppColors.borderOf(context),
         ),
       ),
@@ -229,7 +259,7 @@ class _IngredienteItemState extends State<IngredienteItem> {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: widget.isOwned ? FontWeight.w500 : FontWeight.w400,
-                color: widget.isOwned 
+                color: widget.isOwned
                     ? AppColors.primary
                     : AppColors.textOf(context),
                 decoration: _checked ? TextDecoration.lineThrough : null,
@@ -237,7 +267,7 @@ class _IngredienteItemState extends State<IngredienteItem> {
             ),
           ),
           if (widget.isOwned)
-            Icon(
+            const Icon(
               Icons.check_circle,
               color: AppColors.primary,
               size: 20,
