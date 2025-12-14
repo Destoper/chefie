@@ -34,7 +34,7 @@ class SpoonacularService {
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
         final recipes = data.map((json) => RecipeApi.fromJson(json)).toList();
-        
+
         final titles = recipes.map((r) => r.title).join(' ||| ');
         if (titles.isNotEmpty) {
           final translated = await _translator.translate(titles, to: 'pt');
@@ -70,7 +70,8 @@ class SpoonacularService {
 
       if (response.statusCode == 200) {
         final recipe = RecipeDetails.fromApiJson(json.decode(response.body));
-        return await _translateRecipe(recipe);
+        return recipe; 
+        
       } else if (response.statusCode == 402) {
         throw Exception('Daily API limit reached.');
       } else {
@@ -96,7 +97,7 @@ class SpoonacularService {
         final List<dynamic> recipesJson = data['recipes'];
         final recipes = recipesJson.map((json) => RecipeDetails.fromApiJson(json)).toList();
         
-        return await Future.wait(recipes.map((r) => _translateRecipe(r)));
+        return await Future.wait(recipes.map((r) => translateRecipe(r)));
       } else if (response.statusCode == 402) {
         throw Exception('Daily API limit reached.');
       } else {
@@ -107,7 +108,7 @@ class SpoonacularService {
     }
   }
 
-  Future<RecipeDetails> _translateRecipe(RecipeDetails recipe) async {
+  Future<RecipeDetails> translateRecipe(RecipeDetails recipe) async {
     try {
       final results = await Future.wait([
         _translator.translate(recipe.title, to: 'pt'),
@@ -132,7 +133,7 @@ class SpoonacularService {
 
             translatedIngredients.add(
               recipe.extendedIngredients[i].copyWith(
-                original: translatedDisplay,
+                original: translatedDisplay,  
               ),
             );
         }

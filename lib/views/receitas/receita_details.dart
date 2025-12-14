@@ -1,25 +1,60 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:chefie/controllers/favorite_recipe_controller.dart';
 import 'package:chefie/models/recipe_details.dart';
+import 'package:chefie/services/spoonacular_service.dart';
 import 'package:chefie/theme/app_theme.dart';
 import 'package:chefie/widgets/text.dart';
-import 'package:chefie/controllers/favorite_recipe_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
-class ReceitaDetailsPage extends ConsumerWidget {
+class ReceitaDetailsPage extends ConsumerStatefulWidget {
   final RecipeDetails receita;
   final Set<String> usedIngredients;
-  final bool enableCheckboxes; 
+  final bool enableCheckboxes;
 
   const ReceitaDetailsPage({
     super.key,
     required this.receita,
     this.usedIngredients = const {},
-    this.enableCheckboxes = true, 
+    this.enableCheckboxes = true,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isFavoriteAsync = ref.watch(isFavoriteProvider(receita.id));
+  ConsumerState<ReceitaDetailsPage> createState() => _ReceitaDetailsPageState();
+}
+
+class _ReceitaDetailsPageState extends ConsumerState<ReceitaDetailsPage> {
+  late RecipeDetails _currentRecipe;
+  bool _isTranslating = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentRecipe = widget.receita;
+    _startTranslation();
+  }
+
+  Future<void> _startTranslation() async {
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    try {
+      final service = SpoonacularService();
+      final translated = await service.translateRecipe(_currentRecipe);
+
+      if (mounted) {
+        setState(() {
+          _currentRecipe = translated;
+          _isTranslating = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) setState(() => _isTranslating = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isFavoriteAsync = ref.watch(isFavoriteProvider(_currentRecipe.id));
 
     return Scaffold(
       backgroundColor: AppColors.backgroundOf(context),
@@ -34,7 +69,7 @@ class ReceitaDetailsPage extends ConsumerWidget {
               onPressed: () async {
                 final wasAdded = await ref
                     .read(favoriteControllerProvider.notifier)
-                    .toggle(receita);
+                    .toggle(_currentRecipe);
 
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).clearSnackBars();
@@ -66,108 +101,119 @@ class ReceitaDetailsPage extends ConsumerWidget {
           ),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        shrinkWrap: false,
-        children: [
-          Container(
-            width: double.infinity,
-            height: 250,
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(25.0)),
-              color: AppColors.primary.withValues(alpha: 0.1),
-            ),
-            child: receita.image != null && receita.image!.isNotEmpty
-                ? Image.network(
-                    'https://images.weserv.nl/?url=${Uri.encodeComponent(receita.image!)}',
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Center(
+      body: Skeletonizer(
+        enabled: _isTranslating,
+        effect: ShimmerEffect(
+          baseColor: AppColors.textSecondaryOf(context).withValues(alpha: 0.1),
+          highlightColor:
+              AppColors.textSecondaryOf(context).withValues(alpha: 0.3),
+        ),
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          shrinkWrap: false,
+          children: [
+            Container(
+              width: double.infinity,
+              height: 250,
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(25.0)),
+                color: AppColors.primary.withValues(alpha: 0.1),
+              ),
+              child: _currentRecipe.image != null &&
+                      _currentRecipe.image!.isNotEmpty
+                  ? Image.network(
+                      'https://images.weserv.nl/?url=${Uri.encodeComponent(_currentRecipe.image!)}',
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Center(
+                        child: Icon(Icons.restaurant,
+                            size: 64,
+                            color: AppColors.textOf(context)
+                                .withValues(alpha: 0.2)),
+                      ),
+                    )
+                  : Center(
                       child: Icon(Icons.restaurant,
-                          size: 64, color: AppColors.textOf(context).withValues(alpha: 0.2)),
+                          size: 64,
+                          color: AppColors.textOf(context)
+                              .withValues(alpha: 0.2)),
                     ),
-                  )
-                : Center(
-                    child: Icon(Icons.restaurant,
-                        size: 64, color: AppColors.textOf(context).withValues(alpha: 0.2)),
-                  ),
-          ),
-          const SizedBox(height: 20),
-          
-          Text(
-            receita.title,
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textOf(context),
             ),
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ReceitaInfoItem(
-                text: "${receita.readyInMinutes} min",
-                icon: Icons.access_time,
-              ),
-              ReceitaInfoItem(
-                text: "${receita.servings} pessoas",
-                icon: Icons.people_alt_outlined,
-              ),
-              ReceitaInfoItem(
-                text: "${receita.extendedIngredients.length} itens",
-                icon: Icons.kitchen_outlined,
-              ),
-            ],
-          ),
-          Divider(color: AppColors.borderOf(context), height: 32),
-        
-          TextLabel(
-              text: "Ingredientes", fontSize: 20, fontWeight: FontWeight.w600),
-          const SizedBox(height: 12),
-          Column(
-            children: [
-              for (var ingredient in receita.extendedIngredients)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: IngredienteItem(
-                    ingredient: ingredient.original,
-                    isOwned: _checkIfOwned(ingredient.name),
-                    enableCheckbox: enableCheckboxes, 
-                  ),
-                ),
-            ],
-          ),
-          
-          Divider(color: AppColors.borderOf(context), height: 32),
-          
-          TextLabel(
-              text: "Modo de Preparo",
-              fontSize: 20,
-              fontWeight: FontWeight.w600),
-          const SizedBox(height: 12),
-          if (receita.instructions != null && receita.instructions!.isNotEmpty)
-            _buildInstructions(receita.instructions!, context)
-          else
+            const SizedBox(height: 20),
             Text(
-              'Instruções não disponíveis',
+              _currentRecipe.title,
               style: TextStyle(
-                color: AppColors.textOf(context).withValues(alpha: 0.6),
-                fontStyle: FontStyle.italic,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textOf(context),
               ),
             ),
-          const SizedBox(height: 40),
-        ],
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ReceitaInfoItem(
+                  text: "${_currentRecipe.readyInMinutes} min",
+                  icon: Icons.access_time,
+                ),
+                ReceitaInfoItem(
+                  text: "${_currentRecipe.servings} pessoas",
+                  icon: Icons.people_alt_outlined,
+                ),
+                ReceitaInfoItem(
+                  text: "${_currentRecipe.extendedIngredients.length} itens",
+                  icon: Icons.kitchen_outlined,
+                ),
+              ],
+            ),
+            Divider(color: AppColors.borderOf(context), height: 32),
+            TextLabel(
+                text: "Ingredientes",
+                fontSize: 20,
+                fontWeight: FontWeight.w600),
+            const SizedBox(height: 12),
+            Column(
+              children: [
+                for (var ingredient in _currentRecipe.extendedIngredients)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: IngredienteItem(
+                      ingredient: ingredient.original,
+                      isOwned: _checkIfOwned(ingredient.name),
+                      enableCheckbox: widget.enableCheckboxes,
+                    ),
+                  ),
+              ],
+            ),
+            Divider(color: AppColors.borderOf(context), height: 32),
+            TextLabel(
+                text: "Modo de Preparo",
+                fontSize: 20,
+                fontWeight: FontWeight.w600),
+            const SizedBox(height: 12),
+            if (_currentRecipe.instructions != null &&
+                _currentRecipe.instructions!.isNotEmpty)
+              _buildInstructions(_currentRecipe.instructions!, context)
+            else
+              Text(
+                'Instruções não disponíveis',
+                style: TextStyle(
+                  color: AppColors.textOf(context).withValues(alpha: 0.6),
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            const SizedBox(height: 40),
+          ],
+        ),
       ),
     );
   }
 
   bool _checkIfOwned(String ingredientName) {
-    if (usedIngredients.isEmpty) return false;
+    if (widget.usedIngredients.isEmpty) return false;
     final lowerName = ingredientName.toLowerCase();
-    return usedIngredients.any((owned) => 
-      lowerName.contains(owned) || owned.contains(lowerName)
-    );
+    return widget.usedIngredients.any(
+        (owned) => lowerName.contains(owned) || owned.contains(lowerName));
   }
 
   Widget _buildInstructions(String instructions, BuildContext context) {
@@ -267,7 +313,10 @@ class _IngredienteItemState extends State<IngredienteItem> {
               width: 8,
               height: 8,
               decoration: BoxDecoration(
-                color: widget.isOwned ? AppColors.primary : AppColors.textSecondaryOf(context).withValues(alpha: 0.3),
+                color: widget.isOwned
+                    ? AppColors.primary
+                    : AppColors.textSecondaryOf(context)
+                        .withValues(alpha: 0.3),
                 shape: BoxShape.circle,
               ),
             ),
@@ -277,13 +326,14 @@ class _IngredienteItemState extends State<IngredienteItem> {
                 widget.ingredient,
                 style: TextStyle(
                   fontSize: 15,
-                  fontWeight: widget.isOwned ? FontWeight.w600 : FontWeight.w400,
+                  fontWeight:
+                      widget.isOwned ? FontWeight.w600 : FontWeight.w400,
                   color: AppColors.textOf(context),
                 ),
               ),
             ),
             if (widget.isOwned)
-              Icon(Icons.check, size: 16, color: AppColors.primary),
+              const Icon(Icons.check, size: 16, color: AppColors.primary),
           ],
         ),
       );
@@ -298,11 +348,11 @@ class _IngredienteItemState extends State<IngredienteItem> {
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: _checked 
+          color: _checked
               ? AppColors.primary.withValues(alpha: 0.05)
               : AppColors.surfaceOf(context),
           border: Border.all(
-            color: _checked 
+            color: _checked
                 ? AppColors.primary.withValues(alpha: 0.3)
                 : AppColors.borderOf(context),
           ),
@@ -312,7 +362,8 @@ class _IngredienteItemState extends State<IngredienteItem> {
             Checkbox(
               value: _checked,
               activeColor: AppColors.primary,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4)),
               onChanged: (newValue) {
                 setState(() => _checked = newValue ?? false);
               },
@@ -323,7 +374,8 @@ class _IngredienteItemState extends State<IngredienteItem> {
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: _checked ? FontWeight.w500 : FontWeight.w400,
-                  color: _checked ? AppColors.primary : AppColors.textOf(context),
+                  color:
+                      _checked ? AppColors.primary : AppColors.textOf(context),
                   decoration: _checked ? TextDecoration.lineThrough : null,
                   decorationColor: AppColors.primary.withValues(alpha: 0.5),
                 ),
