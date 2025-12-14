@@ -4,11 +4,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'theme/app_theme.dart';
 import 'views/ingredientes/ingredientes.dart';
 import 'views/receitas/find_receita.dart';
+import 'package:chefie/views/favoritos/favorites.dart';
 import 'views/home/home.dart';
 import 'views/login/login_temp.dart';
 import 'controllers/auth_controller.dart';
 import 'config/env.dart';
 
+import 'package:intl/date_symbol_data_local.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
@@ -16,6 +18,8 @@ void main() async {
     url: Env.supabaseUrl,
     anonKey: Env.supabaseAnonKey,
   );
+  
+  await initializeDateFormatting('pt_BR', null);
   
   runApp(
     const ProviderScope(
@@ -77,12 +81,11 @@ class MainScaffold extends StatefulWidget {
 class _MainScaffoldState extends State<MainScaffold> {
   int _currentPageIndex = 0;
 
-  // Define all your pages here
   final List<Widget> _pages = [
     HomePage(),
     IngredientesPage(),
     FindReceitaPage(),
-    IngredientesPage(),
+    FavoritosPage(),
   ];
 
   final PageController _pageController = PageController();

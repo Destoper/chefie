@@ -8,11 +8,13 @@ import 'package:chefie/controllers/favorite_recipe_controller.dart';
 class ReceitaDetailsPage extends ConsumerWidget {
   final RecipeDetails receita;
   final Set<String> usedIngredients;
+  final bool enableCheckboxes; 
 
   const ReceitaDetailsPage({
     super.key,
     required this.receita,
     this.usedIngredients = const {},
+    this.enableCheckboxes = true, 
   });
 
   @override
@@ -65,7 +67,7 @@ class ReceitaDetailsPage extends ConsumerWidget {
         ],
       ),
       body: ListView(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(16),
         shrinkWrap: false,
         children: [
           Container(
@@ -74,7 +76,7 @@ class ReceitaDetailsPage extends ConsumerWidget {
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(25.0)),
-              color: AppColors.primary.withValues(alpha: 0.6),
+              color: AppColors.primary.withValues(alpha: 0.1),
             ),
             child: receita.image != null && receita.image!.isNotEmpty
                 ? Image.network(
@@ -82,16 +84,25 @@ class ReceitaDetailsPage extends ConsumerWidget {
                     fit: BoxFit.cover,
                     errorBuilder: (_, __, ___) => Center(
                       child: Icon(Icons.restaurant,
-                          size: 64, color: AppColors.textOf(context)),
+                          size: 64, color: AppColors.textOf(context).withValues(alpha: 0.2)),
                     ),
                   )
                 : Center(
                     child: Icon(Icons.restaurant,
-                        size: 64, color: AppColors.textOf(context)),
+                        size: 64, color: AppColors.textOf(context).withValues(alpha: 0.2)),
                   ),
           ),
           const SizedBox(height: 20),
-          TextTitle(text: receita.title, fontWeight: FontWeight.w700),
+          
+          Text(
+            receita.title,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textOf(context),
+            ),
+          ),
+          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -109,29 +120,30 @@ class ReceitaDetailsPage extends ConsumerWidget {
               ),
             ],
           ),
-          Divider(color: AppColors.borderOf(context)),
-          const SizedBox(height: 20),
+          Divider(color: AppColors.borderOf(context), height: 32),
+        
           TextLabel(
-              text: "Ingredientes", fontSize: 22, fontWeight: FontWeight.w600),
+              text: "Ingredientes", fontSize: 20, fontWeight: FontWeight.w600),
           const SizedBox(height: 12),
           Column(
             children: [
               for (var ingredient in receita.extendedIngredients)
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.only(bottom: 8),
                   child: IngredienteItem(
                     ingredient: ingredient.original,
                     isOwned: _checkIfOwned(ingredient.name),
+                    enableCheckbox: enableCheckboxes, 
                   ),
                 ),
             ],
           ),
-          const SizedBox(height: 20),
-          Divider(color: AppColors.borderOf(context)),
-          const SizedBox(height: 12),
+          
+          Divider(color: AppColors.borderOf(context), height: 32),
+          
           TextLabel(
               text: "Modo de Preparo",
-              fontSize: 22,
+              fontSize: 20,
               fontWeight: FontWeight.w600),
           const SizedBox(height: 12),
           if (receita.instructions != null && receita.instructions!.isNotEmpty)
@@ -144,16 +156,18 @@ class ReceitaDetailsPage extends ConsumerWidget {
                 fontStyle: FontStyle.italic,
               ),
             ),
-          const SizedBox(height: 120),
+          const SizedBox(height: 40),
         ],
       ),
     );
   }
 
   bool _checkIfOwned(String ingredientName) {
+    if (usedIngredients.isEmpty) return false;
     final lowerName = ingredientName.toLowerCase();
-    return usedIngredients
-        .any((owned) => lowerName.contains(owned) || owned.contains(lowerName));
+    return usedIngredients.any((owned) => 
+      lowerName.contains(owned) || owned.contains(lowerName)
+    );
   }
 
   Widget _buildInstructions(String instructions, BuildContext context) {
@@ -162,10 +176,14 @@ class ReceitaDetailsPage extends ConsumerWidget {
         .replaceAll(RegExp(r'\n\s*\n'), '\n\n')
         .trim();
 
-    return TextLabel(
-      text: cleanInstructions,
-      fontSize: 14,
-      fontWeight: FontWeight.w400,
+    return Text(
+      cleanInstructions,
+      style: TextStyle(
+        fontSize: 16,
+        height: 1.5,
+        fontWeight: FontWeight.w400,
+        color: AppColors.textOf(context),
+      ),
     );
   }
 }
@@ -182,25 +200,27 @@ class ReceitaInfoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 100,
-      height: 100,
-      padding: const EdgeInsets.all(5),
-      child: Column(
-        children: [
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.3),
-              borderRadius: BorderRadius.circular(45),
-            ),
-            child: Icon(icon, color: AppColors.destructive),
+    return Column(
+      children: [
+        Container(
+          width: 50,
+          height: 50,
+          decoration: BoxDecoration(
+            color: AppColors.primary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(15),
           ),
-          const SizedBox(height: 5),
-          Text(text, style: const TextStyle(fontWeight: FontWeight.w600)),
-        ],
-      ),
+          child: Icon(icon, color: AppColors.primary, size: 24),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 12,
+            color: AppColors.textSecondaryOf(context),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -210,10 +230,12 @@ class IngredienteItem extends StatefulWidget {
     super.key,
     required this.ingredient,
     this.isOwned = false,
+    this.enableCheckbox = true,
   });
 
   final String ingredient;
   final bool isOwned;
+  final bool enableCheckbox;
 
   @override
   State<IngredienteItem> createState() => _IngredienteItemState();
@@ -230,49 +252,85 @@ class _IngredienteItemState extends State<IngredienteItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: widget.isOwned
-            ? AppColors.primary.withValues(alpha: 0.1)
-            : AppColors.surfaceOf(context),
-        border: Border.all(
-          color: widget.isOwned
-              ? AppColors.primary.withValues(alpha: 0.5)
-              : AppColors.borderOf(context),
+    if (!widget.enableCheckbox) {
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: AppColors.surfaceOf(context),
+          border: Border.all(color: AppColors.borderOf(context)),
         ),
-      ),
-      child: Row(
-        children: [
-          Checkbox(
-            value: _checked,
-            onChanged: (newValue) {
-              setState(() => _checked = newValue ?? false);
-            },
-            activeColor: AppColors.primary,
-            checkColor: AppColors.white,
-          ),
-          Expanded(
-            child: Text(
-              widget.ingredient,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: widget.isOwned ? FontWeight.w500 : FontWeight.w400,
-                color: widget.isOwned
-                    ? AppColors.primary
-                    : AppColors.textOf(context),
-                decoration: _checked ? TextDecoration.lineThrough : null,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 8,
+              height: 8,
+              decoration: BoxDecoration(
+                color: widget.isOwned ? AppColors.primary : AppColors.textSecondaryOf(context).withValues(alpha: 0.3),
+                shape: BoxShape.circle,
               ),
             ),
-          ),
-          if (widget.isOwned)
-            const Icon(
-              Icons.check_circle,
-              color: AppColors.primary,
-              size: 20,
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                widget.ingredient,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: widget.isOwned ? FontWeight.w600 : FontWeight.w400,
+                  color: AppColors.textOf(context),
+                ),
+              ),
             ),
-        ],
+            if (widget.isOwned)
+              Icon(Icons.check, size: 16, color: AppColors.primary),
+          ],
+        ),
+      );
+    }
+
+    return InkWell(
+      onTap: () {
+        setState(() => _checked = !_checked);
+      },
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: _checked 
+              ? AppColors.primary.withValues(alpha: 0.05)
+              : AppColors.surfaceOf(context),
+          border: Border.all(
+            color: _checked 
+                ? AppColors.primary.withValues(alpha: 0.3)
+                : AppColors.borderOf(context),
+          ),
+        ),
+        child: Row(
+          children: [
+            Checkbox(
+              value: _checked,
+              activeColor: AppColors.primary,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+              onChanged: (newValue) {
+                setState(() => _checked = newValue ?? false);
+              },
+            ),
+            Expanded(
+              child: Text(
+                widget.ingredient,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: _checked ? FontWeight.w500 : FontWeight.w400,
+                  color: _checked ? AppColors.primary : AppColors.textOf(context),
+                  decoration: _checked ? TextDecoration.lineThrough : null,
+                  decorationColor: AppColors.primary.withValues(alpha: 0.5),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

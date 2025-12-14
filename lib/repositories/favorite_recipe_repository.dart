@@ -53,24 +53,33 @@ class FavoriteRecipeRepository {
     return FavoriteRecipe.fromJson(response);
   }
 
-  Future<FavoriteRecipe> update({
+  Future<FavoriteRecipe?> update({
     required String id,
     String? notes,
     int? rating,
     DateTime? lastCookedAt,
   }) async {
     final updates = <String, dynamic>{};
+    
     if (notes != null) updates['notes'] = notes;
     if (rating != null) updates['rating'] = rating;
     if (lastCookedAt != null) updates['last_cooked_at'] = lastCookedAt.toIso8601String();
+
+    if (updates.isEmpty) {
+      return null; 
+    }
 
     final response = await _supabase
         .from(_table)
         .update(updates)
         .eq('id', id)
-        .eq('user_id', _userId)
+        .eq('user_id', _userId) 
         .select()
-        .single();
+        .maybeSingle();
+
+    if (response == null) {
+      throw Exception("Não foi possível atualizar. Talvez sejam as permissões RLS.");
+    }
 
     return FavoriteRecipe.fromJson(response);
   }
@@ -108,7 +117,7 @@ class FavoriteRecipeRepository {
     }
   }
 
-  Future<FavoriteRecipe> markAsCooked(String id) async {
+  Future<FavoriteRecipe?> markAsCooked(String id) async {
     return await update(
       id: id,
       lastCookedAt: DateTime.now(),

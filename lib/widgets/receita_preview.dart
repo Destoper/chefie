@@ -62,7 +62,7 @@ class _ReceitaPreviewState extends State<ReceitaPreview> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ReceitaDetailsPage(receita: detailsAdapter),
+            builder: (context) => ReceitaDetailsPage(receita: detailsAdapter, enableCheckboxes: true),
           ),
         );
       },
