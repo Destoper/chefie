@@ -5,18 +5,21 @@ class TextTitle extends StatelessWidget {
   final String text;
   final FontWeight fontWeight;
   final double fontSize;
+  final TextAlign? textAlign;
 
   const TextTitle({
     super.key,
     this.text = "Title!",
     this.fontWeight = FontWeight.w800,
     this.fontSize = 32,
+    this.textAlign,
   });
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
+      textAlign: textAlign,
       style: TextStyle(
         color: AppColors.textOf(context),
         fontSize: fontSize,
@@ -31,6 +34,7 @@ class TextLabel extends StatelessWidget {
   final Color? color;
   final double fontSize;
   final FontWeight fontWeight;
+  final TextAlign? textAlign;
 
   const TextLabel({
     super.key,
@@ -38,12 +42,14 @@ class TextLabel extends StatelessWidget {
     this.color,
     this.fontSize = 20,
     this.fontWeight = FontWeight.w700,
+    this.textAlign,
   });
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
+      textAlign: textAlign,
       style: TextStyle(
         color: color ?? AppColors.textOf(context),
         fontSize: fontSize,

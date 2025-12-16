@@ -9,6 +9,8 @@ class ButtonRounded extends StatelessWidget {
   final double height;
   final Color? backgroundColor;
   final Color? foregroundColor;
+  final Color? textColor; 
+  final Color? borderColor;
   final double borderWidth;
   final double fontSize;
   final FontWeight fontWeight;
@@ -25,6 +27,8 @@ class ButtonRounded extends StatelessWidget {
     this.height = 50,
     this.backgroundColor,
     this.foregroundColor,
+    this.textColor,
+    this.borderColor,
     this.borderWidth = 0,
     this.fontSize = 18,
     this.fontWeight = FontWeight.w600,
@@ -33,42 +37,50 @@ class ButtonRounded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color bgColor = backgroundColor ?? AppColors.primary;
-    final Color borderColor = foregroundColor ?? AppColors.backgroundOf(context);
-    return 
-      SizedBox(
-        width: width,
-        height: height,
-        child: TextButton(
-          onPressed: onPressed,
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all<Color>(invertColors? borderColor : bgColor),
-            foregroundColor: WidgetStateProperty.all<Color>(invertColors? bgColor : borderColor),
-            shape: WidgetStateProperty.all<OutlinedBorder>(
-              RoundedRectangleBorder(
-                borderRadius: borderRadius,
-                side: BorderSide(
-                  color: invertColors? bgColor : borderColor,
-                  width: borderWidth,
-                ),
+    final Color baseBg = backgroundColor ?? AppColors.primary;
+    final Color baseFg = foregroundColor ?? AppColors.backgroundOf(context);
+
+    final Color effectiveBg = invertColors ? baseFg : baseBg;
+    final Color effectiveFg = invertColors ? baseBg : baseFg;
+
+    final Color finalTextColor = textColor ?? effectiveFg;
+    final Color finalBorderColor = borderColor ?? effectiveFg;
+
+    return SizedBox(
+      width: width,
+      height: height,
+      child: TextButton(
+        onPressed: onPressed,
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.all<Color>(effectiveBg),
+          foregroundColor: WidgetStateProperty.all<Color>(finalTextColor),
+          shape: WidgetStateProperty.all<OutlinedBorder>(
+            RoundedRectangleBorder(
+              borderRadius: borderRadius,
+              side: BorderSide(
+                color: finalBorderColor,
+                width: borderWidth > 0 ? borderWidth : (invertColors ? 2.0 : 0), 
               ),
             ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (icon != null) icon!,
-              if (icon != null) const SizedBox(width: 10),
-              Text(
-                text,
-                style: TextStyle(
-                  fontWeight: fontWeight,
-                  fontSize: fontSize
-                  ),
-              ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (icon != null) ...[
+              icon!,
+              const SizedBox(width: 10),
             ],
-          ),
+            Text(
+              text,
+              style: TextStyle(
+                fontWeight: fontWeight,
+                fontSize: fontSize
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

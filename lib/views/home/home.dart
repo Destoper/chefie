@@ -1,5 +1,6 @@
 import 'package:chefie/modelviews/receita.dart';
 import 'package:chefie/views/ingredientes/ingredientes.dart';
+import 'package:chefie/views/perfil/profile.dart';
 import 'package:chefie/views/receitas/find_receita.dart';
 import 'package:chefie/widgets/chefie_app_bar.dart';
 import 'package:chefie/widgets/image.dart';
@@ -9,7 +10,6 @@ import 'package:chefie/widgets/text.dart';
 import 'package:chefie/theme/app_theme.dart';
 import 'package:chefie/widgets/receita_preview.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -18,82 +18,102 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<ReceitaModel> receitas  = [];
+  List<ReceitaModel> receitas = [];
   int currentPageIndex = 0;
 
-  void _getReceitas(){
-    receitas = ReceitaModel.getReceitas();
+  @override
+  void initState() {
+    super.initState();
+    _getReceitas();
+  }
+
+  void _getReceitas() {
+    setState(() {
+      receitas = ReceitaModel.getReceitas();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    _getReceitas();
     return Scaffold(
       backgroundColor: AppColors.backgroundOf(context),
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
-        child: ChefieAppBar(title: "Chefie", leading: Icon(Icons.restaurant_menu)),
-      ),      
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: ChefieAppBar(
+          title: "Chefie",
+          leading: IconButton(
+            icon: const Icon(Icons.account_circle_outlined),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfilePage()),
+              );
+            },
+          ),
+        ),
+      ),
       body: ListView(
         children: <Widget>[
           Padding(
-            padding:  EdgeInsets.only(left: 10.0, right: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-          TextTitle(text: "Olá, o que vamos cozinhar hoje?"),
-          SizedBox(height: 15),
-          Container(
-            width: double.infinity,
-            height: 200,
-            clipBehavior: Clip.antiAlias,
-            decoration: const BoxDecoration(
-              shape: BoxShape.rectangle, 
-              borderRadius: BorderRadius.all(
-                Radius.circular(25.0)
-              )
+                const TextTitle(text: "Olá, o que vamos cozinhar hoje?"),
+                const SizedBox(height: 15),
+                Container(
+                  width: double.infinity,
+                  height: 200,
+                  clipBehavior: Clip.antiAlias,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                  ),
+                  child: ChefieImage(
+                    image: Image.network(
+                      "https://lh3.googleusercontent.com/aida-public/AB6AXuBnRdwr4pPmUz7lSSqXJfcAIaP4fAB3B0vc0orpjJw5-_5G5iTQBBMVZ_g48p5HNYimB-akiA3EF5xt-Q9UUum8lSk9pm09V5hGFPdQ5k_4I56DwxRka_2VpWR1YvnaXCV74qCf2_gspq01qt92toGeuXGTX-gXOUEQV8PXqZjNbGmeAej9XQul0HhszsJOGEeGdx1EwxG9QqoQL7ybuFzYVcaFpP1V685As7TH8JYOQLIf4xh5z5S_iw8UUN919Lups5eJHC0jEraK",
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Container(
+                        color: AppColors.primary.withValues(alpha: 0.2),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ButtonRounded(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const IngredientesPage(),
+                      ),
+                    );
+                  },
+                  text: "Meus ingredientes",
+                  height: 55.0,
+                ),
+                const SizedBox(height: 10),
+                ButtonRounded(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const FindReceitaPage(),
+                      ),
+                    );
+                  },
+                  text: "Explorar receitas",
+                  height: 55.0,
+                  invertColors: true,
+                  borderWidth: 2.5,
+                ),
+              ],
             ),
-            child:
-            ChefieImage(
-              image: Image.network(
-                "https://lh3.googleusercontent.com/aida-public/AB6AXuBnRdwr4pPmUz7lSSqXJfcAIaP4fAB3B0vc0orpjJw5-_5G5iTQBBMVZ_g48p5HNYimB-akiA3EF5xt-Q9UUum8lSk9pm09V5hGFPdQ5k_4I56DwxRka_2VpWR1YvnaXCV74qCf2_gspq01qt92toGeuXGTX-gXOUEQV8PXqZjNbGmeAej9XQul0HhszsJOGEeGdx1EwxG9QqoQL7ybuFzYVcaFpP1V685As7TH8JYOQLIf4xh5z5S_iw8UUN919Lups5eJHC0jEraK",
-              ),
-            ),
           ),
-          SizedBox(height: 20),
-          ButtonRounded(
-            onPressed: (){
-              Navigator.push(
-                context, 
-                MaterialPageRoute(
-                  builder: (context) => IngredientesPage(),
-                )
-              );
-            }, 
-            text: "Meus ingredientes",
-            height: 55.0,
-          ),
-          SizedBox(height: 10),
-          ButtonRounded(
-            onPressed: (){
-              Navigator.push(
-                context, 
-                MaterialPageRoute(
-                  builder: (context) => FindReceitaPage(),
-                )
-              );
-            }, 
-            text: "Explorar receitas", 
-            height: 55.0,
-            invertColors: true, 
-            borderWidth: 2.5
-          ),
-          ],),
-          ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 5),
-            child: TextLabel(text: "Sugestões do Dia"),
+            child: const TextLabel(text: "Sugestões do Dia"),
           ),
           sugestoesDoDiaCarousel()
         ],
@@ -101,36 +121,20 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  SizedBox sugestoesDoDiaCarousel() {
+  Widget sugestoesDoDiaCarousel() {
     return SizedBox(
-          height: 220,
-          child: ListView.separated(
-            padding: EdgeInsets.only(left:10.0, right: 10.0),
-            itemCount: receitas.length,
-            scrollDirection: Axis.horizontal,
-            separatorBuilder:(context, index) => SizedBox(width: 15),
-            itemBuilder: (context, index) => ReceitaPreview(
-              receita: receitas[index], 
-              previewWidth: 250,
-              nameMaxLines: 1,
-            ),
-          )
-        );
-  }
-  
-  AppBar appBar() {
-    return AppBar(
-      title: Text(
-        "Chefie",
-        style: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-        )
+      height: 220,
+      child: ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        itemCount: receitas.length,
+        scrollDirection: Axis.horizontal,
+        separatorBuilder: (context, index) => const SizedBox(width: 15),
+        itemBuilder: (context, index) => ReceitaPreview(
+          receita: receitas[index],
+          previewWidth: 250,
+          nameMaxLines: 1,
+        ),
       ),
-      leading: Icon(Icons.restaurant_menu),
-      centerTitle: true,
-      backgroundColor: Color(0xfff8f6f5),
-      elevation: 0.0,
     );
   }
 }

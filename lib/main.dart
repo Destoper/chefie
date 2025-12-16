@@ -6,7 +6,7 @@ import 'views/ingredientes/ingredientes.dart';
 import 'views/receitas/find_receita.dart';
 import 'package:chefie/views/favoritos/favorites.dart';
 import 'views/home/home.dart';
-import 'views/login/login_temp.dart';
+import 'views/login/login.dart';
 import 'controllers/auth_controller.dart';
 import 'config/env.dart';
 
