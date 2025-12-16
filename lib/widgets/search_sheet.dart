@@ -106,7 +106,7 @@ class _SearchSheetState extends ConsumerState<SearchSheet> {
                       userIngredientsAsync.whenData((ingredients) {
                         final all = ingredients
                             .where((i) => i.globalIngredient?.nameEn != null)
-                            .map((i) => i.globalIngredient!.nameEn!)
+                            .map((i) => i.globalIngredient!.nameEn)
                             .toList();
                         _selectAll(all);
                       });
@@ -145,7 +145,7 @@ class _SearchSheetState extends ConsumerState<SearchSheet> {
                   itemBuilder: (context, index) {
                     final item = validIngredients[index];
                     
-                    final nameEn = item.globalIngredient!.nameEn!;
+                    final nameEn = item.globalIngredient!.nameEn;
                     final displayName = item.globalIngredient?.namePt ?? nameEn; 
                     
                     final isSelected = _selectedIngredients.contains(nameEn);

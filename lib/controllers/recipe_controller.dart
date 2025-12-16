@@ -14,6 +14,7 @@ SpoonacularService spoonacularService(Ref ref) {
 
 // for home
 @riverpod
+@Riverpod(keepAlive: true)
 Future<List<RecipeDetails>> randomRecipes(Ref ref) async {
   final service = ref.watch(spoonacularServiceProvider);
   return service.getRandomRecipes(number: 6);
@@ -44,7 +45,7 @@ class RecipeController extends _$RecipeController {
       _lastUsedIngredients = [];
       return;
     }
-    
+
     _lastUsedIngredients = List.from(ingredients);
 
     state = const AsyncValue.loading();

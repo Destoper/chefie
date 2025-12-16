@@ -25,7 +25,7 @@ final spoonacularServiceProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef SpoonacularServiceRef = AutoDisposeProviderRef<SpoonacularService>;
-String _$randomRecipesHash() => r'869eec9d2fcfc7643a14448073b3d587589be324';
+String _$randomRecipesHash() => r'299e3f8a6b6ac4be9bb3c22e26a37b3a78934ef6';
 
 /// See also [randomRecipes].
 @ProviderFor(randomRecipes)

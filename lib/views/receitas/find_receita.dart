@@ -32,7 +32,7 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
 
       final allPantryIngredients = ingredients
           .where((i) => i.globalIngredient?.nameEn != null)
-          .map((i) => i.globalIngredient!.nameEn!)
+          .map((i) => i.globalIngredient!.nameEn)
           .toList();
 
       if (allPantryIngredients.isNotEmpty) {
@@ -114,7 +114,7 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
         if (next.hasValue && !next.isLoading && _activeSearchIngredients != null) {
             final currentPantrySet = next.value!
                 .where((i) => i.globalIngredient?.nameEn != null)
-                .map((i) => i.globalIngredient!.nameEn!)
+                .map((i) => i.globalIngredient!.nameEn)
                 .toSet();
 
             final sanitizedList = _activeSearchIngredients!
