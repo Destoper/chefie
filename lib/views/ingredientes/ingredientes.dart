@@ -21,8 +21,6 @@ class IngredientesPage extends ConsumerStatefulWidget {
 class _IngredientesPageState extends ConsumerState<IngredientesPage> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
-  bool _isUpdating = false;
-
   @override
   void dispose() {
     _searchController.dispose();
@@ -30,7 +28,6 @@ class _IngredientesPageState extends ConsumerState<IngredientesPage> {
   }
 
   Future<void> _atualizarIngrediente(UserIngredient updated) async {
-    setState(() => _isUpdating = true);
 
     try {
       final userId = ref.read(authControllerProvider).value?.id;
@@ -58,8 +55,6 @@ class _IngredientesPageState extends ConsumerState<IngredientesPage> {
           ),
         );
       }
-    } finally {
-      if (mounted) setState(() => _isUpdating = false);
     }
   }
 

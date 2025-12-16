@@ -3,6 +3,7 @@ import 'package:chefie/controllers/user_ingredient_controller.dart';
 import 'package:chefie/models/recipe_api.dart';
 import 'package:chefie/theme/app_theme.dart';
 import 'package:chefie/views/receitas/receita_details.dart';
+import 'package:chefie/widgets/search_sheet.dart';
 import 'package:chefie/widgets/chefie_app_bar.dart';
 import 'package:chefie/widgets/text.dart';
 import 'package:flutter/material.dart';
@@ -16,19 +17,20 @@ class FindReceitaPage extends ConsumerStatefulWidget {
 }
 
 class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
-  String _sortBy = 'match'; // 'match' ou 'time'
+  String _sortBy = 'match'; 
   bool _isInitialLoad = true;
+  
+  List<String>? _activeSearchIngredients;
 
   @override
   void initState() {
     super.initState();
-    // Busca receitas assim que a tela abre
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _searchRecipesWithUserIngredients();
+      _initializeSearch();
     });
   }
 
-  Future<void> _searchRecipesWithUserIngredients() async {
+  Future<void> _initializeSearch() async {
     final ingredientsAsync = ref.read(userIngredientControllerProvider);
     
     ingredientsAsync.whenData((ingredients) {
@@ -37,28 +39,52 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
         return;
       }
 
-      final ingredientNames = ingredients
+      final allIngredients = ingredients
           .where((i) => i.globalIngredient?.nameEn != null)
           .map((i) => i.globalIngredient!.nameEn)
           .toList();
 
-      if (ingredientNames.isNotEmpty) {
+      if (allIngredients.isNotEmpty) {
+        setState(() {
+          _activeSearchIngredients = allIngredients;
+        });
         ref.read(recipeControllerProvider.notifier)
-            .searchRecipes(ingredientNames);
+            .searchRecipes(allIngredients);
       }
       
       setState(() => _isInitialLoad = false);
     });
   }
 
+  void _updateSearch(List<String> ingredientsToSearch) {
+    setState(() {
+      _activeSearchIngredients = ingredientsToSearch;
+    });
+    ref.read(recipeControllerProvider.notifier).searchRecipes(ingredientsToSearch);
+  }
+
+  void _openAdvancedSearch() async {
+    if (_activeSearchIngredients == null) return;
+
+    final result = await showModalBottomSheet<List<String>>(
+      context: context,
+      isScrollControlled: true, 
+      backgroundColor: Colors.transparent,
+      builder: (context) => SearchSheet(
+        initiallySelectedIngredients: _activeSearchIngredients!,
+      ),
+    );
+
+    if (result != null) {
+      _updateSearch(result);
+    }
+  }
+
   List<RecipeApi> _sortRecipes(List<RecipeApi> recipes) {
     final sorted = List<RecipeApi>.from(recipes);
-    
     if (_sortBy == 'match') {
       sorted.sort((a, b) => b.matchPercentage.compareTo(a.matchPercentage));
     }
-    // TODO: ordenar por tempo
-    
     return sorted;
   }
 
@@ -69,15 +95,13 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
-        child: ChefieAppBar(title: "Buscar receitas"),
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: const ChefieAppBar(title: "Buscar receitas"),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO: Abrir busca avançada com filtros
-        },
+        onPressed: _openAdvancedSearch,
         backgroundColor: AppColors.primary,
-        shape: CircleBorder(),
+        shape: const CircleBorder(),
         child: Icon(Icons.search, color: AppColors.backgroundOf(context)),
       ),
       body: Padding(
@@ -105,6 +129,7 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
                 color: AppColors.textOf(context),
               ),
             ),
+            
             SizedBox(
               height: 50,
               child: ListView(
@@ -112,20 +137,9 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
                 padding: const EdgeInsets.symmetric(vertical: 6),
                 children: [
                   FilterOption(
-                    text: "Ordenar por",
-                    icon: Icons.swap_vert,
-                    selected: false,
-                    onTap: () {},
-                  ),
-                  FilterOption(
                     text: "Match %",
                     selected: _sortBy == 'match',
                     onTap: () => setState(() => _sortBy = 'match'),
-                  ),
-                  FilterOption(
-                    text: "Tempo",
-                    selected: _sortBy == 'time',
-                    onTap: () => setState(() => _sortBy = 'time'),
                   ),
                 ],
               ),
@@ -144,16 +158,15 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
     AsyncValue<List<RecipeApi>> recipesAsync,
     AsyncValue userIngredientsAsync,
   ) {
-    // Verifica se tem ingredientes cadastrados
     return userIngredientsAsync.when(
-      loading: () => Center(child: CircularProgressIndicator()),
+      loading: () => const Center(child: CircularProgressIndicator()),
       error: (e, _) => Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.error_outline, size: 48, color: AppColors.destructive),
-            SizedBox(height: 16),
-            Text('Erro ao carregar ingredientes'),
+            const SizedBox(height: 16),
+            const Text('Erro ao carregar ingredientes'),
           ],
         ),
       ),
@@ -164,7 +177,7 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.kitchen_outlined, size: 64, color: AppColors.textOf(context).withValues(alpha: 0.4)),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Text(
                   'Adicione ingredientes para\nencontrar receitas!',
                   textAlign: TextAlign.center,
@@ -179,18 +192,18 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
         }
 
         return recipesAsync.when(
-          loading: () => Center(child: CircularProgressIndicator()),
+          loading: () => const Center(child: CircularProgressIndicator()),
           error: (e, _) => Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.error_outline, size: 48, color: AppColors.destructive),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Text('Erro: ${e.toString()}'),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: _searchRecipesWithUserIngredients,
-                  child: Text('Tentar novamente'),
+                  onPressed: _initializeSearch,
+                  child: const Text('Tentar novamente'),
                 ),
               ],
             ),
@@ -199,7 +212,8 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
             if (recipes.isEmpty && !_isInitialLoad) {
               return Center(
                 child: Text(
-                  'Nenhuma receita encontrada',
+                  'Nenhuma receita encontrada para os ingredientes selecionados.',
+                  textAlign: TextAlign.center,
                   style: TextStyle(color: AppColors.textOf(context)),
                 ),
               );
@@ -208,7 +222,7 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
             final sortedRecipes = _sortRecipes(recipes);
 
             return GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 15,
@@ -289,25 +303,25 @@ class RecipePreviewCard extends StatelessWidget {
                           fit: BoxFit.cover,
                           errorBuilder: (_, __, ___) => Container(
                             color: AppColors.primary.withValues(alpha: 0.3),
-                            child: Icon(Icons.restaurant, size: 40),
+                            child: const Icon(Icons.restaurant, size: 40),
                           ),
                         )
                       : Container(
                           color: AppColors.primary.withValues(alpha: 0.3),
-                          child: Icon(Icons.restaurant, size: 40),
+                          child: const Icon(Icons.restaurant, size: 40),
                         ),
                   Positioned(
                     top: 8,
                     right: 8,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: _getMatchColor(recipe.matchPercentage),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
                         '${recipe.matchPercentage.toStringAsFixed(0)}%',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
@@ -335,26 +349,26 @@ class RecipePreviewCard extends StatelessWidget {
                         color: AppColors.textOf(context),
                       ),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.check_circle_outline,
                           size: 16,
                           color: Colors.green,
                         ),
-                        SizedBox(width: 4),
+                        const SizedBox(width: 4),
                         Text(
                           '${recipe.usedIngredientCount} tem',
-                          style: TextStyle(fontSize: 12, color: Colors.green),
+                          style: const TextStyle(fontSize: 12, color: Colors.green),
                         ),
-                        SizedBox(width: 12),
+                        const SizedBox(width: 12),
                         Icon(
                           Icons.cancel_outlined,
                           size: 16,
                           color: AppColors.destructive,
                         ),
-                        SizedBox(width: 4),
+                        const SizedBox(width: 4),
                         Text(
                           '${recipe.missedIngredientCount} falta',
                           style: TextStyle(fontSize: 12, color: AppColors.destructive),
