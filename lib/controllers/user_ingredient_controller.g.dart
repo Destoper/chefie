@@ -27,12 +27,12 @@ final userIngredientRepositoryProvider =
 typedef UserIngredientRepositoryRef =
     AutoDisposeProviderRef<UserIngredientRepository>;
 String _$userIngredientControllerHash() =>
-    r'818b156aa88af7db83432ff7a753c122a473f7f7';
+    r'd67c2c21e9e7bd5079166566ff947fee0d6e9196';
 
 /// See also [UserIngredientController].
 @ProviderFor(UserIngredientController)
 final userIngredientControllerProvider =
-    AutoDisposeAsyncNotifierProvider<
+    AsyncNotifierProvider<
       UserIngredientController,
       List<UserIngredient>
     >.internal(
@@ -45,7 +45,6 @@ final userIngredientControllerProvider =
       allTransitiveDependencies: null,
     );
 
-typedef _$UserIngredientController =
-    AutoDisposeAsyncNotifier<List<UserIngredient>>;
+typedef _$UserIngredientController = AsyncNotifier<List<UserIngredient>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

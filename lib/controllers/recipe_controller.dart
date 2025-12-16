@@ -25,9 +25,12 @@ Future<RecipeDetails> recipeDetails(Ref ref, {required int recipeId}) async {
   return service.getRecipeDetails(recipeId);
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class RecipeController extends _$RecipeController {
   
+  List<String> _lastUsedIngredients = [];
+  List<String> get lastUsedIngredients => _lastUsedIngredients;
+
   @override
   AsyncValue<List<RecipeApi>> build() {
     return const AsyncValue.data([]);
@@ -38,17 +41,21 @@ class RecipeController extends _$RecipeController {
   Future<void> searchRecipes(List<String> ingredients) async {
     if (ingredients.isEmpty) {
       state = const AsyncValue.data([]);
+      _lastUsedIngredients = [];
       return;
     }
+    
+    _lastUsedIngredients = List.from(ingredients);
 
     state = const AsyncValue.loading();
 
     state = await AsyncValue.guard(() async {
-      return await _service.findByIngredients(ingredients, number: 10);
+      return await _service.findByIngredients(ingredients, number: 20);
     });
   }
 
   void clearSearch() {
     state = const AsyncValue.data([]);
+    _lastUsedIngredients = [];
   }
 }

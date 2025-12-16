@@ -17,43 +17,56 @@ class FindReceitaPage extends ConsumerStatefulWidget {
 }
 
 class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
-  String _sortBy = 'match'; 
-  bool _isInitialLoad = true;
-  
+  String _sortBy = 'match';
   List<String>? _activeSearchIngredients;
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initializeSearch();
-    });
-  }
+  void _ensureSearchInitialized() {
+    if (_activeSearchIngredients != null) return;
 
-  Future<void> _initializeSearch() async {
-    final ingredientsAsync = ref.read(userIngredientControllerProvider);
+    final ingredientsState = ref.read(userIngredientControllerProvider);
     
-    ingredientsAsync.whenData((ingredients) {
-      if (ingredients.isEmpty) {
-        setState(() => _isInitialLoad = false);
-        return;
-      }
+    if (ingredientsState.hasValue && !ingredientsState.isLoading) {
+      final ingredients = ingredientsState.value!;
+      
+      if (ingredients.isEmpty) return;
 
-      final allIngredients = ingredients
+      final allPantryIngredients = ingredients
           .where((i) => i.globalIngredient?.nameEn != null)
-          .map((i) => i.globalIngredient!.nameEn)
+          .map((i) => i.globalIngredient!.nameEn!)
           .toList();
 
-      if (allIngredients.isNotEmpty) {
-        setState(() {
-          _activeSearchIngredients = allIngredients;
-        });
-        ref.read(recipeControllerProvider.notifier)
-            .searchRecipes(allIngredients);
+      if (allPantryIngredients.isNotEmpty) {
+        final controller = ref.read(recipeControllerProvider.notifier);
+        final recipeState = ref.read(recipeControllerProvider);
+        
+        final validPantrySet = allPantryIngredients.toSet();
+        final lastUsedAndValid = controller.lastUsedIngredients
+            .where((i) => validPantrySet.contains(i))
+            .toList();
+
+        final bool stateIsDirty = lastUsedAndValid.length != controller.lastUsedIngredients.length;
+        
+        if (recipeState.hasValue && 
+            !(recipeState.isLoading) && 
+            !stateIsDirty &&
+            lastUsedAndValid.isNotEmpty) {
+          
+          setState(() {
+            _activeSearchIngredients = lastUsedAndValid;
+          });
+          
+        } else {
+          final listToUse = (lastUsedAndValid.isEmpty && validPantrySet.isNotEmpty)
+              ? allPantryIngredients
+              : lastUsedAndValid;
+
+          setState(() {
+            _activeSearchIngredients = listToUse;
+          });
+          controller.searchRecipes(listToUse);
+        }
       }
-      
-      setState(() => _isInitialLoad = false);
-    });
+    }
   }
 
   void _updateSearch(List<String> ingredientsToSearch) {
@@ -68,7 +81,7 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
 
     final result = await showModalBottomSheet<List<String>>(
       context: context,
-      isScrollControlled: true, 
+      isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => SearchSheet(
         initiallySelectedIngredients: _activeSearchIngredients!,
@@ -93,6 +106,41 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
     final recipesAsync = ref.watch(recipeControllerProvider);
     final userIngredientsAsync = ref.watch(userIngredientControllerProvider);
 
+    ref.listen(userIngredientControllerProvider, (previous, next) {
+        if (next.hasValue && !next.isLoading && _activeSearchIngredients == null) {
+           _ensureSearchInitialized();
+        }
+        
+        if (next.hasValue && !next.isLoading && _activeSearchIngredients != null) {
+            final currentPantrySet = next.value!
+                .where((i) => i.globalIngredient?.nameEn != null)
+                .map((i) => i.globalIngredient!.nameEn!)
+                .toSet();
+
+            final sanitizedList = _activeSearchIngredients!
+                .where((name) => currentPantrySet.contains(name))
+                .toList();
+
+            if (sanitizedList.length != _activeSearchIngredients!.length) {
+                final newList = sanitizedList.isEmpty && currentPantrySet.isNotEmpty
+                    ? currentPantrySet.toList()
+                    : sanitizedList;
+
+                setState(() {
+                  _activeSearchIngredients = newList;
+                });
+                
+                ref.read(recipeControllerProvider.notifier).searchRecipes(newList);
+            }
+        }
+    });
+
+    if (_activeSearchIngredients == null && userIngredientsAsync.hasValue && !userIngredientsAsync.isLoading) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+           _ensureSearchInitialized();
+        });
+    }
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
@@ -102,7 +150,9 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
         onPressed: _openAdvancedSearch,
         backgroundColor: AppColors.primary,
         shape: const CircleBorder(),
-        child: Icon(Icons.search, color: AppColors.backgroundOf(context)),
+        child: _activeSearchIngredients == null 
+            ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+            : Icon(Icons.search, color: AppColors.backgroundOf(context)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -129,7 +179,6 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
                 color: AppColors.textOf(context),
               ),
             ),
-            
             SizedBox(
               height: 50,
               child: ListView(
@@ -202,18 +251,17 @@ class _FindReceitaPageState extends ConsumerState<FindReceitaPage> {
                 Text('Erro: ${e.toString()}'),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: _initializeSearch,
+                  onPressed: () => _ensureSearchInitialized(),
                   child: const Text('Tentar novamente'),
                 ),
               ],
             ),
           ),
           data: (recipes) {
-            if (recipes.isEmpty && !_isInitialLoad) {
+            if (recipes.isEmpty && _activeSearchIngredients != null) {
               return Center(
                 child: Text(
-                  'Nenhuma receita encontrada para os ingredientes selecionados.',
-                  textAlign: TextAlign.center,
+                  'Nenhuma receita encontrada.',
                   style: TextStyle(color: AppColors.textOf(context)),
                 ),
               );

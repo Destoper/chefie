@@ -184,15 +184,12 @@ class _RecipeDetailsProviderElement
   int get recipeId => (origin as RecipeDetailsProvider).recipeId;
 }
 
-String _$recipeControllerHash() => r'6da22b2960812913596b33e856a0091306ddda65';
+String _$recipeControllerHash() => r'a1273ab2d356a303f098d0faaecd1eb18f45cce7';
 
 /// See also [RecipeController].
 @ProviderFor(RecipeController)
 final recipeControllerProvider =
-    AutoDisposeNotifierProvider<
-      RecipeController,
-      AsyncValue<List<RecipeApi>>
-    >.internal(
+    NotifierProvider<RecipeController, AsyncValue<List<RecipeApi>>>.internal(
       RecipeController.new,
       name: r'recipeControllerProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -202,6 +199,6 @@ final recipeControllerProvider =
       allTransitiveDependencies: null,
     );
 
-typedef _$RecipeController = AutoDisposeNotifier<AsyncValue<List<RecipeApi>>>;
+typedef _$RecipeController = Notifier<AsyncValue<List<RecipeApi>>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

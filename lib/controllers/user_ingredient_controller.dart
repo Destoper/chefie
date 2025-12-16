@@ -11,7 +11,7 @@ UserIngredientRepository userIngredientRepository(Ref ref) {
   return UserIngredientRepository();
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class UserIngredientController extends _$UserIngredientController {
   
   @override

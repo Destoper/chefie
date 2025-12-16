@@ -53,6 +53,23 @@ class _SearchSheetState extends ConsumerState<SearchSheet> {
   Widget build(BuildContext context) {
     final userIngredientsAsync = ref.watch(userIngredientControllerProvider);
 
+    ref.listen(userIngredientControllerProvider, (prev, next) {
+      if (next.hasValue && next.value != null) {
+        final validNames = next.value!
+            .map((i) => i.globalIngredient?.nameEn)
+            .whereType<String>()
+            .toSet();
+            
+        final newSelection = _selectedIngredients.intersection(validNames);
+        
+        if (newSelection.length != _selectedIngredients.length) {
+          setState(() {
+            _selectedIngredients = newSelection;
+          });
+        }
+      }
+    });
+
     return Container(
       height: MediaQuery.of(context).size.height * 0.85,
       decoration: BoxDecoration(
@@ -89,7 +106,7 @@ class _SearchSheetState extends ConsumerState<SearchSheet> {
                       userIngredientsAsync.whenData((ingredients) {
                         final all = ingredients
                             .where((i) => i.globalIngredient?.nameEn != null)
-                            .map((i) => i.globalIngredient!.nameEn)
+                            .map((i) => i.globalIngredient!.nameEn!)
                             .toList();
                         _selectAll(all);
                       });
@@ -127,7 +144,8 @@ class _SearchSheetState extends ConsumerState<SearchSheet> {
                   separatorBuilder: (_, __) => const SizedBox(height: 8),
                   itemBuilder: (context, index) {
                     final item = validIngredients[index];
-                    final nameEn = item.globalIngredient!.nameEn;
+                    
+                    final nameEn = item.globalIngredient!.nameEn!;
                     final displayName = item.globalIngredient?.namePt ?? nameEn; 
                     
                     final isSelected = _selectedIngredients.contains(nameEn);
@@ -152,7 +170,7 @@ class _SearchSheetState extends ConsumerState<SearchSheet> {
                         child: Row(
                           children: [
                             Icon(
-                              Icons.restaurant_menu,
+                              Icons.restaurant_menu, 
                               color: isSelected ? AppColors.primary : Colors.grey,
                               size: 20,
                             ),
@@ -194,7 +212,17 @@ class _SearchSheetState extends ConsumerState<SearchSheet> {
                 child: ButtonRounded(
                   text: "Buscar Receitas (${_selectedIngredients.length})",
                   onPressed: () {
-                    Navigator.pop(context, _selectedIngredients.toList());
+                    final currentIngredients = ref.read(userIngredientControllerProvider).valueOrNull ?? [];
+                    final validNames = currentIngredients
+                        .map((i) => i.globalIngredient?.nameEn)
+                        .whereType<String>()
+                        .toSet();
+
+                    final sanitizedSelection = _selectedIngredients
+                        .where((name) => validNames.contains(name))
+                        .toList();
+
+                    Navigator.pop(context, sanitizedSelection);
                   },
                 ),
               ),

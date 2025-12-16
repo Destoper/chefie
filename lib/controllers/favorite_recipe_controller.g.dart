@@ -26,7 +26,7 @@ final favoriteRecipeRepositoryProvider =
 // ignore: unused_element
 typedef FavoriteRecipeRepositoryRef =
     AutoDisposeProviderRef<FavoriteRecipeRepository>;
-String _$isFavoriteHash() => r'792ebde3b54f4a4dce6c30c4be74fc0cfd17de42';
+String _$isFavoriteHash() => r'db85158ef058829c0c96ec9837ed58a851cc66f1';
 
 /// Copied from Dart SDK
 class _SystemHash {
