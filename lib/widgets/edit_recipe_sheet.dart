@@ -72,7 +72,7 @@ class _EditRecipeSheetState extends ConsumerState<EditRecipeSheet> {
 
           Text("Último Preparo", style: TextStyle(color: AppColors.textSecondaryOf(context), fontWeight: FontWeight.w600)),
           const SizedBox(height: 8),
-          InkWell(
+          GestureDetector(
             onTap: () async {
               final picked = await showDatePicker(
                 context: context,

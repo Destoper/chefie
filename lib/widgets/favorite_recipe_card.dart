@@ -34,7 +34,8 @@ class FavoriteRecipeCard extends ConsumerWidget {
             ),
           ],
         ),
-        child: IntrinsicHeight(
+        child: Container(
+          constraints: const BoxConstraints(maxHeight: 150),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -51,7 +52,7 @@ class FavoriteRecipeCard extends ConsumerWidget {
                       : _buildPlaceholder(),
                 ),
               ),
-
+          
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(12, 10, 4, 10),
